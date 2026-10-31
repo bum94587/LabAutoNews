@@ -1,0 +1,36 @@
+# What the research runs track. Edit freely; runs read this every time.
+
+segments:
+  - Liquid handling & benchtop automation
+  - Robotic arms, mobile lab robots, integrated workcells
+  - Self-driving labs / autonomous discovery / AI scientists
+  - Lab orchestration, scheduling & data software (LIMS, ELN, middleware)
+  - Cloud labs & lab-as-a-service
+  - Clinical & diagnostic lab automation
+  - Standards & interoperability (SiLA 2, LADS / OPC UA, Allotrope)
+  - Funding, M&A, IPOs, partnerships
+
+companies:
+  incumbents: [Thermo Fisher, Hamilton, Tecan, Beckman Coulter, Agilent, Revvity, Roche Diagnostics, Siemens Healthineers, Molecular Devices, Eppendorf, Sartorius]
+  growth: [Opentrons, Automata, Biosero, HighRes Biosolutions, Formulatrix, SPT Labtech, Synthace, Benchling, Emerald Cloud Lab, Ginkgo Bioworks]
+  ai_native: [Lila Sciences, Periodic Labs, Chemify, Radical AI, Medra, Trilobio, FutureHouse, Arctoris, Recursion]
+
+sources:
+  news: [Lab Manager, SLAS / SLAS Technology, GenomeWeb, Fierce Biotech, Endpoints News, Labiotech.eu, The Robot Report, C&EN, Chemistry World, STAT]
+  research: [arXiv (cs.RO, cond-mat.mtrl-sci), bioRxiv, ChemRxiv, Nature / Science / Digital Discovery, Acceleration Consortium]
+  money: [Crunchbase news, SEC EDGAR filings, company press-release wires]
+  community: [PyLabRobot, Hacker News, LinkedIn posts from key founders]
+
+keywords:
+  - "lab automation"
+  - "self-driving lab"
+  - "autonomous laboratory"
+  - "liquid handler"
+  - "laboratory robotics"
+  - "cloud lab"
+  - "AI scientist"
+
+events:
+  - SLAS Europe / SLAS International (annual)
+  - ELRIG Drug Discovery
+  - AACC / ADLM (clinical)
