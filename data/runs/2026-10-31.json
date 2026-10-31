@@ -1,0 +1,101 @@
+{
+  "date": "2026-10-31",
+  "note": "First run: October backfill (window 2026-10-01..31), interactive session",
+  "sources_checked": [
+    {
+      "id": "slas",
+      "method": "site-search",
+      "queries": [
+        "SLAS news release October 2026"
+      ],
+      "candidates": 5,
+      "kept": 1
+    },
+    {
+      "id": "lrig",
+      "method": "site-search",
+      "queries": [
+        "LRIG laboratory robotics interest group meetings news"
+      ],
+      "candidates": 2,
+      "kept": 0
+    },
+    {
+      "id": "elrig",
+      "method": "site-search",
+      "queries": [
+        "ELRIG Drug Discovery 2026 automation"
+      ],
+      "candidates": 2,
+      "kept": 1
+    },
+    {
+      "id": "labautomation-io",
+      "method": "site-search",
+      "queries": [
+        "labautomation.io forum discussion October 2026"
+      ],
+      "candidates": 4,
+      "kept": 1
+    },
+    {
+      "id": "hamilton",
+      "method": "site-search",
+      "queries": [
+        "Hamilton Company liquid handling announcement October 2026",
+        "Biosero Hamilton co-marketing agreement"
+      ],
+      "candidates": 2,
+      "kept": 0
+    },
+    {
+      "id": "tecan",
+      "method": "site-search",
+      "queries": [
+        "Tecan laboratory automation news October 2026"
+      ],
+      "candidates": 3,
+      "kept": 1
+    },
+    {
+      "id": "agilent",
+      "method": "site-search",
+      "queries": [
+        "Agilent lab automation liquid handling announcement October 2026",
+        "Agilent NovoStation"
+      ],
+      "candidates": 3,
+      "kept": 1
+    },
+    {
+      "id": "beckman",
+      "method": "site-search",
+      "queries": [
+        "Beckman Coulter Biomek automation October 2026"
+      ],
+      "candidates": 0,
+      "kept": 0
+    },
+    {
+      "id": "trade-press",
+      "method": "web-search",
+      "queries": [
+        "lab automation startup raises funding October 2026",
+        "self-driving laboratory autonomous lab announcement October 2026"
+      ],
+      "candidates": 6,
+      "kept": 3
+    }
+  ],
+  "fetch_failed": [
+    "labautomation-io",
+    "slas",
+    "lrig",
+    "elrig",
+    "hamilton",
+    "tecan",
+    "agilent",
+    "beckman"
+  ],
+  "notes": "Direct fetch blocked by environment network policy; all core sources covered by site-restricted WebSearch. Beckman and Hamilton had no October 2026 lab-automation releases in search."
+}
