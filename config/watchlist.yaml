@@ -16,6 +16,7 @@ item_types: [product, partnership, funding, acquisition, event, research, commun
 companies:
   core_vendors: [Hamilton, Tecan, Agilent, Beckman Coulter]
   incumbents: [Thermo Fisher, Revvity, Molecular Devices, Eppendorf, Sartorius, Roche Diagnostics, Siemens Healthineers, Abbott, Waters, SPT Labtech, Formulatrix, Analytik Jena, Gilson, INTEGRA Biosciences]
+  open_source: [PyLabRobot]
   growth: [Opentrons, Automata, Biosero, HighRes Biosolutions, Synthace, Benchling, Emerald Cloud Lab, Ginkgo Bioworks, Cellares, Retisoft, Unchained Labs]
   ai_native: [Lila Sciences, Periodic Labs, Chemify, Radical AI, Medra, Trilobio, FutureHouse, Arctoris, Recursion]
 

@@ -6,6 +6,8 @@
 # Each source can be read two ways:
 #   1. `fetch:` - fetched directly by `uv run fetch_sources.py` (needs the domain allowed in
 #      the environment's network settings; failures are logged, never fatal)
+#      Types: discourse | rss | html-links | git-log (merged PRs + tags of a public repo).
+#      `fetch:` can be one block or a list of blocks.
 #   2. `search:` - site-restricted web searches the research run makes with WebSearch
 #      (allowed_domains = search.domains). This always works and is the fallback.
 #
@@ -30,6 +32,28 @@ sources:
         - "liquid handler"
         - "PyLabRobot"
         - "scheduler orchestration"
+
+  - id: pylabrobot
+    name: PyLabRobot (open-source lab automation library)
+    tier: core
+    kind: community
+    home: https://github.com/PyLabRobot/pylabrobot
+    fetch:
+      - type: git-log            # merged PRs + release tags via git (GitHub web/API is blocked)
+        url: https://github.com/PyLabRobot/pylabrobot
+        days: 14
+      - type: discourse          # the PyLabRobot category on labautomation.io
+        url: https://labautomation.io/c/pylabrobot/23.json
+    search:
+      domains: [github.com, docs.pylabrobot.org, labautomation.io, pylabrobot.org]
+      queries:
+        - "PyLabRobot release"
+        - "PyLabRobot new device backend support"
+        - "PyLabRobot paper OR talk OR workshop"
+    notes: >-
+      Report as one weekly roll-up item ("PyLabRobot this week": new devices/backends, notable
+      fixes, releases), not one item per PR. Separate items only for releases, papers or
+      announcements.
 
   - id: slas
     name: SLAS (Society for Laboratory Automation and Screening)

@@ -1,7 +1,7 @@
 """Fetch the latest headlines from the sources in config/sources.yaml.
 
-For each source with a `fetch:` block, read its listing (Discourse JSON, RSS, or an HTML page
-of links), keep only lab-automation-relevant links for vendors (`include` / `exclude`), and
+For each source with a `fetch:` block (one, or a list), read its listing (Discourse JSON, RSS,
+an HTML page of links, or a public git repo's recent merged PRs and release tags), keep only lab-automation-relevant links for vendors (`include` / `exclude`), and
 record every link not seen before in `data/raw/links.jsonl` with today's date as first_seen.
 The research run then opens the new links as candidates.
 
@@ -20,7 +20,10 @@ from __future__ import annotations
 
 import argparse
 import re
-from urllib.parse import urljoin
+import subprocess
+import tempfile
+from datetime import date, timedelta
+from urllib.parse import urljoin, urlparse
 
 import feedparser
 import requests
@@ -43,7 +46,8 @@ def get(url: str) -> requests.Response:
 
 def fetch_discourse(cfg: dict) -> list[dict]:
     data = get(cfg["url"]).json()
-    base = cfg["url"].split("/latest")[0]
+    u = urlparse(cfg["url"])
+    base = f"{u.scheme}://{u.netloc}"
     out = []
     for t in data.get("topic_list", {}).get("topics", []):
         out.append({
@@ -84,7 +88,39 @@ def fetch_html_links(cfg: dict) -> list[dict]:
     return out
 
 
-FETCHERS = {"discourse": fetch_discourse, "rss": fetch_rss, "html-links": fetch_html_links}
+def fetch_git_log(cfg: dict) -> list[dict]:
+    """Merged PRs and release tags of a public git repo over the last `days` (default 14).
+
+    Uses git itself (a shallow, blob-less clone into a temp dir), which works where the
+    GitHub web/API endpoints are blocked. Only commits that reference a PR `(#123)` are kept.
+    """
+    repo = cfg["url"].removesuffix(".git")
+    since = (date.today() - timedelta(days=int(cfg.get("days", 14)))).isoformat()
+    with tempfile.TemporaryDirectory() as tmp:
+        subprocess.run(["git", "clone", "-q", "--bare", "--filter=blob:none", f"--shallow-since={since}",
+                        repo, tmp], check=True, capture_output=True, timeout=180)
+        log = subprocess.run(["git", "-C", tmp, "log", f"--since={since}", "--format=%H%x09%ad%x09%s",
+                              "--date=short"], check=True, capture_output=True, text=True).stdout
+        tags = subprocess.run(["git", "-C", tmp, "for-each-ref", "refs/tags", "--format=%(refname:short)%09%(creatordate:short)"],
+                              check=True, capture_output=True, text=True).stdout
+    out = []
+    for line in filter(None, log.splitlines()):
+        sha, day, subject = line.split("\t", 2)
+        m = re.search(r"\(#(\d+)\)\s*$", subject)
+        if not m:
+            continue
+        out.append({"title": subject, "url": f"{repo}/pull/{m.group(1)}", "published": day,
+                    "summary": f"merged PR, commit {sha[:7]}"})
+    for line in filter(None, tags.splitlines()):
+        tag, day = line.split("\t")
+        if day >= since:
+            out.append({"title": f"Release {tag}", "url": f"{repo}/releases/tag/{tag}", "published": day,
+                        "summary": "release tag"})
+    return out
+
+
+FETCHERS = {"discourse": fetch_discourse, "rss": fetch_rss, "html-links": fetch_html_links,
+            "git-log": fetch_git_log}
 
 
 def relevant(src: dict, row: dict) -> bool:
@@ -93,6 +129,25 @@ def relevant(src: dict, row: dict) -> bool:
     if any(x.lower() in text for x in exc):
         return False
     return True if not inc else any(x.lower() in text for x in inc)
+
+
+def fetch_one(src: dict, cfg: dict, known: dict, new_rows: list) -> dict:
+    entry = {"at": now_utc(), "source_id": src["id"], "url": cfg["url"]}
+    try:
+        rows = FETCHERS[cfg["type"]](cfg)
+        kept = [r for r in rows if relevant(src, r)]
+        fresh = [r for r in kept if r["url"] not in known]
+        for r in fresh:
+            rec = {"first_seen": today(), "source_id": src["id"], **r}
+            known[r["url"]] = rec
+            new_rows.append(rec)
+        entry.update(status="ok", listed=len(rows), relevant=len(kept), new=len(fresh))
+        print(f"ok      {src['id']:<18} {len(rows):>3} listed, {len(kept):>3} relevant, {len(fresh):>3} new  ({cfg['type']})")
+    except Exception as e:  # noqa: BLE001 - a dead source must never stop the run
+        msg = f"{type(e).__name__}: {e}"[:200]
+        entry.update(status="failed", error=msg)
+        print(f"FAILED  {src['id']:<18} {msg}")
+    return entry
 
 
 def main() -> None:
@@ -115,23 +170,8 @@ def main() -> None:
             continue
         if not args.all and not args.only and src.get("tier") != "core":
             continue
-        cfg = src["fetch"]
-        entry = {"at": now_utc(), "source_id": src["id"], "url": cfg["url"]}
-        try:
-            rows = FETCHERS[cfg["type"]](cfg)
-            kept = [r for r in rows if relevant(src, r)]
-            fresh = [r for r in kept if r["url"] not in known]
-            for r in fresh:
-                rec = {"first_seen": today(), "source_id": src["id"], **r}
-                known[r["url"]] = rec
-                new_rows.append(rec)
-            entry.update(status="ok", listed=len(rows), relevant=len(kept), new=len(fresh))
-            print(f"ok      {src['id']:<18} {len(rows):>3} listed, {len(kept):>3} relevant, {len(fresh):>3} new")
-        except Exception as e:  # noqa: BLE001 - a dead source must never stop the run
-            msg = f"{type(e).__name__}: {e}"[:200]
-            entry.update(status="failed", error=msg)
-            print(f"FAILED  {src['id']:<18} {msg}")
-        log.append(entry)
+        for cfg in (src["fetch"] if isinstance(src["fetch"], list) else [src["fetch"]]):
+            log.append(fetch_one(src, cfg, known, new_rows))
 
     append_jsonl(LINKS, new_rows)
     append_jsonl(FETCH_LOG, log)

@@ -1,0 +1,2 @@
+{"at": "2026-10-31T23:42:48Z", "source_id": "pylabrobot", "url": "https://github.com/PyLabRobot/pylabrobot", "status": "ok", "listed": 58, "relevant": 58, "new": 58}
+{"at": "2026-10-31T23:42:49Z", "source_id": "pylabrobot", "url": "https://labautomation.io/c/pylabrobot/23.json", "status": "failed", "error": "ProxyError: HTTPSConnectionPool(host='labautomation.io', port=443): Max retries exceeded with url: /c/pylabrobot/23.json (Caused by ProxyError('Unable to connect to proxy', OSError('Tunnel connection "}

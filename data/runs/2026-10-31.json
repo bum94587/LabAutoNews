@@ -12,6 +12,15 @@
       "kept": 1
     },
     {
+      "id": "pylabrobot",
+      "method": "feed",
+      "queries": [
+        "git-log merged PRs, last 14 days"
+      ],
+      "candidates": 58,
+      "kept": 1
+    },
+    {
       "id": "lrig",
       "method": "site-search",
       "queries": [
@@ -97,5 +106,97 @@
     "agilent",
     "beckman"
   ],
-  "notes": "Direct fetch blocked by environment network policy; all core sources covered by site-restricted WebSearch. Beckman and Hamilton had no October 2026 lab-automation releases in search."
+  "notes": "Direct fetch blocked by environment network policy; all core sources covered by site-restricted WebSearch. Beckman and Hamilton had no October 2026 lab-automation releases in search.",
+  "rejected": [
+    {
+      "title": "Hamilton ETFs October distributions / Hamilton Insurance Q3 results",
+      "url": "https://bnnbloomberg.ca/press-releases/2026/10/26/hamilton-etfs-announces-october-2026-monthly-upcoming-semi-monthly-cash-distributions",
+      "source_id": "hamilton",
+      "reason": "different companies named Hamilton"
+    },
+    {
+      "title": "Hamilton Microlab Prep 4-channel configuration (Analytica page)",
+      "url": "https://www.hamiltoncompany.com/analytica-munich-2026",
+      "source_id": "hamilton",
+      "reason": "undated product page, likely from spring 2026"
+    },
+    {
+      "title": "Tecan Fluent releases 2014-2021",
+      "url": "https://www.tecan.com/news-archive",
+      "source_id": "tecan",
+      "reason": "old news"
+    },
+    {
+      "title": "Tecan + NVIDIA agentic AI in Introspect",
+      "url": "https://clpmag.com/lab-management/company-news/tecan-nvidia-add-ai-introspect-lab-analytics-platform/",
+      "source_id": "tecan",
+      "reason": "June 2026, outside window (used as context in the Tecan story)"
+    },
+    {
+      "title": "Agilent expands oligonucleotide manufacturing in Boulder",
+      "url": "https://www.agilent.com/about/newsroom/presrel/2026/05oct-ca26034.html",
+      "source_id": "agilent",
+      "reason": "manufacturing capacity, not lab automation"
+    },
+    {
+      "title": "Agilent Gen5 AI cell identification for BioTek imagers",
+      "url": "https://www.agilent.com/about/newsroom/presrel/",
+      "source_id": "agilent",
+      "reason": "29 Sep, outside window; imaging software"
+    },
+    {
+      "title": "SPT Labtech and Agilent automated target enrichment",
+      "url": "https://www.sptlabtech.com/news/spt-labtech-and-agilent-introduce-automated-target-enrichment-protocols-for-genomic-workflows",
+      "source_id": "agilent",
+      "reason": "October 2025, a year old"
+    },
+    {
+      "title": "Beckman Biomek i3 benchtop launch",
+      "url": "https://www.beckman.com/news/biomek-i3-benchtop-liquid-handler",
+      "source_id": "beckman",
+      "reason": "Dec 2025 launch, old news"
+    },
+    {
+      "title": "Biomek FXp end of sale",
+      "url": "https://www.beckman.com/liquid-handlers/biomek-fxp",
+      "source_id": "beckman",
+      "reason": "standing legacy notice, not dated news"
+    },
+    {
+      "title": "LRIG Bay Area (15 Oct) and New England (22 Oct) events",
+      "url": "https://ssllc.com/learning-center/events/laboratory-robotics-new-england-annual-exhibition/",
+      "source_id": "lrig",
+      "reason": "event listings only, no coverage of what happened"
+    },
+    {
+      "title": "SLAS Sample Management Symposium, 21-22 Oct at Genentech",
+      "url": "https://www.slas.org/events-calendar/slas-2026-sample-management-symposium/schedule-at-a-glance/",
+      "source_id": "slas",
+      "reason": "event listing only"
+    },
+    {
+      "title": "SLAS Europe 2027 call for abstracts",
+      "url": "https://www.slas.org/events/",
+      "source_id": "slas",
+      "reason": "routine call"
+    },
+    {
+      "title": "Munich Lab Automation Community meetup, 28 Oct",
+      "url": "https://labautomation.io/c/meet-ups/21",
+      "source_id": "labautomation-io",
+      "reason": "year not confirmable"
+    },
+    {
+      "title": "DOE selects four national-lab autonomy projects",
+      "url": "https://www.ornl.gov/autonomous-science/",
+      "source_id": "trade-press",
+      "reason": "no details found; SPIRE covered separately"
+    },
+    {
+      "title": "Flapping Airplanes raises $1B",
+      "url": "https://techcrunch.com/2026/10/21/year-old-ai-lab-flapping-airplanes-raises-1b-at-a-6b-valuation/",
+      "source_id": "trade-press",
+      "reason": "AI lab, not lab automation"
+    }
+  ]
 }

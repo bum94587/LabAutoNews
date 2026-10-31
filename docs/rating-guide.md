@@ -45,6 +45,20 @@ At the bottom:
 **Missed** is the most valuable field: anything you saw elsewhere that the brief should have
 had. The next run follows each one up, and the gap tells the learner where coverage is weak.
 
+## Changing the scope (sites, companies)
+
+Near the bottom of every brief, the **Scope** section lists every site with what it produced
+this week (candidates found, stories shown) and every watched company with its story count,
+plus companies that were in the news but aren't on the watchlist. To change what is watched,
+fill in the last line:
+
+> **Scope:** Add: Opentrons blog, Automata · Remove: Telescope Innovations · `LAN-S20261102`
+
+Free text. Name a site, a company, or a topic. The next run harvests it, edits
+`config/sources.yaml` / `config/watchlist.yaml`, logs the change in
+`data/feedback/scope_log.jsonl`, and the following brief lists it under "Scope changes applied".
+Say "core" if a new site should be checked on every run (otherwise it's secondary).
+
 ## What happens with it
 
 `learn_weights.py` computes, for every source, segment, item type, search method, domain,

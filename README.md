@@ -10,8 +10,8 @@ automation, standards, and the business around them.
 - **You rate stories where you read them** (the myday viewer). The ratings are harvested and
   learned from, so the research gets better at finding what you care about.
 
-Main sources: SLAS, LRIG, ELRIG, Labautomation.io, and only the lab-automation sections of
-Hamilton, Tecan, Agilent and Beckman Coulter. Trade press, wires and preprints are used to
+Main sources: SLAS, LRIG, ELRIG, Labautomation.io, PyLabRobot, and only the lab-automation
+sections of Hamilton, Tecan, Agilent and Beckman Coulter. Trade press, wires and preprints are used to
 corroborate and widen the net. See [`config/sources.yaml`](config/sources.yaml).
 
 ## How it runs
@@ -47,7 +47,9 @@ In Claude Code: `/deep-research daily`, `/deep-research weekly`, or
 ## Rating
 
 See [`docs/rating-guide.md`](docs/rating-guide.md). Short version: in a brief, change
-`> **Rate:** _/5 · **Tags:** _` to `> **Rate:** 4/5 · **Tags:** must-know, more`.
+`> **Rate:** _/5 · **Tags:** _` to `> **Rate:** 4/5 · **Tags:** must-know, more`. To change what is
+watched, fill in the brief's last line, `> **Scope:** Add: … · Remove: …`; each brief's Scope
+section lists every site and company with what it produced.
 
 ## Layout
 
@@ -59,7 +61,8 @@ See [`docs/rating-guide.md`](docs/rating-guide.md). Short version: in a brief, c
 | `data/items/`, `data/verify/` | One JSONL per day: research items, and the verifier's verdicts |
 | `data/runs/` | What each run checked and how (coverage) |
 | `data/editorial/` | Weekly TL;DR and signals |
-| `data/feedback/ratings.jsonl` | Your harvested ratings |
+| `data/feedback/ratings.jsonl` | Your harvested ratings and scope requests |
+| `data/feedback/scope_log.jsonl` | Scope requests applied to `config/` |
 | `data/raw/` | Link registry and fetch log from `fetch_sources.py` |
 | `docs/news/` | The weekly briefs (read in myday) |
 | `docs/tuning.md` | What the learner found (generated) |

@@ -12,10 +12,24 @@ Arguments: `$ARGUMENTS` (default `daily`). Dates are America/Los_Angeles. `D` = 
 ## 0. Orient (every run)
 1. `uv sync`, then `uv run sync_state.py`: pulls the items, verdicts and ratings that earlier
    runs left on other branches. Without this step you will duplicate work.
-2. Read `config/sources.yaml`, `config/watchlist.yaml`, `config/weights.json` (if present) and
+2. **Harvest feedback and apply scope changes.** If `/home/user/myday` is not present, call
+   add_repo for `bum94587/myday` and clone it there (shallow). Run
+   `uv run harvest_ratings.py --from /home/user/myday/projects/labautonews/docs/news --from docs/news`.
+   Then, for every `kind: "scope"` record in `data/feedback/ratings.jsonl` whose
+   `(id, harvested_at)` is not yet in `data/feedback/scope_log.jsonl`:
+   - **Add** a site → a new entry in `config/sources.yaml` (tier `core` if the user says so,
+     else `secondary`; find its news/blog section and give it `search.domains` + 2-3 queries,
+     and a `fetch:` block if it has a feed). Add a company → the right group in
+     `config/watchlist.yaml` (and its newsroom as a source if it has one worth checking).
+   - **Remove** → delete the company from the watchlist, or the site from sources.yaml.
+   - Append `{"id", "harvested_at", "request": {"add", "remove"}, "applied_at": "D",
+     "summary": "one line of what changed", "changes": ["config/... : ..."]}` to
+     `data/feedback/scope_log.jsonl`. If a request is ambiguous, apply the most sensible
+     reading and say so in `summary` (the brief shows it under "Scope changes applied").
+3. Read `config/sources.yaml`, `config/watchlist.yaml`, `config/weights.json` (if present) and
    `docs/tuning.md`: what the user has rated up or down, `steer.more` / `steer.less`, and
    `missed_leads`.
-3. List the ids, titles and URLs of all items from the last 30 days (`data/items/`) so that you
+4. List the ids, titles and URLs of all items from the last 30 days (`data/items/`) so that you
    never add the same story twice. A genuinely new development in an old story is a new item
    that says what changed.
 
@@ -34,13 +48,21 @@ Arguments: `$ARGUMENTS` (default `daily`). Dates are America/Los_Angeles. `D` = 
 5. For each candidate, open the primary source. Keep it only if it was **published within the
    last 7 days** (a daily run looks back 7 days to catch late indexing; the 30-day dedupe stops
    repeats) and it is about lab automation.
+6. Sources with a `notes:` field have special handling. Follow it (e.g. PyLabRobot is one
+   weekly roll-up item built from `fetch_sources.py --new` PR titles, not one item per PR;
+   roll-ups go in the run on the brief day, or in the first run after a release).
 
 Record what you checked in `data/runs/D.json`:
 ```json
 {"date": "D", "sources_checked": [{"id": "slas", "method": "site-search", "queries": ["..."], "candidates": 3, "kept": 1}],
- "fetch_failed": ["hamilton"], "notes": "anything odd"}
+ "fetch_failed": ["hamilton"],
+ "rejected": [{"title": "Tecan half-year results", "url": "https://...", "source_id": "tecan", "reason": "financial results, not lab automation"}],
+ "notes": "anything odd"}
 ```
 `method` is `feed` (fetch_sources worked), `site-search`, or `feed+site-search`.
+`rejected` lists every candidate you looked at and screened out *before* it became an item
+(outside the window, not lab automation, duplicate, vendor's non-automation business) with a
+short reason. The user reads this list, so be specific and keep each reason to a few words.
 
 ## 2. Write items (daily)
 Append to `data/items/D.jsonl`, one JSON object per line. Ids are `LAN-<D as YYYYMMDD>-NN`,
@@ -63,6 +85,9 @@ continuing from the highest NN already in the file.
   compared against the user's ratings to calibrate you, so don't inflate it.
 - `status`: `include`, `hold` (worth tracking but not brief-worthy) or `drop` (with a
   `drop_reason`). Dropped items stay in the file so dedupe and learning can see them.
+- **Write for a quick read** (validate.py enforces the limits): `title` ≤ 14 words, a plain
+  "who did what"; `summary` ≤ 50 words, at most 2 sentences, facts only; `why_it_matters`
+  ≤ 30 words, one sentence. Numbers, caveats and context go in `claims` (shown under Details).
 - **Every fact needs a ref. No link, no claim.** Primary sources first (press release, paper,
   organiser page). Put numbers in `claims`, each pointing to its ref.
 - Then run `uv run validate.py D` and fix every problem.
@@ -76,16 +101,13 @@ writes `data/verify/D.jsonl`. When it returns:
 - run `uv run validate.py D` again
 
 ## 4. Weekly brief (Mondays, or `weekly`)
-1. Harvest ratings: if `/home/user/myday` is not present, call add_repo for `bum94587/myday`
-   and clone it there (shallow). Then
-   `uv run harvest_ratings.py --from /home/user/myday/projects/labautonews/docs/news --from docs/news`,
-   then `uv run learn_weights.py`.
-2. Write `data/editorial/D.md`, the only free-written part:
+1. Ratings were harvested in step 0; now run `uv run learn_weights.py`.
+2. Write `data/editorial/D.md`, the only free-written part. Keep it short:
    ```
    ## TL;DR
-   - 3-5 bullets, each ending with the story's source link(s)
+   - at most 4 bullets, each ≤ 20 words, each ending with one source link
    ## Signals to watch (analysis)
-   - patterns across this week's (and earlier) items, each linked; label speculation
+   - at most 3 bullets, each ≤ 30 words, linked; label speculation
    ```
 3. `uv run build_brief.py --end D`. This renders `docs/news/D_lab-automation-weekly.md`. Read it
    once from top to bottom. If something is wrong, fix the item or verdict data and rebuild

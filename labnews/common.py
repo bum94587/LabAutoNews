@@ -6,7 +6,8 @@ Data model (all plain text so git can merge it and myday can read it):
 - data/verify/YYYY-MM-DD.jsonl   the verifier agent's verdicts, keyed by item id
 - data/runs/YYYY-MM-DD.json      what that day's run checked (sources, methods, queries)
 - data/editorial/YYYY-MM-DD.md   TL;DR + "signals to watch" for a weekly brief
-- data/feedback/ratings.jsonl    your ratings and tags, harvested from the briefs
+- data/feedback/ratings.jsonl    your ratings, tags and scope requests, harvested from the briefs
+- data/feedback/scope_log.jsonl  scope requests the runs have applied to config/
 - data/raw/links.jsonl           every link the fetcher has ever seen (first_seen date)
 - config/weights.json            what learn_weights.py learned from the ratings
 """
@@ -29,6 +30,7 @@ VERIFY_DIR = DATA / "verify"
 RUNS_DIR = DATA / "runs"
 EDITORIAL_DIR = DATA / "editorial"
 FEEDBACK = DATA / "feedback" / "ratings.jsonl"
+SCOPE_LOG = DATA / "feedback" / "scope_log.jsonl"
 RAW_DIR = DATA / "raw"
 LINKS = RAW_DIR / "links.jsonl"
 FETCH_LOG = RAW_DIR / "fetch_log.jsonl"
@@ -37,6 +39,10 @@ WEIGHTS = CONFIG / "weights.json"
 
 ITEM_ID_RE = re.compile(r"LAN-\d{8}-\d{2,3}")
 BRIEF_ID_RE = re.compile(r"LAN-W\d{8}")
+SCOPE_ID_RE = re.compile(r"LAN-S\d{8}")
+
+# Quick-read limits (words). validate.py fails an item that goes over.
+MAX_WORDS = {"title": 14, "summary": 50, "why_it_matters": 30}
 
 FACTS = ["verified", "partial", "unverified", "contradicted"]
 SCIENCE = ["sound", "questionable", "unsupported", "na"]
@@ -154,6 +160,10 @@ def validate_item(it: dict, segments: set[str], types: set[str], source_ids: set
         errs.append(f"status '{it['status']}' not in {STATUS}")
     if not isinstance(it["relevance"], int) or not 1 <= it["relevance"] <= 5:
         errs.append("relevance must be an integer 1-5")
+    for field, limit in MAX_WORDS.items():
+        n = len(str(it.get(field, "")).split())
+        if n > limit and it.get("status") == "include":
+            errs.append(f"{field} is {n} words; keep it to {limit} (details go in claims)")
     refs = it["refs"]
     if not refs:
         errs.append("needs at least one ref - no source, no claim")

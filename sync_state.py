@@ -5,7 +5,7 @@ on the branch today's run starts from. This fetches `origin/main` and every `ori
 branch and folds their data into the working tree:
 
 - union files (JSONL, one record per line) are merged by key, so nothing is lost and
-  re-running is harmless: data/items/*.jsonl, data/verify/*.jsonl, data/feedback/ratings.jsonl,
+  re-running is harmless: data/items/*.jsonl, data/verify/*.jsonl, data/feedback/ratings.jsonl, scope_log.jsonl,
   data/raw/links.jsonl, data/raw/fetch_log.jsonl
 - write-once files are copied in when missing locally: data/runs/*.json,
   data/editorial/*.md, docs/news/*.md
@@ -31,6 +31,7 @@ UNION = {  # glob -> function giving a record's key
     "data/items/*.jsonl": lambda r: r["id"],
     "data/verify/*.jsonl": lambda r: (r["id"], r.get("at", "")),
     "data/feedback/ratings.jsonl": lambda r: (r["id"], r.get("harvested_at", "")),
+    "data/feedback/scope_log.jsonl": lambda r: (r["id"], r.get("harvested_at", "")),
     "data/raw/links.jsonl": lambda r: r["url"],
     "data/raw/fetch_log.jsonl": lambda r: (r["source_id"], r["at"]),
 }
