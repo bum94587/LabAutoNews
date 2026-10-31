@@ -1,0 +1,12 @@
+[project]
+name = "labautonews"
+version = "0.1.0"
+description = "Recurring, verified, rated research on lab automation news"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "beautifulsoup4>=4.15.0",
+    "feedparser>=6.0.14",
+    "pyyaml>=6.0.3",
+    "requests>=2.34.2",
+]

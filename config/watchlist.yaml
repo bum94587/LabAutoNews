@@ -1,0 +1,31 @@
+# Topics and companies a run should recognise. Slugs are used as the `segment` field on items.
+
+segments:
+  liquid-handling: Liquid handling & benchtop automation
+  robotics-workcells: Robotic arms, mobile lab robots, integrated workcells, storage
+  self-driving-labs: Self-driving labs / autonomous discovery / AI scientists
+  software-orchestration: Scheduling, orchestration, LIMS/ELN, data & device integration
+  cloud-labs: Cloud labs & lab-as-a-service
+  clinical-automation: Clinical & diagnostic lab automation
+  standards: Standards & interoperability (SiLA 2, LADS / OPC UA, Allotrope)
+  business: Funding, M&A, partnerships, leadership, market
+  community-events: Conferences, user groups, community discussion
+
+item_types: [product, partnership, funding, acquisition, event, research, community, standards, people, market, other]
+
+companies:
+  core_vendors: [Hamilton, Tecan, Agilent, Beckman Coulter]
+  incumbents: [Thermo Fisher, Revvity, Molecular Devices, Eppendorf, Sartorius, Roche Diagnostics, Siemens Healthineers, Abbott, Waters, SPT Labtech, Formulatrix, Analytik Jena, Gilson, INTEGRA Biosciences]
+  growth: [Opentrons, Automata, Biosero, HighRes Biosolutions, Synthace, Benchling, Emerald Cloud Lab, Ginkgo Bioworks, Cellares, Retisoft, Unchained Labs]
+  ai_native: [Lila Sciences, Periodic Labs, Chemify, Radical AI, Medra, Trilobio, FutureHouse, Arctoris, Recursion]
+
+keywords: ["lab automation", "laboratory automation", "liquid handler", "liquid handling robot",
+           "self-driving lab", "autonomous laboratory", "laboratory robotics", "cloud lab",
+           "AI scientist", "workcell", "lab orchestration", "SiLA 2", "LADS OPC UA"]
+
+events:
+  - SLAS International (annual, ~Jan/Feb, US)
+  - SLAS Europe (annual, ~May)
+  - ELRIG Drug Discovery (annual, ~Oct, UK)
+  - LRIG chapter meetings and vendor shows (year-round)
+  - ADLM (clinical lab, ~Jul)
