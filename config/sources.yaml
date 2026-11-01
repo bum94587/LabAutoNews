@@ -189,6 +189,31 @@ sources:
         - "self-driving lab"
         - "lab automation funding raises"
 
+  - id: linkedin
+    name: LinkedIn (posts and articles, via search only)
+    tier: secondary
+    kind: social
+    home: https://www.linkedin.com/feed/hashtag/labautomation/
+    # No fetch block: linkedin.com is blocked by the network policy, most content sits behind
+    # a login wall, and LinkedIn's User Agreement forbids scraping. Search engines index public
+    # posts, company pages and Pulse articles, so site-restricted search is the only route.
+    search:
+      domains: [linkedin.com]
+      queries:
+        - "lab automation announces"
+        - "#labautomation"
+        - "liquid handling launch"
+        - "self-driving lab"
+        - "SLAS2027"
+        - "Hamilton OR Tecan OR Beckman OR Agilent automation"
+    notes: >-
+      LEADS ONLY. Use posts to discover news early, then find the item's primary source (press
+      release, organiser page, paper) and cite that first. A post on a company's own official
+      page counts as primary for that company's own announcement; personal posts are secondary.
+      Search-result dates for LinkedIn are unreliable: take the date from the post text or the
+      corroborating source. Set source_id "linkedin" on items found this way so ratings show
+      whether it earns its place.
+
   - id: wires
     name: Press-release wires
     tier: secondary

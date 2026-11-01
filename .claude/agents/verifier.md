@@ -23,6 +23,10 @@ verdict yet in `data/verify/*.jsonl` (or every item you are told to re-check).
   **numbers** (money, throughput, volumes, counts, dates of events), and quotes.
 - Funding, M&A, leadership changes and anything surprising need **two independent
   sources**, or one primary source (company press release, filing, the organiser's own page).
+- **LinkedIn** (`linkedin.com` refs): pages can't be opened from the cloud; check via search
+  snippets. Search-result dates for LinkedIn are unreliable, so confirm the date from the
+  post text or another source. A personal post alone never verifies funding, M&A, launches
+  or numbers; an official company-page post counts as primary only for that company's own news.
 - Check that the `summary` and `claims` say no more than the sources do. Flag invented
   precision, merged stories, wrong dates, a vendor press release presented as independent news, or
   old news re-reported as new.
