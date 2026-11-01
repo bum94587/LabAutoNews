@@ -18,6 +18,8 @@ corroborate and widen the net. See [`config/sources.yaml`](config/sources.yaml).
 
 ## How it runs
 
+Schedule: daily through 4 Nov 2026 (deep mode), then once a week, Mondays 04:47 Pacific.
+
 ```
 every day (scheduled cloud run)            Mondays, additionally
 ───────────────────────────────            ─────────────────────

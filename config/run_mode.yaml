@@ -6,6 +6,11 @@
 
 deep_until: 2026-11-04
 
+# After deep mode the project runs once a week (user request 2026-10-31): the scheduled task is
+# switched to Mondays on the evening of 4 Nov. Safety net in case a daily run still fires:
+after_deep:
+  run_days: [Monday]              # on any other weekday, stop at once: no research, no commit
+
 deep:
   weekly_sources_daily: true      # journals, PubMed, preprints every day (not only Mondays), 14-day look-back
   secondary_always: true          # trade press, LinkedIn, wires checked every run, not only when core is thin

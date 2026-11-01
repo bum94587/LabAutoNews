@@ -48,7 +48,9 @@ normal steps below:
 - `deep_dive`: research the topic listed for D under `deep_dive_topics` (skip if none) following
   "Deep dive" below. Keep it to ~800 words plus references. Its key claims become items
   (found_via `followup`, status `include` or `hold`) so the verifier checks them like any other.
-Deep mode never skips verification. If today is past `deep_until`, ignore this section.
+Deep mode never skips verification. If today is past `deep_until`, ignore this section, and
+if `after_deep.run_days` doesn't include today's weekday, stop the scheduled run right away
+(nothing to research, write or commit). A run the user starts by hand always proceeds.
 
 ## 1. Collect (daily)
 0. **Whose brief this is**: a DMPK / ADME scientist in drug discovery (`focus` in
