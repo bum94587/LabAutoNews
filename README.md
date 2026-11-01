@@ -29,6 +29,12 @@ verifier agent → data/verify/D.jsonl
 validate.py, commit, push                  myday "update" → pull_news.py → viewer
 ```
 
+## Deep mode
+
+`config/run_mode.yaml` can switch on a temporary deep mode (currently until 2026-11-04): every
+source every day, extended search, a daily brief (`docs/news/D_lab-automation-daily.md`) and a
+daily deep dive (`docs/news/D_deepdive-<slug>.md`) on a listed topic. It reverts on its own.
+
 ## Quickstart
 
 This is a [`uv`](https://docs.astral.sh/uv/)-managed Python 3.12 project.

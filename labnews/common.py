@@ -38,7 +38,7 @@ NEWS_DIR = ROOT / "docs" / "news"
 WEIGHTS = CONFIG / "weights.json"
 
 ITEM_ID_RE = re.compile(r"LAN-\d{8}-\d{2,3}")
-BRIEF_ID_RE = re.compile(r"LAN-W\d{8}")
+BRIEF_ID_RE = re.compile(r"LAN-[WBD]\d{8}")   # W weekly brief, B daily brief, D deep dive
 SCOPE_ID_RE = re.compile(r"LAN-S\d{8}")
 
 # Quick-read limits (words). validate.py fails an item that goes over.

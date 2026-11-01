@@ -65,7 +65,7 @@ def parse(path: Path) -> list[dict]:
             continue
         m_rate = RATE_RE.search(line)
         tags = [t.strip().lower() for t in field(line, "Tags").split(",") if t.strip()]
-        rec = {"id": rid, "kind": "brief" if rid.startswith("LAN-W") else "item",
+        rec = {"id": rid, "kind": "brief" if re.match(r"LAN-[WBD]", rid) else "item",
                "rating": int(m_rate.group(1)) if m_rate else None, "tags": tags}
         if rec["kind"] == "brief":
             rec["missed"] = field(line, "Missed")
@@ -91,7 +91,7 @@ def main() -> None:
         if not d.exists():
             print(f"skip (not found): {d}")
             continue
-        for f in sorted(d.glob("*_lab-automation-weekly.md")):
+        for f in sorted(list(d.glob("*_lab-automation-*.md")) + list(d.glob("*_deepdive-*.md"))):
             for rec in parse(f):
                 old = have.get(rec["id"])
                 same = old and all(old.get(k) == rec.get(k) for k in ("rating", "tags", "missed", "notes", "add", "remove"))

@@ -33,6 +33,23 @@ Arguments: `$ARGUMENTS` (default `daily`). Dates are America/Los_Angeles. `D` = 
    never add the same story twice. A genuinely new development in an old story is a new item
    that says what changed.
 
+## 0b. Deep mode (check every run)
+Read `config/run_mode.yaml`. If D ≤ `deep_until`, apply every `deep:` setting on top of the
+normal steps below:
+- `weekly_sources_daily`: run the weekly (journal/PubMed/preprint) steps today too, with
+  `uv run fetch_sources.py --weekly`, even if it isn't Monday.
+- `secondary_always`: run the trade-press, LinkedIn and wire searches every run.
+- `search_mode: extended`: use WebSearch mode "extended" for core and literature queries.
+- `extra_queries_per_source`: add that many of your own queries per core source (one aimed at
+  the source's companies/products, one at the DMPK/ADME angle). Record them in `data/runs/D.json`.
+- `daily_brief`: after verification, `uv run build_brief.py --kind daily --end D` renders that
+  day's items to `docs/news/D_lab-automation-daily.md` (no editorial needed). Skip it on
+  Mondays, when the weekly brief covers the day.
+- `deep_dive`: research the topic listed for D under `deep_dive_topics` (skip if none) following
+  "Deep dive" below. Keep it to ~800 words plus references. Its key claims become items
+  (found_via `followup`, status `include` or `hold`) so the verifier checks them like any other.
+Deep mode never skips verification. If today is past `deep_until`, ignore this section.
+
 ## 1. Collect (daily)
 0. **Whose brief this is**: a DMPK / ADME scientist in drug discovery (`focus` in
    `config/watchlist.yaml`). DMPK/ADME automation is the primary lens (segment `dmpk-adme`,
@@ -129,8 +146,18 @@ writes `data/verify/D.jsonl`. When it returns:
 push the session branch. myday's `tools/pull_news.py` finds briefs on any `claude/*` branch.
 Do not commit to myday.
 
-## Deep dive (`deepdive "<topic>"`)
+## Deep dive (`deepdive "<topic>"`, or the deep-mode topic of the day)
 Same rules on sources and verification, no date window (lead with the last 12 months).
 Write items as above with `segment` set appropriately. Write the analysis to
-`docs/news/D_deepdive-<slug>.md` with numbered references to every source, run the verifier
-on the items, and include its badges/notes for each claim-bearing section.
+`docs/news/D_deepdive-<slug>.md`:
+```
+# Deep dive: <topic>, <date>
+<one line: scope and what was searched>
+## TL;DR            (≤4 bullets, each linked)
+## <2-4 short sections>  (facts with numbered citations [n]; analysis labelled; DMPK/ADME angle first)
+## What to watch    (≤3 bullets)
+## References       ([n] title, publisher/journal, date, URL; mark primary / secondary / paper)
+> **Rate:** _/5 · **Tags:** _ · `LAN-D<YYYYMMDD>`
+```
+Run the verifier on the deep dive's items and reflect its verdicts: drop or reword anything it
+couldn't confirm, and put its badge next to each section's key claim.

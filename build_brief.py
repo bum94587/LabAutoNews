@@ -4,7 +4,7 @@
     uv run build_brief.py --end 2026-11-02   # week ending that date
     uv run build_brief.py --days 14          # wider window (e.g. the first brief)
 
-Writes `docs/news/YYYY-MM-DD_lab-automation-weekly.md`, which myday's `tools/pull_news.py`
+Writes `docs/news/YYYY-MM-DD_lab-automation-weekly.md` (or `-daily.md` with `--kind daily`), which myday's `tools/pull_news.py`
 copies into the viewer. Layout, quick read first:
 
 1. TL;DR (editorial), then one short block per story: badge, headline, 1-2 sentences, a
@@ -166,8 +166,12 @@ def scope_section(runs: list[dict], week: list[dict], shown: list[dict]) -> list
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("--end", default=date.today().isoformat())
-    ap.add_argument("--days", type=int, default=7)
+    ap.add_argument("--days", type=int, default=None, help="window length (default 7 weekly, 1 daily)")
+    ap.add_argument("--kind", choices=["weekly", "daily"], default="weekly",
+                    help="daily = that day's items only, no editorial (deep mode)")
     args = ap.parse_args()
+    if args.days is None:
+        args.days = 1 if args.kind == "daily" else 7
     end = date.fromisoformat(args.end)
     start = end - timedelta(days=args.days - 1)
 
@@ -186,12 +190,12 @@ def main() -> None:
 
     ed_text = ""
     ed = EDITORIAL_DIR / f"{end.isoformat()}.md"
-    if ed.exists():
+    if ed.exists() and args.kind == "weekly":
         ed_text = ed.read_text(encoding="utf-8").strip()
     top, _, signals = ed_text.partition("## Signals")
 
-    tag = f"{start.strftime('%-d %b')} – {end.strftime('%-d %b %Y')}"
-    out = [f"# Lab automation weekly, {end.strftime('%-d %b %Y')}", "",
+    tag = end.strftime('%-d %b %Y') if start == end else f"{start.strftime('%-d %b')} – {end.strftime('%-d %b %Y')}"
+    out = [f"# Lab automation {args.kind}, {end.strftime('%-d %b %Y')}", "",
            f"{tag} · {sum(not is_paper(t[1]) for t in shown)} stories · {sum(is_paper(t[1]) for t in shown)} papers · "
            f"{len(held)} filtered out · {LEGEND}", ""]
     if top.strip():
@@ -249,7 +253,7 @@ def main() -> None:
         out.append(render_details(n, it, v))
 
     out += ["## Feedback", "",
-            f"> **Brief:** _/5 · **Missed:** _ · **Notes:** _ · `LAN-W{end.strftime('%Y%m%d')}`", "",
+            f"> **Brief:** _/5 · **Missed:** _ · **Notes:** _ · `LAN-{'W' if args.kind == 'weekly' else 'B'}{end.strftime('%Y%m%d')}`", "",
             f"> **Scope:** Add: _ · Remove: _ · `LAN-S{end.strftime('%Y%m%d')}`", "",
             "Rate stories 1-5 (5 = must-know) and tag freely (`must-know`, `useful`, `meh`, `off-topic`, "
             "`wrong`, `unsound`, `hype`, `stale`, `dup`, `shallow`, `great`, `more`, `less`). **Missed**: "
@@ -257,7 +261,7 @@ def main() -> None:
             "e.g. `Add: Opentrons blog, Automata · Remove: Telescope Innovations`.", ""]
 
     NEWS_DIR.mkdir(parents=True, exist_ok=True)
-    path = NEWS_DIR / f"{end.isoformat()}_lab-automation-weekly.md"
+    path = NEWS_DIR / f"{end.isoformat()}_lab-automation-{args.kind}.md"
     text = "\n".join(out)
     if path.exists():  # a rebuild keeps any feedback line that differs from its blank template
         old = {m.group(1): line for line in path.read_text(encoding="utf-8").splitlines()

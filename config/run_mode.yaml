@@ -1,0 +1,20 @@
+# Temporary run-mode overrides. The research run reads this at the start of every run.
+#
+# Deep mode (user request 2026-10-31: spare cloud credit until 4 Nov): while today (America/
+# Los_Angeles) <= deep_until, every run goes deeper. After that date it reverts to normal on
+# its own; delete or move the date to change that.
+
+deep_until: 2026-11-04
+
+deep:
+  weekly_sources_daily: true      # journals, PubMed, preprints every day (not only Mondays), 14-day look-back
+  secondary_always: true          # trade press, LinkedIn, wires checked every run, not only when core is thin
+  search_mode: extended           # WebSearch mode "extended" for core-source and literature queries
+  extra_queries_per_source: 2     # beyond the ones in sources.yaml: one company-specific, one DMPK/ADME angle
+  daily_brief: true               # also render docs/news/D_lab-automation-daily.md (that day's items)
+  deep_dive: true                 # one deep dive per day from the list below (verified like any item)
+  deep_dive_topics:
+    2026-11-01: "Automated in vitro ADME screening platforms in 2026: who runs what (pharma in-house, CROs, vendors), throughput, recent papers"
+    2026-11-02: "Closed-loop / self-driving DMTA in pharma: real deployments vs claims, where DMPK data enters the loop"
+    2026-11-03: "Bioanalysis automation: LC-MS/MS sample prep, acoustic ejection MS, RapidFire and high-throughput PK"
+    2026-11-04: "Orchestration and data for ADME labs: schedulers, SiLA 2 / LADS, LIMS/ELN integration, AI agents"
