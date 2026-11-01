@@ -11,7 +11,9 @@ automation, standards, and the business around them.
   learned from, so the research gets better at finding what you care about.
 
 Main sources: SLAS, LRIG, ELRIG, Labautomation.io, PyLabRobot, and only the lab-automation
-sections of Hamilton, Tecan, Agilent and Beckman Coulter. Trade press, wires and preprints are used to
+sections of Hamilton, Tecan, Agilent and Beckman Coulter, checked daily; and weekly, the journals
+SLAS Discovery, SLAS Technology and HardwareX plus PubMed, with DMPK / ADME automation in drug
+discovery as the primary lens (papers in that field are marked 🎯 and listed first). Trade press, wires and preprints are used to
 corroborate and widen the net. See [`config/sources.yaml`](config/sources.yaml).
 
 ## How it runs

@@ -1,6 +1,6 @@
 # Lab automation weekly, 31 Oct 2026
 
-1 Oct – 31 Oct 2026 · 9 stories · 3 filtered out · ✅ verified · 🟡 partly verified · ⚪ unverified · ⏳ not yet checked · ⚠️ technical claim questionable · ⛔ technical claim unsupported
+1 Oct – 31 Oct 2026 · 9 stories · 2 papers · 3 filtered out · 🎯 your field (DMPK/ADME) · ✅ verified · 🟡 partly verified · ⚪ unverified · ⏳ not yet checked · ⚠️ technical claim questionable · ⛔ technical claim unsupported
 
 *First issue: an October backfill. From next Monday each brief covers seven days.*
 
@@ -93,6 +93,28 @@ Sources: [Labautomation.io thread: Protocol Factory](https://labautomation.io/t/
 
 > **Rate:** _/5 · **Tags:** _ · `LAN-20261031-08`
 
+## From the journals
+
+SLAS Discovery, SLAS Technology, HardwareX, PubMed and preprints; your field first.
+
+### P1. 🎯 Bayer's predicTeam: ADMET models need accountability across their full life cycle
+*Drug Discovery Today* · Bayer predicTeam · 6 Oct · 🟡
+
+A Drug Discovery Today keynote from Bayer argues ADMET prediction models need accountability across their full end-to-end life cycle, from building them to getting project teams to trust and use them. **Why:** As ADME data generation automates, model upkeep becomes the bottleneck in DMPK-driven design cycles.
+
+[DOI 10.1016/j.drudis.2026.104827](https://doi.org/10.1016/j.drudis.2026.104827) · [Drug Discovery Today (ScienceDirect)](https://www.sciencedirect.com/science/article/abs/pii/S1359644626002321)
+
+> **Rate:** _/5 · **Tags:** _ · `LAN-20261031-13`
+
+### P2. ARTGEL: open-hardware temperature-regulated gel electrophoresis for runs over 24 hours
+*HardwareX* · Saha & Fraden · 25 Oct · 🟡
+
+An open, fully documented electrophoresis platform combines thermoelectric gel temperature control, a heated circulating buffer and automated electrode wiping to keep long runs stable. **Why:** A small example of open hardware automating a manual step; niche for pharma.
+
+[HardwareX home page listing](https://www.hardware-x.com/) · [arXiv preprint 2606.09597](https://arxiv.org/pdf/2606.09597)
+
+> **Rate:** _/5 · **Tags:** _ · `LAN-20261031-14`
+
 ## Signals to watch (analysis)
 - **"AI needs a physical lab" drives money** at both ends: Opentrons' round and Tecan's ~92% rally ([Yahoo Finance](https://finance.yahoo.com/markets/stocks/articles/tecan-group-swx-tecn-stock-010902622.html)). Speculation: expect "AI-ready" workcell rebranding.
 - **Integration remains the pain point**, from ELRIG's agenda to community simulation tools ([DTR](https://www.drugtargetreview.com/news/self-driving-labs-and-advanced-cell-models-feature-at-elrig-2026/2136745.article)).
@@ -122,26 +144,37 @@ Screened out during research:
 - [Munich Lab Automation Community meetup, 28 Oct](https://labautomation.io/c/meet-ups/21) [labautomation-io]: year not confirmable
 - [DOE selects four national-lab autonomy projects](https://www.ornl.gov/autonomous-science/) [trade-press]: no details found; SPIRE covered separately
 - [Flapping Airplanes raises $1B](https://techcrunch.com/2026/10/21/year-old-ai-lab-flapping-airplanes-raises-1b-at-a-6b-valuation/) [trade-press]: AI lab, not lab automation
+- [Automation platform for a high-throughput 96-well Caco-2 permeability assay (Assay Drug Dev Technol)](https://pubmed.ncbi.nlm.nih.gov/41468180/) [pubmed]: April 2026, outside window; your field, worth a look
+- [Robotic safety in self-driving laboratories (SLAS Technology)](https://www.sciencedirect.com/science/article/pii/S2472630326000774) [slas-technology]: online 26 Aug 2026, outside window
+- [PickliPy: open-source acoustic dispensing picklists (preprint)](https://sciety.org/articles/activity/10.64898/2026.07.05.735934) [pubmed]: July 2026 preprint, outside window
+- [Drug Metabolism and Pharmacokinetics, Oct 2026 (ADC PK scaling, DS-1971a metabolites)](https://www.sciencedirect.com/journal/drug-metabolism-and-pharmacokinetics) [research]: DMPK science, no automation angle
+- [HardwareX Oct 2026: rheometer module, micro-gripper, optical CT for teaching](https://www.hardware-x.com/) [hardwarex]: not lab automation
+- [SLAS Discovery: no October 2026 ADME/automation papers found via search](https://www.sciencedirect.com/journal/slas-discovery/articles-in-press) [slas-discovery]: search does not index in-press items well; needs the Crossref feed
 
 ## Scope: sites and companies
 
 What each site and company produced in this window. To add or remove one, fill in the **Scope** line at the very bottom; the next run applies it to `config/`.
 
-| Site | Tier | Checked via | Candidates | Stories |
-|---|---|---|---:|---:|
-| [Labautomation.io (community forum)](https://labautomation.io) | core | site-search | 4 | 1 |
-| [PyLabRobot (open-source lab automation library)](https://github.com/PyLabRobot/pylabrobot) | core | feed | 58 | 1 |
-| [SLAS (Society for Laboratory Automation and Screening)](https://www.slas.org/news-highlights/news-center/) | core | site-search | 5 | 1 |
-| [LRIG (Laboratory Robotics Interest Group) and chapters](https://www.lrig.org) | core | site-search | 2 | 0 |
-| [ELRIG (European Laboratory Research & Innovation Group)](https://www.elrig.org) | core | site-search | 2 | 1 |
-| [Hamilton Company (Robotics / liquid handling)](https://www.hamiltoncompany.com/automated-liquid-handling) | core | site-search | 2 | 0 |
-| [Tecan (lab automation)](https://www.tecan.com/news-archive) | core | site-search | 3 | 1 |
-| [Agilent (automation & liquid handling only)](https://www.agilent.com/en/product/automated-liquid-handling) | core | site-search | 3 | 1 |
-| [Beckman Coulter (Life Sciences automation + clinical lab automation)](https://www.beckman.com/news) | core | site-search | 0 | 0 |
-| Lab trade press | secondary | web-search | 6 | 0 |
-| Press-release wires | secondary | **not checked** | 0 | 0 |
-| Preprints and journals | secondary | **not checked** | 0 | 0 |
-| Open web search (not a listed site) | — | web-search | — | 3 |
+| Site | Tier | Cadence | Checked via | Candidates | Stories |
+|---|---|---|---|---:|---:|
+| [Labautomation.io (community forum)](https://labautomation.io) | core | daily | site-search | 4 | 1 |
+| [PyLabRobot (open-source lab automation library)](https://github.com/PyLabRobot/pylabrobot) | core | daily | feed | 58 | 1 |
+| [SLAS (Society for Laboratory Automation and Screening)](https://www.slas.org/news-highlights/news-center/) | core | daily | site-search | 5 | 1 |
+| [LRIG (Laboratory Robotics Interest Group) and chapters](https://www.lrig.org) | core | daily | site-search | 2 | 0 |
+| [ELRIG (European Laboratory Research & Innovation Group)](https://www.elrig.org) | core | daily | site-search | 2 | 1 |
+| [Hamilton Company (Robotics / liquid handling)](https://www.hamiltoncompany.com/automated-liquid-handling) | core | daily | site-search | 2 | 0 |
+| [Tecan (lab automation)](https://www.tecan.com/news-archive) | core | daily | site-search | 3 | 1 |
+| [Agilent (automation & liquid handling only)](https://www.agilent.com/en/product/automated-liquid-handling) | core | daily | site-search | 3 | 1 |
+| [Beckman Coulter (Life Sciences automation + clinical lab automation)](https://www.beckman.com/news) | core | daily | site-search | 0 | 0 |
+| [SLAS Discovery (journal)](https://www.sciencedirect.com/journal/slas-discovery) | core | weekly | site-search | 3 | 0 |
+| [SLAS Technology (journal)](https://www.sciencedirect.com/journal/slas-technology) | core | weekly | site-search | 2 | 0 |
+| [HardwareX (journal, open hardware)](https://www.sciencedirect.com/journal/hardwarex) | core | weekly | site-search | 5 | 1 |
+| [PubMed (DMPK/ADME automation first, then pharma/biotech lab automation)](https://pubmed.ncbi.nlm.nih.gov/) | core | weekly | site-search | 3 | 0 |
+| Lab trade press | secondary | daily | web-search | 6 | 0 |
+| [LinkedIn (posts and articles, via search only)](https://www.linkedin.com/feed/hashtag/labautomation/) | secondary | daily | **not checked** | 0 | 0 |
+| Press-release wires | secondary | daily | **not checked** | 0 | 0 |
+| Preprints and other journals | secondary | weekly | site-search | 2 | 1 |
+| Open web search (not a listed site) | — | daily | web-search | — | 3 |
 
 **Companies watched** (stories this window):
 
@@ -151,7 +184,7 @@ What each site and company produced in this window. To add or remove one, fill i
 - Growth: Opentrons 2 · Automata 0 · Biosero 0 · HighRes Biosolutions 0 · Synthace 0 · Benchling 0 · Emerald Cloud Lab 0 · Ginkgo Bioworks 0 · Cellares 0 · Retisoft 0 · Unchained Labs 0
 - AI-native: Lila Sciences 0 · Periodic Labs 0 · Chemify 0 · Radical AI 0 · Medra 0 · Trilobio 0 · FutureHouse 0 · Arctoris 0 · Recursion 0
 
-**In the news, not on the watchlist** (add?): Argonne · BMG Labtech · Brookhaven · Brooks Automation · KPBMA · LBNL · NVIDIA · One Nucleus · Peak Analysis & Automation · SLAC · Telescope Innovations · Texas A&M
+**In the news, not on the watchlist** (add?): Argonne · BMG Labtech · Bayer · Brandeis University · Brookhaven · Brooks Automation · KPBMA · LBNL · NVIDIA · One Nucleus · Peak Analysis & Automation · SLAC · Telescope Innovations · Texas A&M
 
 ## Details <a id="details"></a>
 
@@ -219,6 +252,17 @@ What each site and company produced in this window. To add or remove one, fill i
 - Other active threads: Hamilton VENUS firmware commands, clot detection during aspiration [[2]](https://labautomation.io/c/opentrons/9)
 - Verifier: facts partial, science na. The Protocol Factory alpha-tester thread exists (developer Koji, private alpha, ~10 testers, not affiliated with Opentrons), and a 'Clot Detection Not Triggering During Aspiration' VENUS thread was active 10 Oct. However, the Protocol Factory post appears to date from about 6 Oct, so '10 Oct' looks borrowed from the clot thread, and the refs are category pages rather than the thread. Based on search snippets (labautomation.io not fetched).
 - Sources: [1] [Labautomation.io thread: Protocol Factory](https://labautomation.io/t/alpha-testers-wanted-protocol-factory-live-opentrons-protocol-simulation-in-vscode/8101) (primary) · [2] [Labautomation.io Opentrons category](https://labautomation.io/c/opentrons/9) (primary) · [3] [Labautomation.io Hamilton (VENUS) category](https://labautomation.io/c/hamilton-venus/7) (primary)
+
+**P1. Bayer's predicTeam: ADMET models need accountability across their full life cycle** (`LAN-20261031-13`, dmpk-adme, published 2026-10-06)
+- "ADMET all-inclusive: Accountability for the full end-to-end model life cycle is key to success", online 6 Oct 2026, article 104827 [[1]](https://doi.org/10.1016/j.drudis.2026.104827)
+- Verifier: facts partial, science na. Search snippets of the ScienceDirect page confirm a Drug Discovery Today keynote by Bayer's predicTeam, 'ADMET all-inclusive: Accountability for the full end-to-end model life cycle is key to success', online 6 Oct 2026, DOI 10.1016/j.drudis.2026.104827 (article 104827), following up the group's 2020 paper. Not confirmed: the individual authors, and the summary's list of life-cycle stages (deployment, monitoring, retirement); the snippets only say 'full end-to-end model life cycle'. This rests on snippets because ScienceDirect could not be opened. The piece is an opinion keynote with no testable technical claim.
+- Sources: [1] [DOI 10.1016/j.drudis.2026.104827](https://doi.org/10.1016/j.drudis.2026.104827) (paper) · [2] [Drug Discovery Today (ScienceDirect)](https://www.sciencedirect.com/science/article/abs/pii/S1359644626002321) (paper)
+
+**P2. ARTGEL: open-hardware temperature-regulated gel electrophoresis for runs over 24 hours** (`LAN-20261031-14`, open-hardware, published 2026-10-25)
+- Listed on HardwareX as published online 25 Oct 2026; arXiv preprint June 2026 [[1]](https://www.hardware-x.com/)
+- Automated electrode wiping stabilises voltage over runs exceeding 24 h [[2]](https://arxiv.org/pdf/2606.09597)
+- Verifier: facts partial, science sound. Venue confirmed from search snippets only: the HardwareX home page lists 'ARTGEL: A temperature-regulated gel electrophoresis platform for quantitative studies of reversible association' (Saha et al.) as published online 25 Oct 2026. No HardwareX article page, DOI or volume turned up, and one broad search found no journal record, so the venue is not stated wrongly but rests on a home-page listing alone. The arXiv preprint 2606.09597 (June 2026; Rupam Saha and Seth Fraden, Brandeis MRSEC) confirms the summary and the >24 h electrode-wiping claim at abstract level. The design is plausible and openly documented (thermoelectric gel control, heated circulating buffer, Arduino control, demonstrated on DNA origami), but the performance data was not inspected.
+- Sources: [1] [HardwareX home page listing](https://www.hardware-x.com/) (paper) · [2] [arXiv preprint 2606.09597](https://arxiv.org/pdf/2606.09597) (paper)
 
 ## Feedback
 

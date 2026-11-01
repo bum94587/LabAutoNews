@@ -1,7 +1,8 @@
 """Fetch the latest headlines from the sources in config/sources.yaml.
 
 For each source with a `fetch:` block (one, or a list), read its listing (Discourse JSON, RSS,
-an HTML page of links, or a public git repo's recent merged PRs and release tags), keep only lab-automation-relevant links for vendors (`include` / `exclude`), and
+an HTML page of links, a public git repo's recent merged PRs and release tags, a journal's new
+articles via Crossref, or PubMed queries), keep only lab-automation-relevant links for vendors (`include` / `exclude`), and
 record every link not seen before in `data/raw/links.jsonl` with today's date as first_seen.
 The research run then opens the new links as candidates.
 
@@ -10,7 +11,8 @@ Every source is fetched inside its own try/except, so one blocked or broken site
 the run; the outcome per source goes to `data/raw/fetch_log.jsonl`. A blocked site is not an
 error: the research run covers it with site-restricted web search instead (see the skill).
 
-    uv run fetch_sources.py              # fetch all core sources
+    uv run fetch_sources.py              # fetch all daily core sources
+    uv run fetch_sources.py --weekly     # also the weekly ones (journals, PubMed): Mondays
     uv run fetch_sources.py --all        # also secondary sources that have a fetch block
     uv run fetch_sources.py --only slas  # one source
     uv run fetch_sources.py --new        # just print links first seen today (no fetching)
@@ -119,8 +121,53 @@ def fetch_git_log(cfg: dict) -> list[dict]:
     return out
 
 
+def fetch_crossref_journal(cfg: dict) -> list[dict]:
+    """Articles a journal published online in the last `days` (default 14), via Crossref by ISSN."""
+    since = (date.today() - timedelta(days=int(cfg.get("days", 14)))).isoformat()
+    url = (f"https://api.crossref.org/journals/{cfg['issn']}/works?rows=100&sort=published&order=desc"
+           f"&filter=from-online-pub-date:{since}&select=DOI,title,published-online,published,abstract,author")
+    items = get(url).json().get("message", {}).get("items", [])
+    out = []
+    for w in items:
+        parts = (w.get("published-online") or w.get("published") or {}).get("date-parts", [[]])[0]
+        pub = "-".join(f"{p:02d}" if i else str(p) for i, p in enumerate(parts))
+        authors = w.get("author") or []
+        first = authors[0].get("family", "") if authors else ""
+        out.append({"title": " ".join((w.get("title") or [""])[0].split()), "url": f"https://doi.org/{w['DOI']}",
+                    "published": pub, "summary": (f"{first} et al. " if first else "") +
+                    re.sub(r"<[^>]+>", "", w.get("abstract", ""))[:280]})
+    return out
+
+
+def fetch_pubmed(cfg: dict) -> list[dict]:
+    """PubMed records added in the last `days` (default 14) for each query, via NCBI E-utilities."""
+    base = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils"
+    days = int(cfg.get("days", 14))
+    ids: list[str] = []
+    for q in cfg["queries"]:
+        r = requests.get(f"{base}/esearch.fcgi", headers=HEADERS, timeout=TIMEOUT, params={
+            "db": "pubmed", "term": q, "datetype": "edat", "reldate": days, "retmax": 100,
+            "retmode": "json", "tool": "LabAutoNews"})
+        r.raise_for_status()
+        ids += [i for i in r.json()["esearchresult"]["idlist"] if i not in ids]
+    if not ids:
+        return []
+    r = requests.get(f"{base}/esummary.fcgi", headers=HEADERS, timeout=TIMEOUT, params={
+        "db": "pubmed", "id": ",".join(ids[:200]), "retmode": "json", "tool": "LabAutoNews"})
+    r.raise_for_status()
+    res = r.json()["result"]
+    out = []
+    for pmid in res.get("uids", []):
+        d = res[pmid]
+        first = (d.get("authors") or [{}])[0].get("name", "")
+        out.append({"title": d.get("title", ""), "url": f"https://pubmed.ncbi.nlm.nih.gov/{pmid}/",
+                    "published": d.get("sortpubdate", "")[:10].replace("/", "-"),
+                    "summary": f"{first} et al., {d.get('source', '')} {d.get('elocationid', '')}".strip()})
+    return out
+
+
 FETCHERS = {"discourse": fetch_discourse, "rss": fetch_rss, "html-links": fetch_html_links,
-            "git-log": fetch_git_log}
+            "git-log": fetch_git_log, "crossref-journal": fetch_crossref_journal, "pubmed": fetch_pubmed}
 
 
 def relevant(src: dict, row: dict) -> bool:
@@ -132,7 +179,7 @@ def relevant(src: dict, row: dict) -> bool:
 
 
 def fetch_one(src: dict, cfg: dict, known: dict, new_rows: list) -> dict:
-    entry = {"at": now_utc(), "source_id": src["id"], "url": cfg["url"]}
+    entry = {"at": now_utc(), "source_id": src["id"], "url": cfg.get("url") or cfg.get("issn") or cfg["type"]}
     try:
         rows = FETCHERS[cfg["type"]](cfg)
         kept = [r for r in rows if relevant(src, r)]
@@ -154,6 +201,8 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("--all", action="store_true", help="include secondary sources")
     ap.add_argument("--only", help="fetch a single source id")
+    ap.add_argument("--weekly", action="store_true",
+                    help="also fetch sources with cadence: weekly (journals, PubMed); the Monday run uses this")
     ap.add_argument("--new", action="store_true", help="only list links first seen today")
     args = ap.parse_args()
 
@@ -169,6 +218,8 @@ def main() -> None:
         if "fetch" not in src or (args.only and src["id"] != args.only):
             continue
         if not args.all and not args.only and src.get("tier") != "core":
+            continue
+        if src.get("cadence") == "weekly" and not (args.weekly or args.only):
             continue
         for cfg in (src["fetch"] if isinstance(src["fetch"], list) else [src["fetch"]]):
             log.append(fetch_one(src, cfg, known, new_rows))

@@ -1,6 +1,22 @@
 # Topics and companies a run should recognise. Slugs are used as the `segment` field on items.
 
+# Whose brief this is: a DMPK / ADME scientist in drug discovery. Their field is the primary
+# lens, but any lab automation relevant to pharma & biotech is in scope. Don't narrow too far.
+focus:
+  primary:
+    name: DMPK / ADME automation in drug discovery
+    segment: dmpk-adme
+    keywords: [ADME, DMPK, drug metabolism, pharmacokinetics, metabolic stability, liver microsomes,
+               hepatocytes, intrinsic clearance, CYP inhibition, CYP induction, plasma protein binding,
+               permeability, Caco-2, MDCK, PAMPA, solubility, lipophilicity, logD, transporter assays,
+               bioanalysis, LC-MS/MS, sample preparation, PK sample analysis, metabolite identification,
+               in vitro-in vivo extrapolation, DMTA cycle]
+    relevance: +1 to the researcher's relevance guess (cap 5); papers in this field are listed first
+  in_scope: Any laboratory automation relevant to pharma & biotech, from discovery and screening to bioanalysis, cell/gene therapy and QC
+  lower_priority: Self-driving labs in materials, chemistry or physics with no clear transfer to pharma (keep them, rate relevance 1 lower)
+
 segments:
+  dmpk-adme: DMPK / ADME automation (primary focus)
   liquid-handling: Liquid handling & benchtop automation
   robotics-workcells: Robotic arms, mobile lab robots, integrated workcells, storage
   self-driving-labs: Self-driving labs / autonomous discovery / AI scientists
@@ -10,6 +26,7 @@ segments:
   standards: Standards & interoperability (SiLA 2, LADS / OPC UA, Allotrope)
   business: Funding, M&A, partnerships, leadership, market
   community-events: Conferences, user groups, community discussion
+  open-hardware: Open-source hardware and DIY lab instruments
 
 item_types: [product, partnership, funding, acquisition, event, research, community, standards, people, market, other]
 

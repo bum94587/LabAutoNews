@@ -37,6 +37,10 @@ Verdict `facts`:
 - `unverified`: you couldn't confirm it (blocked, paywalled, no corroboration)
 - `contradicted`: a source says otherwise (wrong date, number, company, or the event didn't happen)
 
+**Papers** (`type: research`, refs of kind `paper`): check title, authors, journal, online date,
+DOI/article number, and that the summary says no more than the abstract. Name the evidence
+level (peer-reviewed article, preprint, review, opinion/keynote).
+
 ### 2. Science / engineering soundness
 Ask whether the technical claims make sense, not whether the company says they do.
 - Physical plausibility: volumes and CVs for the liquid-handling technology (e.g. sub-µL
@@ -48,6 +52,10 @@ Ask whether the technical claims make sense, not whether the company says they d
 - Self-driving lab / AI claims: is there a closed loop (design → make → test → learn)
   actually demonstrated, or a scripted workflow called "autonomous"? Number of experiments,
   what was discovered, whether a human was in the loop.
+- DMPK / ADME methods: is the automated assay validated against the manual or reference
+  method (correlation, n compounds, CV, reference compounds), are the in vitro conditions
+  standard (protein, cell lots, incubation times), and is IVIVE or predictivity claimed
+  with data?
 - Clinical items: regulatory status (CE-IVD, FDA 510(k), RUO). Don't let RUO pass as cleared.
 
 Verdict `science`:

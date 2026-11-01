@@ -34,9 +34,16 @@ Arguments: `$ARGUMENTS` (default `daily`). Dates are America/Los_Angeles. `D` = 
    that says what changed.
 
 ## 1. Collect (daily)
-1. `uv run fetch_sources.py`, then `uv run fetch_sources.py --new` for the links first seen today.
+0. **Whose brief this is**: a DMPK / ADME scientist in drug discovery (`focus` in
+   `config/watchlist.yaml`). DMPK/ADME automation is the primary lens (segment `dmpk-adme`,
+   +1 relevance, listed first), but any lab automation relevant to pharma & biotech is in
+   scope. Don't narrow too far; materials/physics SDL work stays in at relevance −1.
+1. `uv run fetch_sources.py` (Mondays: `uv run fetch_sources.py --weekly`), then
+   `uv run fetch_sources.py --new` for the links first seen today.
    Sources that fail are normal when the network policy blocks them. Cover those with search.
-2. For **every core source** in `config/sources.yaml`, run its site-restricted searches:
+2. For **every core source due today** in `config/sources.yaml` (cadence `daily` every run;
+   cadence `weekly` (SLAS Discovery, SLAS Technology, HardwareX, PubMed, preprints) on Mondays
+   only, looking back 14 days), run its site-restricted searches:
    WebSearch with `allowed_domains` = `search.domains` and each of `search.queries`, adding the
    current month/year. Vendors: keep only lab-automation sections (respect `include` /
    `exclude`). Agilent's chromatography or Beckman's centrifuge news is not lab automation.
@@ -88,6 +95,10 @@ continuing from the highest NN already in the file.
 - **Write for a quick read** (validate.py enforces the limits): `title` ≤ 14 words, a plain
   "who did what"; `summary` ≤ 50 words, at most 2 sentences, facts only; `why_it_matters`
   ≤ 30 words, one sentence. Numbers, caveats and context go in `claims` (shown under Details).
+- **Papers** (journal articles, preprints): `type: "research"`, refs of kind `paper` (DOI link
+  first, then PubMed/journal page), plus `journal` and `authors` ("Smith et al.") fields.
+  The summary is the finding in plain words; `why_it_matters` says what it means for a
+  pharma/biotech lab. They render in the brief's "From the journals" section.
 - **Every fact needs a ref. No link, no claim.** Primary sources first (press release, paper,
   organiser page). Put numbers in `claims`, each pointing to its ref.
 - Then run `uv run validate.py D` and fix every problem.

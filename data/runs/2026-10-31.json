@@ -94,6 +94,52 @@
       ],
       "candidates": 6,
       "kept": 3
+    },
+    {
+      "id": "slas-discovery",
+      "method": "site-search",
+      "queries": [
+        "SLAS Discovery October 2026 ADME OR DMPK OR permeability OR metabolic stability"
+      ],
+      "candidates": 3,
+      "kept": 0
+    },
+    {
+      "id": "slas-technology",
+      "method": "site-search",
+      "queries": [
+        "SLAS Technology articles in press October 2026 automation",
+        "Robotic safety in self-driving laboratories"
+      ],
+      "candidates": 2,
+      "kept": 0
+    },
+    {
+      "id": "hardwarex",
+      "method": "site-search",
+      "queries": [
+        "HardwareX October 2026 laboratory automation open hardware"
+      ],
+      "candidates": 5,
+      "kept": 1
+    },
+    {
+      "id": "pubmed",
+      "method": "site-search",
+      "queries": [
+        "automated ADME DMPK assay liquid handler 2026 drug discovery"
+      ],
+      "candidates": 3,
+      "kept": 0
+    },
+    {
+      "id": "research",
+      "method": "site-search",
+      "queries": [
+        "(Drug Discovery Today via ScienceDirect)"
+      ],
+      "candidates": 2,
+      "kept": 1
     }
   ],
   "fetch_failed": [
@@ -104,7 +150,11 @@
     "hamilton",
     "tecan",
     "agilent",
-    "beckman"
+    "beckman",
+    "slas-discovery",
+    "slas-technology",
+    "hardwarex",
+    "pubmed"
   ],
   "notes": "Direct fetch blocked by environment network policy; all core sources covered by site-restricted WebSearch. Beckman and Hamilton had no October 2026 lab-automation releases in search.",
   "rejected": [
@@ -197,6 +247,42 @@
       "url": "https://techcrunch.com/2026/10/21/year-old-ai-lab-flapping-airplanes-raises-1b-at-a-6b-valuation/",
       "source_id": "trade-press",
       "reason": "AI lab, not lab automation"
+    },
+    {
+      "title": "Automation platform for a high-throughput 96-well Caco-2 permeability assay (Assay Drug Dev Technol)",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41468180/",
+      "source_id": "pubmed",
+      "reason": "April 2026, outside window; your field, worth a look"
+    },
+    {
+      "title": "Robotic safety in self-driving laboratories (SLAS Technology)",
+      "url": "https://www.sciencedirect.com/science/article/pii/S2472630326000774",
+      "source_id": "slas-technology",
+      "reason": "online 26 Aug 2026, outside window"
+    },
+    {
+      "title": "PickliPy: open-source acoustic dispensing picklists (preprint)",
+      "url": "https://sciety.org/articles/activity/10.64898/2026.07.05.735934",
+      "source_id": "pubmed",
+      "reason": "July 2026 preprint, outside window"
+    },
+    {
+      "title": "Drug Metabolism and Pharmacokinetics, Oct 2026 (ADC PK scaling, DS-1971a metabolites)",
+      "url": "https://www.sciencedirect.com/journal/drug-metabolism-and-pharmacokinetics",
+      "source_id": "research",
+      "reason": "DMPK science, no automation angle"
+    },
+    {
+      "title": "HardwareX Oct 2026: rheometer module, micro-gripper, optical CT for teaching",
+      "url": "https://www.hardware-x.com/",
+      "source_id": "hardwarex",
+      "reason": "not lab automation"
+    },
+    {
+      "title": "SLAS Discovery: no October 2026 ADME/automation papers found via search",
+      "url": "https://www.sciencedirect.com/journal/slas-discovery/articles-in-press",
+      "source_id": "slas-discovery",
+      "reason": "search does not index in-press items well; needs the Crossref feed"
     }
   ]
 }

@@ -33,8 +33,17 @@ from labnews.common import (EDITORIAL_DIR, NEWS_DIR, RUNS_DIR, SCOPE_LOG, all_it
 
 FACT = {"verified": "✅", "partial": "🟡", "unverified": "⚪", "contradicted": "❌"}
 SCI = {"questionable": "⚠️", "unsupported": "⛔"}
-LEGEND = ("✅ verified · 🟡 partly verified · ⚪ unverified · ⏳ not yet checked · "
+LEGEND = ("🎯 your field (DMPK/ADME) · ✅ verified · 🟡 partly verified · ⚪ unverified · ⏳ not yet checked · "
           "⚠️ technical claim questionable · ⛔ technical claim unsupported")
+FOCUS_SEGMENT = "dmpk-adme"
+
+
+def is_paper(it: dict) -> bool:
+    return it["type"] == "research" and any(r["kind"] == "paper" for r in it["refs"])
+
+
+def focus_mark(it: dict) -> str:
+    return "🎯 " if it["segment"] == FOCUS_SEGMENT else ""
 MAX_INLINE_SOURCES = 3
 FEEDBACK_RE = re.compile(r"`(LAN-[A-Z]?\d{8}(?:-\d{2,3})?)`\s*$")
 
@@ -63,7 +72,7 @@ def link(r: dict) -> str:
     return f"[{r.get('title') or r['url']}]({r['url']})"
 
 
-def render_story(n: int, it: dict, v: dict | None) -> str:
+def render_story(n: str, it: dict, v: dict | None) -> str:
     meta = " · ".join(filter(None, [badge(v), it["type"], ", ".join(it.get("companies", [])[:3]),
                                     short_date(it["published"])]))
     srcs = " · ".join(link(r) for r in it["refs"][:MAX_INLINE_SOURCES])
@@ -73,11 +82,20 @@ def render_story(n: int, it: dict, v: dict | None) -> str:
     body = it["summary"]
     if it.get("why_it_matters"):
         body += f" **Why:** {it['why_it_matters']}"
-    return "\n".join([f"### {n}. {it['title']}", meta, "", body, "", f"Sources: {srcs}", "",
+    return "\n".join([f"### {n}. {focus_mark(it)}{it['title']}", meta, "", body, "", f"Sources: {srcs}", "",
                       f"> **Rate:** _/5 · **Tags:** _ · `{it['id']}`", ""])
 
 
-def render_details(n: int, it: dict, v: dict | None) -> str:
+def render_paper(n: str, it: dict, v: dict | None) -> str:
+    meta = " · ".join(filter(None, [f"*{it['journal']}*" if it.get("journal") else "", it.get("authors", ""),
+                                    short_date(it["published"]), badge(v)]))
+    body = it["summary"] + (f" **Why:** {it['why_it_matters']}" if it.get("why_it_matters") else "")
+    srcs = " · ".join(link(r) for r in it["refs"][:MAX_INLINE_SOURCES])
+    return "\n".join([f"### {n}. {focus_mark(it)}{it['title']}", meta, "", body, "", srcs, "",
+                      f"> **Rate:** _/5 · **Tags:** _ · `{it['id']}`", ""])
+
+
+def render_details(n: str, it: dict, v: dict | None) -> str:
     lines = [f"**{n}. {it['title']}** (`{it['id']}`, {it['segment']}, published {it['published']})"]
     for c in it.get("claims", []):
         lines.append(f"- {c['text']} [[{c['ref'] + 1}]]({it['refs'][c['ref']]['url']})")
@@ -117,15 +135,16 @@ def scope_section(runs: list[dict], week: list[dict], shown: list[dict]) -> list
     out = ["## Scope: sites and companies", "",
            "What each site and company produced in this window. To add or remove one, fill in the "
            "**Scope** line at the very bottom; the next run applies it to `config/`.", "",
-           "| Site | Tier | Checked via | Candidates | Stories |", "|---|---|---|---:|---:|"]
+           "| Site | Tier | Cadence | Checked via | Candidates | Stories |", "|---|---|---|---|---:|---:|"]
     for s in sources():
         st = stats.get(s["id"])
         how = ", ".join(sorted(st["methods"])) if st else "**not checked**"
         home = s.get("home")
         name = f"[{s['name']}]({home})" if home else s["name"]
-        out.append(f"| {name} | {s.get('tier', '')} | {how} | {st['candidates'] if st else 0} | {stories.get(s['id'], 0)} |")
+        out.append(f"| {name} | {s.get('tier', '')} | {s.get('cadence', 'daily')} | {how} | "
+                   f"{st['candidates'] if st else 0} | {stories.get(s['id'], 0)} |")
     if stories.get("web"):
-        out.append(f"| Open web search (not a listed site) | — | web-search | — | {stories['web']} |")
+        out.append(f"| Open web search (not a listed site) | — | daily | web-search | — | {stories['web']} |")
 
     wl = watchlist()["companies"]
     count: dict[str, int] = {}
@@ -173,13 +192,29 @@ def main() -> None:
 
     tag = f"{start.strftime('%-d %b')} – {end.strftime('%-d %b %Y')}"
     out = [f"# Lab automation weekly, {end.strftime('%-d %b %Y')}", "",
-           f"{tag} · {len(shown)} stories · {len(held)} filtered out · {LEGEND}", ""]
+           f"{tag} · {sum(not is_paper(t[1]) for t in shown)} stories · {sum(is_paper(t[1]) for t in shown)} papers · "
+           f"{len(held)} filtered out · {LEGEND}", ""]
     if top.strip():
         out += [top.strip(), ""]
 
+    news = [t for t in shown if not is_paper(t[1])]
+    papers = [t for t in shown if is_paper(t[1])]
+    news.sort(key=lambda t: t[1]["segment"] != FOCUS_SEGMENT)    # stable: your field first, then score
+    papers.sort(key=lambda t: t[1]["segment"] != FOCUS_SEGMENT)
+    numbered = [(str(n), it, v) for n, (_, it, v) in enumerate(news, 1)] + \
+               [(f"P{n}", it, v) for n, (_, it, v) in enumerate(papers, 1)]
+
     out += ["## Stories", ""]
-    for n, (_, it, v) in enumerate(shown, 1):
-        out.append(render_story(n, it, v))
+    for n, it, v in numbered:
+        if not n.startswith("P"):
+            out.append(render_story(n, it, v))
+    if not news:
+        out += ["No news stories this week.", ""]
+
+    if papers:
+        out += ["## From the journals", "",
+                "SLAS Discovery, SLAS Technology, HardwareX, PubMed and preprints; your field first.", ""]
+        out += [render_paper(n, it, v) for n, it, v in numbered if n.startswith("P")]
 
     if signals.strip():
         out += ["## Signals" + signals.rstrip(), ""]
@@ -210,7 +245,7 @@ def main() -> None:
     out += scope_section(runs, week, [it for _, it, _ in shown]) + [""]
 
     out += ['## Details <a id="details"></a>', ""]
-    for n, (_, it, v) in enumerate(shown, 1):
+    for n, it, v in numbered:
         out.append(render_details(n, it, v))
 
     out += ["## Feedback", "",
@@ -233,7 +268,7 @@ def main() -> None:
             new_lines.append(old.get(m.group(1), line) if m else line)
         text = "\n".join(new_lines)
     path.write_text(text, encoding="utf-8")
-    print(f"Wrote {path.relative_to(NEWS_DIR.parents[1])}: {len(shown)} stories, {len(held)} left out, "
+    print(f"Wrote {path.relative_to(NEWS_DIR.parents[1])}: {len(shown)} stories+papers, {len(held)} left out, "
           f"{len(rejected)} screened out.")
 
 

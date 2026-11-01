@@ -4,6 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working in this
 
 ## What this project is
 
+Reader: a DMPK / ADME scientist in drug discovery. Their field is the primary lens
+(`focus` in `config/watchlist.yaml`), but any lab automation relevant to pharma & biotech is in scope.
+
 Recurring, well-sourced intelligence on lab automation. A scheduled cloud run researches
 every day and writes structured items; on Mondays it renders a weekly brief that the user
 reads (and rates) in the **myday** viewer, the same way as the money_systems finance briefs.
@@ -16,7 +19,7 @@ code, data and generated briefs live here.
 
 - `uv sync`
 - `uv run sync_state.py`: merge data from `origin/main` and every `origin/claude/*` branch (run first)
-- `uv run fetch_sources.py [--all|--only ID|--new]`: headline metadata from `config/sources.yaml`
+- `uv run fetch_sources.py [--all|--weekly|--only ID|--new]` (`--weekly` adds journals/PubMed, Mondays): headline metadata from `config/sources.yaml`
 - `uv run validate.py [YYYY-MM-DD]`: schema check of items and verdicts (exit 1 on problems)
 - `uv run build_brief.py [--end D] [--days N]`: render `docs/news/D_lab-automation-weekly.md`
 - `uv run harvest_ratings.py [--from DIR ...]`: ratings from briefs into `data/feedback/ratings.jsonl`
@@ -54,4 +57,6 @@ The cloud environment's network policy currently blocks direct fetches of the so
 site-restricted WebSearch. Allowing these domains in the environment's network settings
 enables direct fetching: labautomation.io, slas.org, lrig.org, elrig.org,
 hamiltoncompany.com, tecan.com, agilent.com, beckman.com, github.com (web/API; git itself works, which
-is how `fetch_sources.py` reads PyLabRobot).
+is how `fetch_sources.py` reads PyLabRobot), and for the weekly literature feeds api.crossref.org
+(SLAS Discovery, SLAS Technology, HardwareX by ISSN) and eutils.ncbi.nlm.nih.gov (PubMed).
+Google Scholar is deliberately not used (no API, blocks automation, not indexed by search).

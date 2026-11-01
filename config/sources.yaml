@@ -1,12 +1,16 @@
 # Where every research run looks, in priority order.
 #
-# tier: core      -> checked on every daily run, no exceptions
+# tier: core      -> always checked (on its cadence), no exceptions
 #       secondary -> checked when core sources are thin, or to corroborate
+# cadence: daily (default) | weekly -> weekly sources (journals, PubMed) are checked on the
+#       Monday run only, looking back 14 days because articles are indexed with a lag
 #
 # Each source can be read two ways:
 #   1. `fetch:` - fetched directly by `uv run fetch_sources.py` (needs the domain allowed in
 #      the environment's network settings; failures are logged, never fatal)
-#      Types: discourse | rss | html-links | git-log (merged PRs + tags of a public repo).
+#      Types: discourse | rss | html-links | git-log (merged PRs + tags of a public repo) |
+#      crossref-journal (new articles by ISSN; needs api.crossref.org allowed) |
+#      pubmed (E-utilities queries; needs eutils.ncbi.nlm.nih.gov allowed).
 #      `fetch:` can be one block or a list of blocks.
 #   2. `search:` - site-restricted web searches the research run makes with WebSearch
 #      (allowed_domains = search.domains). This always works and is the fallback.
@@ -176,6 +180,88 @@ sources:
     include: [automat, robot, liquid handl, biomek, echo, workcell, dxa, total lab, integration, slas]
     exclude: [flow cytometer only, centrifuge only, reagent kit only]
 
+  # ---------------------------------------------------------------- journals & literature (weekly)
+  # Papers are rendered in the brief's "From the journals" section. DMPK / ADME first (see the
+  # focus block in watchlist.yaml), then any lab automation relevant to pharma & biotech.
+  - id: slas-discovery
+    name: SLAS Discovery (journal)
+    tier: core
+    cadence: weekly
+    kind: journal
+    home: https://www.sciencedirect.com/journal/slas-discovery
+    fetch:
+      type: crossref-journal
+      issn: 2472-5552
+      days: 14
+    search:
+      domains: [sciencedirect.com, slas-discovery.org]
+      queries:
+        - "SLAS Discovery articles in press"
+        - "SLAS Discovery ADME OR DMPK OR metabolic stability OR permeability"
+        - "SLAS Discovery high-throughput screening automation"
+
+  - id: slas-technology
+    name: SLAS Technology (journal)
+    tier: core
+    cadence: weekly
+    kind: journal
+    home: https://www.sciencedirect.com/journal/slas-technology
+    fetch:
+      type: crossref-journal
+      issn: 2472-6303
+      days: 14
+    search:
+      domains: [sciencedirect.com, slas-technology.org]
+      queries:
+        - "SLAS Technology articles in press"
+        - "SLAS Technology laboratory automation"
+        - "SLAS Technology self-driving laboratory"
+
+  - id: hardwarex
+    name: HardwareX (journal, open hardware)
+    tier: core
+    cadence: weekly
+    kind: journal
+    home: https://www.sciencedirect.com/journal/hardwarex
+    fetch:
+      type: crossref-journal
+      issn: 2468-0672
+      days: 14
+    search:
+      domains: [sciencedirect.com, hardware-x.com]
+      queries:
+        - "HardwareX laboratory automation"
+        - "HardwareX liquid handling OR pipetting robot OR microplate"
+        - "HardwareX open source laboratory instrument"
+    include: [automat, liquid, pipett, robot, laborator, microplate, plate, sample, dispens, incubat, pump, fluidic, culture, assay, bioreactor, microscop, screening, spectro]
+
+  - id: pubmed
+    name: PubMed (DMPK/ADME automation first, then pharma/biotech lab automation)
+    tier: core
+    cadence: weekly
+    kind: literature
+    home: https://pubmed.ncbi.nlm.nih.gov/
+    fetch:
+      type: pubmed
+      days: 14
+      queries:
+        # primary field: DMPK / ADME
+        - '(ADME[tiab] OR DMPK[tiab] OR "drug metabolism"[tiab] OR pharmacokinetic*[tiab] OR "metabolic stability"[tiab] OR microsom*[tiab] OR hepatocyte*[tiab] OR "CYP inhibition"[tiab] OR "protein binding"[tiab] OR permeability[tiab] OR Caco-2[tiab] OR solubility[tiab] OR bioanalys*[tiab]) AND (automat*[tiab] OR "high-throughput"[tiab] OR robot*[tiab] OR "liquid handl*"[tiab] OR "acoustic dispens*"[tiab])'
+        # broader: lab automation in pharma & biotech
+        - '("laboratory automation"[tiab] OR "lab automation"[tiab] OR "liquid handling"[tiab] OR "self-driving lab*"[tiab] OR "autonomous lab*"[tiab] OR "laboratory robot*"[tiab] OR "automated workflow"[tiab]) AND (drug[tiab] OR pharma*[tiab] OR biotech*[tiab] OR assay*[tiab] OR screening[tiab])'
+    search:
+      domains: [pubmed.ncbi.nlm.nih.gov, pmc.ncbi.nlm.nih.gov]
+      queries:
+        - "automated ADME assay"
+        - "high-throughput metabolic stability automation"
+        - "automated DMPK workflow liquid handler"
+        - "automated bioanalysis LC-MS/MS sample preparation"
+        - "laboratory automation drug discovery"
+    notes: >-
+      Google Scholar is not used: it has no API, blocks automated queries, and web search does
+      not index it. PubMed (plus the journal feeds) covers the peer-reviewed side; preprints
+      come from the `research` source.
+
   # ---------------------------------------------------------------- secondary (corroboration, wider net)
   - id: trade-press
     name: Lab trade press
@@ -225,12 +311,14 @@ sources:
         - "liquid handling announces"
 
   - id: research
-    name: Preprints and journals
+    name: Preprints and other journals
     tier: secondary
-    kind: research
+    cadence: weekly
+    kind: literature
     search:
-      domains: [arxiv.org, biorxiv.org, chemrxiv.org, nature.com, science.org, pubs.rsc.org, sciencedirect.com]
+      domains: [biorxiv.org, chemrxiv.org, arxiv.org, nature.com, science.org, pubs.acs.org, pubs.rsc.org, sciencedirect.com, tandfonline.com]
       queries:
-        - "self-driving laboratory"
+        - "automated ADME OR DMPK assay"
+        - "self-driving laboratory drug discovery"
         - "autonomous experimentation robot"
         - "laboratory robotics liquid handling"
