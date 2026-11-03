@@ -1,0 +1,194 @@
+{
+ "date": "2026-11-03",
+ "sources_checked": [
+  {
+   "id": "slas",
+   "method": "site-search",
+   "queries": [
+    "SLAS news release November 2026"
+   ],
+   "candidates": 3,
+   "kept": 0
+  },
+  {
+   "id": "hamilton",
+   "method": "site-search",
+   "queries": [
+    "Hamilton automated liquid handling news November 2026"
+   ],
+   "candidates": 1,
+   "kept": 0
+  },
+  {
+   "id": "tecan",
+   "method": "site-search",
+   "queries": [
+    "Tecan automation launches partnership 2026"
+   ],
+   "candidates": 1,
+   "kept": 0
+  },
+  {
+   "id": "beckman",
+   "method": "site-search",
+   "queries": [
+    "Beckman Coulter Biomek Echo automation news 2026"
+   ],
+   "candidates": 2,
+   "kept": 0
+  },
+  {
+   "id": "agilent",
+   "method": "site-search",
+   "queries": [
+    "lab automation announces launch liquid handler workcell (combined)"
+   ],
+   "candidates": 0,
+   "kept": 0
+  },
+  {
+   "id": "lrig/elrig/labautomation-io",
+   "method": "site-search",
+   "queries": [
+    "lab automation announces launch liquid handler workcell (combined)"
+   ],
+   "candidates": 1,
+   "kept": 0
+  },
+  {
+   "id": "pylabrobot",
+   "method": "feed",
+   "queries": [
+    "fetch_sources.py --weekly"
+   ],
+   "candidates": 0,
+   "kept": 0,
+   "notes": "0 new PRs since yesterday's roll-up"
+  },
+  {
+   "id": "trade-press+wires",
+   "method": "site-search",
+   "queries": [
+    "self-driving lab OR autonomous lab...",
+    "laboratory automation announces November 2026"
+   ],
+   "candidates": 4,
+   "kept": 0
+  },
+  {
+   "id": "slas-technology/discovery/pubmed/research",
+   "method": "site-search",
+   "queries": [
+    "SLAS Technology OR SLAS Discovery automated ADME laboratory automation article 2026"
+   ],
+   "candidates": 2,
+   "kept": 0
+  },
+  {
+   "id": "deep-dive",
+   "method": "site-search",
+   "queries": [
+    "AEMS ADME bioanalysis 2026",
+    "SCIEX Echo MS+ metabolic stability"
+   ],
+   "candidates": 4,
+   "kept": 4
+  }
+ ],
+ "extra_queries": [
+  "Hamilton ADLM 2026 (company)",
+  "automated ADME assay LC-MS/MS (DMPK angle)"
+ ],
+ "fetch_failed": [
+  "labautomation-io",
+  "slas",
+  "lrig",
+  "elrig",
+  "hamilton",
+  "tecan",
+  "agilent",
+  "beckman",
+  "slas-discovery",
+  "slas-technology",
+  "hardwarex",
+  "pubmed",
+  "www.drugdiscoverynews.com (WebFetch)",
+  "www.sciencedirect.com (WebFetch)",
+  "www.evotec.com (WebFetch)"
+ ],
+ "rejected": [
+  {
+   "title": "Beckman Echo 650 Plus Series",
+   "url": "https://www.beckman.com/news/echo-650-plus-series-acoustic-liquid-handlers",
+   "source_id": "beckman",
+   "reason": "published 13 May 2026, outside window"
+  },
+  {
+   "title": "Beckman and Automata partnership",
+   "url": "https://www.beckman.com/news",
+   "source_id": "beckman",
+   "reason": "January 2026, outside window"
+  },
+  {
+   "title": "Tecan agentic AI in Introspect with NVIDIA",
+   "url": "https://www.tecan.com/customer-news/tecan-accelerates-data-driven-lab-journey-with-agentic-ai-developments-powered-by-nvidia-2412",
+   "source_id": "tecan",
+   "reason": "June 2026, outside window"
+  },
+  {
+   "title": "Hamilton nRichDX partnership",
+   "url": "https://www.hamiltoncompany.com/press-releases/strategic-partnership-between-nrichdx-and-hamilton",
+   "source_id": "hamilton",
+   "reason": "January 2026, outside window"
+  },
+  {
+   "title": "Is the autonomous lab finally achievable? MCP, MHS",
+   "url": "https://www.drugdiscoverynews.com/is-the-autonomous-lab-finally-achievable-17574",
+   "source_id": "web",
+   "reason": "about 2 weeks old, outside 7-day window; page not fetchable; Anthropic MHS claim unverified"
+  },
+  {
+   "title": "Robotic safety in self-driving laboratories (SLAS Technology)",
+   "url": "https://www.sciencedirect.com/science/article/pii/S2472630326000774",
+   "source_id": "slas-technology",
+   "reason": "online date unconfirmed, page not fetchable"
+  },
+  {
+   "title": "Biotech instrumentation / pharma robots market reports",
+   "url": "https://globenewswire.com/news-release/2026/11/02/3393460/28124/en/",
+   "source_id": "wires",
+   "reason": "market-research ad, not lab automation news"
+  },
+  {
+   "title": "Lab Innovations 2026 speaker lineup",
+   "url": "https://www.selectscience.net/article/lab-innovations-2026-reveals-its-speaker-lineup",
+   "source_id": "trade-press",
+   "reason": "generic UK trade show, 4-5 Nov, low relevance"
+  },
+  {
+   "title": "Atinary Boston Self-Driving Labs",
+   "url": "https://www.selectscience.net/article/atinary-launches-self-driving-labs-r-in-boston-bringing-ai-into-the-physical-world-of-r-and-d",
+   "source_id": "trade-press",
+   "reason": "old/conflicting dates"
+  },
+  {
+   "title": "Veon Scientific i.prep 2 teaser",
+   "url": "https://www.linkedin.com/",
+   "source_id": "linkedin",
+   "reason": "about 100 days old, teaser only"
+  },
+  {
+   "title": "Meng 2026 AEMS review (Analysis & Sensing)",
+   "url": "https://chemistry-europe.onlinelibrary.wiley.com/doi/abs/10.1002/anse.202500218",
+   "source_id": "web",
+   "reason": "could not confirm paper on re-search; omitted"
+  },
+  {
+   "title": "Nature Protocols Hu & Blair 2026",
+   "url": "https://www.nature.com/articles/s41596-025-01320-y",
+   "source_id": "web",
+   "reason": "author attribution not confirmed; Hu and Blair work is Nature 2024"
+  }
+ ],
+ "notes": "Quiet day: no core-source item inside the 7-day window. All page fetches blocked by network policy, so everything rests on search-result text. Deep dive on bioanalysis automation written instead."
+}
