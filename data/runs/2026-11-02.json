@@ -1,0 +1,298 @@
+{
+ "date": "2026-11-02",
+ "note": "Monday, deep mode. Direct fetch blocked for all web sources and WebFetch blocked for most hosts (news-medical, prnewswire, arxiv, biorxiv, sciencedirect, pubmed); everything via site-restricted WebSearch (extended). Search index lags; few in-window stories found.",
+ "sources_checked": [
+  {
+   "id": "slas",
+   "method": "site-search",
+   "queries": [
+    "SLAS news release November 2026",
+    "extra: SLAS Technology Idea Exchange / webinars Nov 2026"
+   ],
+   "candidates": 4,
+   "kept": 0
+  },
+  {
+   "id": "lrig",
+   "method": "site-search",
+   "queries": [
+    "LRIG OR ELRIG meeting November 2026 automation"
+   ],
+   "candidates": 1,
+   "kept": 0
+  },
+  {
+   "id": "elrig",
+   "method": "site-search",
+   "queries": [
+    "LRIG OR ELRIG meeting November 2026 automation"
+   ],
+   "candidates": 2,
+   "kept": 0
+  },
+  {
+   "id": "labautomation-io",
+   "method": "site-search",
+   "queries": [
+    "labautomation.io new topic liquid handler scheduler"
+   ],
+   "candidates": 3,
+   "kept": 0
+  },
+  {
+   "id": "pylabrobot",
+   "method": "feed",
+   "queries": [
+    "git-log merged PRs since 2026-10-31"
+   ],
+   "candidates": 11,
+   "kept": 1
+  },
+  {
+   "id": "hamilton",
+   "method": "site-search",
+   "queries": [
+    "Hamilton Microlab STAR VANTAGE automation announcement November 2026"
+   ],
+   "candidates": 0,
+   "kept": 0
+  },
+  {
+   "id": "tecan",
+   "method": "site-search",
+   "queries": [
+    "Tecan Fluent Veya automation news"
+   ],
+   "candidates": 1,
+   "kept": 0
+  },
+  {
+   "id": "agilent",
+   "method": "site-search",
+   "queries": [
+    "Agilent lab automation announces November 2026"
+   ],
+   "candidates": 2,
+   "kept": 0
+  },
+  {
+   "id": "beckman",
+   "method": "site-search",
+   "queries": [
+    "Beckman Coulter Biomek Echo automation news 2026"
+   ],
+   "candidates": 0,
+   "kept": 0
+  },
+  {
+   "id": "slas-discovery",
+   "method": "site-search",
+   "queries": [
+    "SLAS Technology SLAS Discovery HardwareX automated October 2026"
+   ],
+   "candidates": 1,
+   "kept": 0
+  },
+  {
+   "id": "slas-technology",
+   "method": "site-search",
+   "queries": [
+    "SLAS Technology SLAS Discovery HardwareX automated October 2026"
+   ],
+   "candidates": 0,
+   "kept": 0
+  },
+  {
+   "id": "hardwarex",
+   "method": "site-search",
+   "queries": [
+    "SLAS Technology SLAS Discovery HardwareX automated October 2026"
+   ],
+   "candidates": 0,
+   "kept": 0
+  },
+  {
+   "id": "pubmed",
+   "method": "site-search",
+   "queries": [
+    "automated ADME DMPK assay high-throughput automation 2026",
+    "automated high-throughput bioanalysis LC-MS/MS sample preparation OR acoustic ejection mass spectrometry 2026",
+    "Caco-2 permeability 96-well automation platform predict-first"
+   ],
+   "candidates": 3,
+   "kept": 0
+  },
+  {
+   "id": "trade-press",
+   "method": "site-search",
+   "queries": [
+    "laboratory automation drug discovery news November 2026",
+    "self-driving lab drug discovery automation announced this week"
+   ],
+   "candidates": 6,
+   "kept": 0
+  },
+  {
+   "id": "linkedin",
+   "method": "site-search",
+   "queries": [
+    "lab automation announces OR launches OR partnership liquid handling Hamilton Tecan Beckman Agilent Opentrons Automata"
+   ],
+   "candidates": 0,
+   "kept": 0
+  },
+  {
+   "id": "wires",
+   "method": "site-search",
+   "queries": [
+    "lab automation announces liquid handling self-driving lab"
+   ],
+   "candidates": 2,
+   "kept": 0
+  },
+  {
+   "id": "research",
+   "method": "site-search",
+   "queries": [
+    "automated high-throughput bioanalysis LC-MS/MS ...",
+    "closed-loop DMTA ..."
+   ],
+   "candidates": 2,
+   "kept": 0
+  },
+  {
+   "id": "web",
+   "method": "site-search",
+   "queries": [
+    "Danaher Abcam autonomous lab",
+    "Carterra AstraZeneca lab-in-the-loop",
+    "Lilly TuneLab",
+    "Opentrons OR Automata OR Biosero OR HighRes news late October 2026"
+   ],
+   "candidates": 4,
+   "kept": 3
+  }
+ ],
+ "extra_queries": [
+  "Hamilton/Tecan: AI-agent and REST API angle (Tecan x NVIDIA, VENUS REST API) via LinkedIn",
+  "DMPK angle: automated Caco-2/ADME and LC-MS/MS bioanalysis queries"
+ ],
+ "fetch_failed": [
+  "labautomation-io",
+  "slas",
+  "lrig",
+  "elrig",
+  "hamilton",
+  "tecan",
+  "agilent",
+  "beckman",
+  "slas-discovery",
+  "slas-technology",
+  "hardwarex",
+  "pubmed (crossref/eutils proxy 403)"
+ ],
+ "rejected": [
+  {
+   "title": "Takara Bio and SPT Labtech automated NGS library prep on firefly",
+   "url": "https://www.drugdiscoverynews.com/takara-bio-usa-partners-with-spt-labtech-to-deliver-automation-ready-ngs-library-preparation-technologies-17624",
+   "source_id": "trade-press",
+   "reason": "release dated 20 Oct, outside window"
+  },
+  {
+   "title": "Opentrons $40M Series E (DDW, 2 Nov coverage)",
+   "url": "https://ddw-online.com/opentrons-announces-40m-series-e-funding-round-44609-202611",
+   "source_id": "trade-press",
+   "reason": "duplicate of LAN-20261031-01"
+  },
+  {
+   "title": "Agilent Q4 FY2026 results date (23 Nov)",
+   "url": "https://www.investor.agilent.com/news-and-events/news/news-details/2026/Agilent-to-Announce-Fourth-Quarter-Fiscal-Year-2026-Financial-Results-on-Nov--23/default.aspx",
+   "source_id": "agilent",
+   "reason": "financial, not automation"
+  },
+  {
+   "title": "Agilent NovoStation",
+   "url": "https://www.investor.agilent.com/news-and-events/news/news-details/2026/Agilent-Introduces-the-NovoStation-Sample-Preparation-System-for-Automated-Flow-Cytometry-Workflows/default.aspx",
+   "source_id": "agilent",
+   "reason": "duplicate of LAN-20261031-03"
+  },
+  {
+   "title": "Agilent OpenLab Sync",
+   "url": "https://www.investor.agilent.com/news-and-events/news/news-details/2026/Agilent-Introduces-OpenLab-Sync-to-Support-Guided-Digital-Execution-in-the-Laboratory/default.aspx",
+   "source_id": "agilent",
+   "reason": "28 May, old"
+  },
+  {
+   "title": "Beckman Echo 650 Plus Series",
+   "url": "https://www.beckman.com/news/echo-650-plus-series-acoustic-liquid-handlers",
+   "source_id": "beckman",
+   "reason": "13 May, old"
+  },
+  {
+   "title": "Tecan agentic AI with NVIDIA headline",
+   "url": "https://www.tecan.com/news-archive",
+   "source_id": "tecan",
+   "reason": "24 Jun, old; details unconfirmed"
+  },
+  {
+   "title": "Hamilton STAR V / HamiltonOne pages",
+   "url": "https://www.hamiltoncompany.com/microlab-star-v",
+   "source_id": "hamilton",
+   "reason": "product pages, no new release"
+  },
+  {
+   "title": "Benchling Automation launch",
+   "url": "https://www.prnewswire.com/news-releases/new-benchling-automation-closes-the-loop-between-lab-instruments-and-ai-302784021.html",
+   "source_id": "wires",
+   "reason": "28 May, old (context in deep dive)"
+  },
+  {
+   "title": "Automated 96-well Caco-2 permeability platform paper",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/41468180/",
+   "source_id": "pubmed",
+   "reason": "PMID suggests late 2025/early 2026, outside 14-day window; date unconfirmed (PubMed blocked)"
+  },
+  {
+   "title": "SLAS Discovery: dashboards for hit selection in HTS",
+   "url": "https://www.sciencedirect.com/science/article/pii/S2472555226000304",
+   "source_id": "slas-discovery",
+   "reason": "data analysis software, issue-dated Oct, online date unconfirmed"
+  },
+  {
+   "title": "bioRxiv high-throughput LC-MS low-input proteomics",
+   "url": "https://www.biorxiv.org/content/10.64898/2026.10.26.762077v1",
+   "source_id": "research",
+   "reason": "proteomics, no ADME or automation focus"
+  },
+  {
+   "title": "Atinary self-driving lab Boston",
+   "url": "https://www.selectscience.net/article/atinary-launches-self-driving-labs-r-in-boston-bringing-ai-into-the-physical-world-of-r-and-d",
+   "source_id": "trade-press",
+   "reason": "date unconfirmed, small-molecule synthesis; not verifiably in window"
+  },
+  {
+   "title": "LRIG New England fall seminar (agentic AI roundtable)",
+   "url": "https://new-england.lrig.org/events/",
+   "source_id": "lrig",
+   "reason": "date unconfirmed"
+  },
+  {
+   "title": "ELRIG Protein Sciences in Drug Discovery, 10-11 Nov",
+   "url": "https://elrig.org/portfolio/protein-sciences-in-drug-discovery-2026/",
+   "source_id": "elrig",
+   "reason": "protein science, AI not automation"
+  },
+  {
+   "title": "Lilly and Nvidia $1B AI co-innovation lab",
+   "url": "https://www.fiercebiotech.com/biotech/lilly-nvidia-tag-partnership-new-ai-co-innovation-lab-1b-investment",
+   "source_id": "trade-press",
+   "reason": "January 2026, old"
+  },
+  {
+   "title": "Hamilton VENUS REST API for schedulers and AI agents (LinkedIn)",
+   "url": "https://www.linkedin.com/in/sahlmichael/",
+   "source_id": "linkedin",
+   "reason": "personal post, undated, no primary source found"
+  }
+ ]
+}
