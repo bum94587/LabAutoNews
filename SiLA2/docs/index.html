@@ -1,0 +1,341 @@
+<title>SiLA 2 STAR Twin</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,500..800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: a lab notebook for one run. Narrow reading column, a sticky contents rail on wide screens,
+   figures on white "bench plates" because the charts are rendered on white. */
+:root {
+  --bg: #f4f6f7;            /* cool bench grey, slight blue bias */
+  --surface: #ffffff;
+  --ink: #17232a;
+  --muted: #55656e;
+  --rule: #d5dde1;
+  --accent: #0d6b66;        /* deep teal: the SiLA / data layer */
+  --accent-soft: #dcefed;
+  --warm: #b4541f;          /* heater-shaker orange, matches the charts */
+  --ok: #1d7a3e;
+  --code-bg: #eef2f3;
+  --font-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111a1e; --surface: #18242a; --ink: #e3eaed; --muted: #9aabb3; --rule: #2c3c44;
+    --accent: #5cc4bb; --accent-soft: #173733; --warm: #f08a52; --ok: #5bc581; --code-bg: #1d2b32;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111a1e; --surface: #18242a; --ink: #e3eaed; --muted: #9aabb3; --rule: #2c3c44;
+  --accent: #5cc4bb; --accent-soft: #173733; --warm: #f08a52; --ok: #5bc581; --code-bg: #1d2b32;
+  color-scheme: dark;
+}
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.6;
+}
+.page {
+  max-width: 1120px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 32px 64px;
+  display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 48px;
+}
+@media (max-width: 860px) { .page { grid-template-columns: minmax(0, 1fr); gap: 24px; } .rail { display: none; } }
+.rail nav { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 24px); display: grid; gap: 6px; font-size: 14px; }
+.rail .label { font-family: var(--font-display); font-stretch: 80%; text-transform: uppercase; letter-spacing: .08em; font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+.rail a { color: var(--muted); text-decoration: none; }
+.rail a:hover, .rail a:focus-visible { color: var(--accent); }
+main { min-width: 0; display: grid; gap: 56px; }
+main > section { display: grid; gap: 16px; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; line-height: 1.15; margin: 0; }
+h1 { font-size: clamp(30px, 4.2vw, 44px); font-weight: 800; font-stretch: 85%; letter-spacing: -.01em; }
+h2 { font-size: 26px; font-weight: 700; font-stretch: 85%; }
+h3 { font-size: 18px; font-weight: 700; }
+p, li { max-width: 68ch; }
+p { margin: 0; }
+a { color: var(--accent); }
+.eyebrow { font-family: var(--font-display); font-stretch: 80%; text-transform: uppercase; letter-spacing: .1em; font-size: 13px; color: var(--accent); font-weight: 700; }
+.lede { font-size: 18px; color: var(--ink); }
+.muted { color: var(--muted); }
+header.intro { display: grid; gap: 14px; }
+.results { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; }
+@media (max-width: 700px) { .results { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.results div { background: var(--surface); padding: 14px 16px; display: grid; gap: 2px; }
+.results b { font-family: var(--font-display); font-size: 26px; font-stretch: 85%; font-variant-numeric: tabular-nums; }
+.results span { font-size: 13px; color: var(--muted); }
+.status { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; color: var(--ok); }
+.status::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--ok); }
+code, pre, kbd { font-family: var(--font-mono); font-size: 13.5px; }
+:not(pre) > code { background: var(--code-bg); padding: 1px 5px; border-radius: 4px; overflow-wrap: anywhere; }
+pre { background: var(--code-bg); border: 1px solid var(--rule); border-radius: 6px; padding: 14px 16px; margin: 0; overflow-x: auto; line-height: 1.5; }
+pre .c { color: var(--muted); }
+figure { margin: 0; display: grid; gap: 8px; }
+.plate { background: #ffffff; border: 1px solid var(--rule); border-radius: 6px; padding: 10px; overflow-x: auto; }
+.plate img { display: block; width: 100%; min-width: 640px; height: auto; }
+figcaption { font-size: 14px; color: var(--muted); max-width: 72ch; }
+.table-wrap { overflow-x: auto; border: 1px solid var(--rule); border-radius: 6px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 14.5px; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font-family: var(--font-display); font-stretch: 85%; font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); background: var(--surface); }
+tr:last-child td { border-bottom: 0; }
+td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.tag { display: inline-block; font-size: 12px; font-weight: 700; padding: 1px 8px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); white-space: nowrap; }
+.tag.warm { background: color-mix(in srgb, var(--warm) 16%, transparent); color: var(--warm); }
+.tag.none { background: var(--code-bg); color: var(--muted); }
+ol.steps { list-style: none; padding: 0; margin: 0; display: grid; gap: 22px; counter-reset: step; }
+ol.steps > li { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 4px 14px; max-width: none; counter-increment: step; }
+ol.steps > li::before { content: counter(step); grid-row: span 3; width: 30px; height: 30px; border-radius: 50%; border: 2px solid var(--accent); color: var(--accent); display: grid; place-items: center; font-family: var(--font-display); font-weight: 800; font-size: 15px; }
+ol.steps > li > * { min-width: 0; }
+.cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+@media (max-width: 760px) { .cols { grid-template-columns: minmax(0, 1fr); } }
+.note { border-left: 3px solid var(--warm); padding: 4px 0 4px 14px; color: var(--ink); max-width: 72ch; }
+.phase { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 12px; padding: 14px 0; border-top: 1px solid var(--rule); }
+.phase:first-of-type { border-top: 0; }
+.phase h3 { font-size: 16px; }
+@media (max-width: 600px) { .phase { grid-template-columns: minmax(0, 1fr); gap: 4px; } }
+ul.tight { margin: 0; padding-left: 20px; display: grid; gap: 4px; }
+.mermaid-wrap { background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; padding: 16px; overflow-x: auto; }
+footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--rule); padding-top: 16px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+</style>
+
+<div class="page">
+  <aside class="rail">
+    <nav aria-label="Contents">
+      <div class="label">Contents</div>
+      <a href="#result">The run</a>
+      <a href="#architecture">How it fits together</a>
+      <a href="#workflow">The workflow</a>
+      <a href="#twin">Inside the twin</a>
+      <a href="#run-it">Run it yourself</a>
+      <a href="#landscape">SiLA 2 and liquid handlers</a>
+      <a href="#proposal">From POC to a real lab</a>
+      <a href="#limits">Limits and review</a>
+      <a href="#sources">Sources</a>
+    </nav>
+  </aside>
+
+  <main>
+    <header class="intro" id="result">
+      <div class="eyebrow">LabAutoNews · proof of concept · 3 Nov 2026</div>
+      <h1>A Hamilton STAR digital twin, driven through SiLA 2</h1>
+      <p class="lede">A small scheduler runs a time-compressed microsomal-stability assay through two SiLA 2 servers: one wraps a Hamilton STAR digital twin built on PyLabRobot's firmware-level simulator, the other a heater-shaker twin. It runs end to end on Linux with open-source tools and no hardware.</p>
+      <div class="status">Built and run in this environment: run succeeded</div>
+      <div class="results" role="list">
+        <div role="listitem"><b>27 / 27</b><span>workflow steps succeeded</span></div>
+        <div role="listitem"><b>32.3 s</b><span>real time for a 5-time-point run</span></div>
+        <div role="listitem"><b>863</b><span>Hamilton firmware commands sent to the simulated STAR</span></div>
+        <div role="listitem"><b>0.00 s</b><span>lateness of each timed sampling step</span></div>
+      </div>
+      <p class="muted">Code, results and this page live in the repository's <a href="https://github.com/bum94587/LabAutoNews/tree/claude/youthful-hamilton-s7n7dx/SiLA2"><code>SiLA2/</code></a> folder. The companion deep dive on the SiLA 2 driver landscape is <a href="https://github.com/bum94587/LabAutoNews/blob/claude/youthful-hamilton-s7n7dx/SiLA2/docs/sila2-drivers-deep-dive.md"><code>docs/sila2-drivers-deep-dive.md</code></a>.</p>
+    </header>
+
+    <section id="architecture">
+      <div class="eyebrow">Architecture</div>
+      <h2>How it fits together</h2>
+      <p><strong>SiLA 2</strong> is the vendor-neutral lab-device standard: each instrument runs a <em>server</em> that publishes <em>features</em> (typed commands and properties written as XML), and any <em>client</em>, such as a scheduler or LIMS, calls them over gRPC. Here both "instruments" are digital twins, so the SiLA servers are virtual drivers.</p>
+      <div class="mermaid-wrap">
+<pre class="mermaid">
+flowchart LR
+  W["workflow.yaml<br/>mini microsomal stability"] --> S["Scheduler<br/>one lane per device,<br/>dependencies, timed steps"]
+  S -- "SiLA 2 / gRPC :50052" --> L["lh_twin server<br/>LiquidHandlerService"]
+  S -- "SiLA 2 / gRPC :50053" --> H["hhs_twin server<br/>HeaterShakerService"]
+  L --> P["PyLabRobot v1 STAR<br/>simulation=True"]
+  P --> F["Firmware-level simulator<br/>real command strings,<br/>resource and volume model"]
+  H --> T["Thermal model<br/>first order, 10x time"]
+  S --> R["results/<br/>timeline, trace, volumes, charts"]
+</pre>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Piece</th><th>What it does</th><th>Built from</th></tr></thead>
+          <tbody>
+            <tr><td>Feature definitions</td><td>The contract: <code>LiquidHandlerService</code> (Initialize, PickUpTips, Aspirate, Dispense, DropTips, an observable Transfer, GetWellVolumes, GetFirmwareTrace, a Status stream) and <code>HeaterShakerService</code> (an observable SetTemperature, Start/StopShaking, a temperature stream)</td><td>SiLA Feature Definition Language, generated by <code>features/make_fdl.py</code></td></tr>
+            <tr><td>STAR twin server</td><td>Turns each SiLA call into PyLabRobot calls on a simulated STAR, records every firmware string, maps failures to defined SiLA errors</td><td><code>sila2</code> 0.14.0 codegen + PyLabRobot @ <code>7779f50</code></td></tr>
+            <tr><td>Heater-shaker twin server</td><td>Heats 22 → 37 °C on a first-order curve (τ = 30 s simulated, 10× faster than real), streams the temperature, shakes</td><td><code>sila2</code> 0.14.0 codegen + 150 lines of Python</td></tr>
+            <tr><td>Scheduler</td><td>Reads the workflow, runs each device's steps in its own lane, waits for dependencies and time points, streams intermediate responses, stops on the first failure, watchdog on every call</td><td>Python standard library + <code>sila2</code> dynamic client</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="workflow">
+      <div class="eyebrow">The run</div>
+      <h2>The workflow: a microsomal stability assay, sped up 30×</h2>
+      <p>Compound goes into liver microsomes at 37 °C; NADPH starts the reaction (t0); at 0, 1, 2, 3 and 5 minutes an aliquot is pipetted into cold acetonitrile to stop it. One workflow minute is 2 real seconds. The LC-MS readout that would give CLint is outside this POC.</p>
+      <figure>
+        <div class="plate"><img src="img/gantt.svg" alt="Gantt chart: the heater-shaker heats for about 10 seconds while the STAR twin initialises and adds compound; NADPH is added at t0; five sampling transfers follow at the planned time points, each preceded by a stop of shaking; then the heater-shaker cools back to 22 C."></div>
+        <figcaption>Device lanes over time. The STAR twin initialises and adds compound while the heater-shaker heats (the two lanes run in parallel); NADPH waits for 37 °C; each dotted line is a planned time point, and every sampling step started on time. Lower panel: block temperature from the thermal model.</figcaption>
+      </figure>
+      <pre><span class="c"># scheduler/workflow.yaml (excerpt)</span>
+- id: add_nadph
+  device: lh
+  command: Transfer
+  params: {SourcePlate: nadph, SourceColumn: 1, TargetPlate: reaction, TargetColumn: 1, VolumeUl: 50.0}
+  depends_on: [add_compound, heat_to_37]
+  marks_t0: true                 <span class="c"># t0 = when this step ends</span>
+- id: sample_t1
+  device: lh
+  command: Transfer
+  params: {SourcePlate: reaction, SourceColumn: 1, TargetPlate: quench, TargetColumn: 2, VolumeUl: 50.0}
+  depends_on: [stop_t1]
+  start_after_t0_s: 60           <span class="c"># 1 workflow minute after t0</span></pre>
+    </section>
+
+    <section id="twin">
+      <div class="eyebrow">Digital twin</div>
+      <h2>Inside the twin</h2>
+      <p>The STAR twin is PyLabRobot's <code>STAR(simulation=True)</code>: a firmware-level simulator configured from a recorded real instrument (8 × 1000 µL channels, 96-head, iSWAP, autoload). It builds the same firmware strings the real driver would send over USB and answers reads from PyLabRobot's resource and volume model, so the twin knows what is in every well.</p>
+      <figure>
+        <div class="plate"><img src="img/plate_volumes.svg" alt="Heat maps of four 96-well plates after the run: compounds and NADPH column 1 at 150 uL, others 200 uL; reaction column 1 at 150 uL, others 300 uL; quench columns 1 to 5 at 200 uL, others 150 uL."></div>
+        <figcaption>Final volumes tracked by the twin. Reaction column 1: 300 + 50 + 50 − 5 × 50 = 150 µL; quench columns 1–5: 150 + 50 = 200 µL. Every value matches the expected volume.</figcaption>
+      </figure>
+      <div class="cols">
+        <div style="min-width:0; display:grid; gap:8px">
+          <h3>What a SiLA call becomes</h3>
+          <p>An observable <code>Transfer</code> streams four steps while PyLabRobot sends firmware commands such as this aspirate (<code>C0AS</code>, 8 channels, positions in 0.1 mm):</p>
+          <pre>C0ASat0 0 0 0 0 0 0 0tm1 1 1 1 1 1 1 1
+xp02526 02526 02526 02526 02526 …
+yp1455 1365 1275 1185 1095 1005 0915 0825
+th2450te2450lp2302 2302 2302 …</pre>
+        </div>
+        <div style="min-width:0; display:grid; gap:8px">
+          <h3>The SiLA adapter</h3>
+          <p>The server method is thin: it reports progress and intermediate responses, and the PyLabRobot work happens in <code>twin.py</code>.</p>
+          <pre>instance.begin_execution()
+def report_step(n, total, text):
+    instance.progress = (n - 1) / total
+    instance.send_intermediate_response(
+        Transfer_IntermediateResponses(
+            Step=f"{n}/{total} {text}"))
+message = twin.transfer(..., on_step=report_step)</pre>
+        </div>
+      </div>
+      <p class="muted">The firmware trace is captured by wrapping the simulator's <code>_log_exchange</code> hook on one driver instance, so PyLabRobot itself is unmodified. PyLabRobot is async and the SiLA server is threaded, so the twin owns one asyncio loop in a background thread and serialises operations with a lock.</p>
+    </section>
+
+    <section id="run-it">
+      <div class="eyebrow">Step by step</div>
+      <h2>Run it yourself</h2>
+      <p>Linux or macOS (Windows via WSL). About five minutes, most of it the first install.</p>
+      <ol class="steps">
+        <li>
+          <h3>Install the tools</h3>
+          <p>You need git and <a href="https://docs.astral.sh/uv/">uv</a>, which also fetches Python 3.12.</p>
+          <pre>curl -LsSf https://astral.sh/uv/install.sh | sh</pre>
+        </li>
+        <li>
+          <h3>Get the code</h3>
+          <p>Clone the repository and switch to the POC folder.</p>
+          <pre>git clone https://github.com/bum94587/LabAutoNews.git
+cd LabAutoNews
+git checkout claude/youthful-hamilton-s7n7dx   <span class="c"># or main, once merged</span>
+cd SiLA2</pre>
+        </li>
+        <li>
+          <h3>Install dependencies</h3>
+          <p>Installs <code>sila2</code> 0.14.0, PyLabRobot pinned to commit <code>7779f50</code>, matplotlib, PyYAML and the two server packages.</p>
+          <pre>uv sync</pre>
+        </li>
+        <li>
+          <h3>Run the demo</h3>
+          <p>Starts both SiLA servers, runs the workflow, writes <code>results/</code> and stops the servers. Expect "run SUCCEEDED: 27/27 steps" after about 35 seconds.</p>
+          <pre>uv run python run_demo.py
+uv run python run_demo.py --time-scale 4    <span class="c"># slower: 1 workflow minute = 4 s</span></pre>
+        </li>
+        <li>
+          <h3>Check the tests</h3>
+          <pre>uv run python tests/test_hhs_twin.py
+uv run python tests/test_lh_twin.py
+uv run python tests/test_smoke.py</pre>
+        </li>
+        <li>
+          <h3>Drive the twin by hand</h3>
+          <p>Start the STAR twin in one terminal, then talk to it from Python in another. <code>--insecure</code> skips TLS, which is fine on localhost and not allowed in production.</p>
+          <pre><span class="c"># terminal 1</span>
+uv run python -m lh_twin --port 50052 --insecure --disable-discovery
+
+<span class="c"># terminal 2: uv run python</span>
+from sila2.client import SilaClient
+lh = SilaClient("127.0.0.1", 50052, insecure=True).LiquidHandlerService
+print(lh.Initialize().Summary)
+run = lh.Transfer(SourcePlate="compounds", SourceColumn=1,
+                  TargetPlate="reaction", TargetColumn=1, VolumeUl=50.0)
+for step in run.subscribe_to_intermediate_responses():
+    print(step.Step)                 <span class="c"># 1/4 pick up tips ... 4/4 drop tips</span>
+print(lh.GetWellVolumes(Plate="reaction").VolumesJson[:80])</pre>
+        </li>
+        <li>
+          <h3>Change the workflow</h3>
+          <p>Edit <code>scheduler/workflow.yaml</code>, for example add a 10-minute time point (<code>start_after_t0_s: 600</code>, quench column 6), and run the demo again. The scheduler rejects workflows that cannot finish, such as dependency cycles.</p>
+        </li>
+        <li>
+          <h3>Look at the results</h3>
+          <p><code>results/run_summary.md</code> (steps, timings, firmware statistics, volumes), <code>gantt.svg</code>, <code>plate_volumes.svg</code>, <code>firmware_trace.json</code> and <code>timeline.json</code>. Any generic SiLA 2 client, such as UniteLabs' SiLA Browser, can also connect to a running twin.</p>
+        </li>
+      </ol>
+    </section>
+
+    <section id="landscape">
+      <div class="eyebrow">Context</div>
+      <h2>SiLA 2 and liquid handlers today</h2>
+      <p>SiLA 2 standardises the plumbing (discovery, transport, observable commands, errors, locking, simulation), but its feature library has no standard liquid-handling feature, so every liquid-handler server defines its own commands. The official Python SDK used here was marked unmaintained on 17 Sep 2026; new work should start on UniteLabs' <code>unitelabs-sila</code> or <code>unitelabs-cdk</code>.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Liquid handler</th><th>SiLA 2 interface</th><th>Source</th></tr></thead>
+          <tbody>
+            <tr><td>Tecan Fluent</td><td>Open-source FluentControl connector since 2020 (start methods, simulation mode, worklist pipetting)</td><td><span class="tag">Vendor</span></td></tr>
+            <tr><td>Dispendix I.DOT</td><td>Native server on the instrument</td><td><span class="tag">Vendor</span></td></tr>
+            <tr><td>Hamilton STAR / VANTAGE</td><td>No public Hamilton interface; UniteLabs says it sells connectors (not public)</td><td><span class="tag warm">Third party, unverified</span></td></tr>
+            <tr><td>Opentrons OT-2 / Flex</td><td>Community connectors with a full Flex simulator</td><td><span class="tag none">Community</span></td></tr>
+            <tr><td>Beckman Biomek</td><td>None found ("SILAS" is not SiLA)</td><td><span class="tag none">None</span></td></tr>
+            <tr><td>Labcyte Echo 5xx</td><td>Community Python server, in use as of Aug 2025</td><td><span class="tag none">Community</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="muted">Details and sources, checked by an independent verifier agent: <a href="https://github.com/bum94587/LabAutoNews/blob/claude/youthful-hamilton-s7n7dx/SiLA2/docs/sila2-drivers-deep-dive.md">SiLA 2 drivers deep dive</a>.</p>
+    </section>
+
+    <section id="proposal">
+      <div class="eyebrow">Proposal</div>
+      <h2>From POC to a real lab</h2>
+      <p>The same architecture can carry a real STAR, because the twin and the real instrument share PyLabRobot's API. A staged path, with each stage usable on its own:</p>
+      <div>
+        <div class="phase"><div class="tag">Done</div><div><h3>1. Twin behind SiLA 2</h3><p>Virtual drivers, scheduler, firmware trace, tests and reviewer sign-off (this folder).</p></div></div>
+        <div class="phase"><div class="tag none">Next</div><div><h3>2. Harden the SiLA layer</h3><ul class="tight"><li>Move from the unmaintained <code>sila2</code> to <code>unitelabs-sila</code> / <code>unitelabs-cdk</code>.</li><li>TLS certificates instead of <code>--insecure</code>; add the standard <code>LockController</code>, <code>SimulationController</code> (switch twin ↔ real) and <code>CancelController</code>.</li><li>Units and range constraints in the feature definitions; structured types instead of JSON strings.</li></ul></div></div>
+        <div class="phase"><div class="tag none">Then</div><div><h3>3. Real STAR, simulation first</h3><ul class="tight"><li>Swap <code>STAR(simulation=True)</code> for <code>STAR()</code> over USB in the same server; keep the twin as a dry-run target.</li><li>Teach and verify labware positions, validate liquid classes (acetonitrile quench needs its own).</li><li>Require explicit per-run human approval before moving hardware, the rule PyLabRobot sets for AI agents.</li></ul></div></div>
+        <div class="phase"><div class="tag none">Then</div><div><h3>4. Peripherals and readout</h3><ul class="tight"><li>Real heater-shaker (PyLabRobot drives several), plate sealer and centrifuge.</li><li>LC-MS/MS hand-off of the quench plate and CLint calculation from the recorded sample times.</li><li>Connect commercial schedulers through a custom driver: none of the major ones documents native SiLA 2 support.</li></ul></div></div>
+        <div class="phase"><div class="tag none">Later</div><div><h3>5. Closing the loop</h3><ul class="tight"><li>Adaptive time points or repeat runs chosen by a model, called through SiLA with an allow-list and a human confirmation step.</li><li>Keep the twin as the rehearsal stage for every new plan.</li></ul></div></div>
+      </div>
+    </section>
+
+    <section id="limits">
+      <div class="eyebrow">Honesty</div>
+      <h2>Limits and review</h2>
+      <ul class="tight">
+        <li>The simulator models positions, firmware and volumes, not liquid physics. It does not refuse an over-aspirate itself, so the twin checks volumes and tip room and raises a defined SiLA error.</li>
+        <li>Each sample is quenched about 0.4 workflow minutes after its nominal time, because a transfer takes about 0.8 s. A real method would start early by that amount.</li>
+        <li>Nothing puts the devices in a safe state on failure; the run just stops scheduling.</li>
+        <li>Unencrypted SiLA on localhost; the Python SDK used is unmaintained; PyLabRobot's v1 STAR driver is new (its registry entry is still the v0 driver).</li>
+      </ul>
+      <p class="note">An independent reviewer agent checked the plan and every builder's code while it was written. It found four blockers in the plan and one in the code (all fixed before the final run) and five should-fix items, all applied: a status/t0 race, call timeouts, two servers silently sharing a port, leaked log handles and an unsafe shutdown. Full findings: <a href="https://github.com/bum94587/LabAutoNews/blob/claude/youthful-hamilton-s7n7dx/SiLA2/REVIEW.md"><code>REVIEW.md</code></a>.</p>
+    </section>
+
+    <section id="sources">
+      <div class="eyebrow">References</div>
+      <h2>Sources</h2>
+      <ul class="tight">
+        <li>PyLabRobot at commit 7779f50: <a href="https://github.com/PyLabRobot/pylabrobot/tree/7779f506d12755f5f274b4c5cab4d095f4fccb62">github.com/PyLabRobot/pylabrobot</a></li>
+        <li>SiLA 2 Python SDK (<code>sila2</code> 0.14.0): <a href="https://gitlab.com/SiLA2/sila_python">gitlab.com/SiLA2/sila_python</a>; SiLA base, schema and feature library: <a href="https://gitlab.com/SiLA2/sila_base">gitlab.com/SiLA2/sila_base</a></li>
+        <li>UniteLabs SiLA libraries: <a href="https://gitlab.com/unitelabs/sila2/sila-python">unitelabs-sila</a>, <a href="https://gitlab.com/unitelabs/cdk/python-cdk">unitelabs-cdk</a></li>
+        <li>This POC: <a href="https://github.com/bum94587/LabAutoNews/tree/claude/youthful-hamilton-s7n7dx/SiLA2">SiLA2/</a> (plan, code, results, review)</li>
+      </ul>
+    </section>
+
+    <footer>Built 3 Nov 2026 by Claude with three builder agents and an independent reviewer agent, for LabAutoNews. Proof of concept only: simulated hardware, not for production use.</footer>
+  </main>
+</div>
