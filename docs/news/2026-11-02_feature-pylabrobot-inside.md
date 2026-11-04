@@ -1,14 +1,16 @@
 # Feature: PyLabRobot from the inside: how open-source, hardware-agnostic lab automation works, and where AI agents plug in, 2 Nov 2026
 
+Verifier (independent agent, 3 Nov): 8 key claims verified, 3 partly verified, none contradicted; corrections applied, including two fixes to the code sketch. Badges: ✅ verified · 🟡 partly verified · 🔬 sound · ⚠️ questionable.
+
 Scope: a guided read of the PyLabRobot source code at commit [`7779f50`](https://github.com/PyLabRobot/pylabrobot/commit/7779f506d12755f5f274b4c5cab4d095f4fccb62) (3 Nov 2026) and its git history, plus public work on AI agents and closed-loop labs, with a DMPK worked example. Code links are primary sources; analysis and opinion are labelled.
 
 ## TL;DR
 
-- **PyLabRobot (PLR) is a pure-Python, MIT-style open-source library that talks to lab robots at the firmware level**, from Hamilton STARs and Opentrons to plate readers, sealers and arms: 84 devices in its registry, 50 of them on the new "v1" API [1][2][3].
-- **It is in the middle of a big rewrite.** The famous "one protocol, any robot" front end now lives under `pylabrobot.legacy`; new drivers are one plain Python class per device that exposes the machine's real parameters (the v1 STAR `aspirate` takes 30+ arguments) [4][5][6].
-- **Development is fast and AI-assisted**: 790 commits from 53 people in the last 12 months, and 54% of them credit an AI coding assistant as co-author, rising to 80% since October [7].
-- **At run time there is no built-in "AI agent" in PLR.** Third-party MCP servers and demos drive it, but only in simulation, behind human confirmation gates; no public example drives a real liquid handler [8][44][45][46].
-- **For a DMPK lab, PLR can already run the liquid handling, 37 °C shaking, plate moves, sealing and centrifugation of a microsomal stability assay**, but not the LC-MS/MS readout or a Caco-2 TEER check; that is where the loop still has to be closed by other software [3][11].
+- **PyLabRobot (PLR) is a pure-Python, MIT-style open-source library that talks to lab robots at the firmware level**, from Hamilton STARs and Opentrons to plate readers, sealers and arms: 84 devices in its registry, 50 of them on the new "v1" API [1][2][3]. ✅
+- **It is in the middle of a big rewrite.** The famous "one protocol, any robot" front end now lives under `pylabrobot.legacy`; new drivers are one plain Python class per device that exposes the machine's real parameters (the v1 STAR `aspirate` takes 33 arguments) [4][5][6]. ✅🔬
+- **Development is fast and AI-assisted**: 790 commits from 53 people in the last 12 months, and 54% of them credit an AI coding assistant as co-author, rising to 80% since October [7]. 🟡🔬
+- **At run time there is no built-in "AI agent" in PLR.** Third-party MCP servers and demos drive it, but only in simulation, behind human confirmation gates; no public example drives a real liquid handler through PyLabRobot [8][44][45][46]. ✅🔬
+- **For a DMPK lab, PLR can already run the liquid handling, 37 °C shaking, plate moves, sealing and centrifugation of a microsomal stability assay**, but not the LC-MS/MS readout or a Caco-2 TEER check; that is where the loop still has to be closed by other software [3][11]. 🟡
 
 ## Why a DMPK scientist should care
 
@@ -31,7 +33,7 @@ Every back end implements the same abstract interface, `LiquidHandlerBackend`, w
 
 **The rewrite ("v1").** On 1 August 2026 a 759-file change (PR #1000, "v1b1 changes") moved that whole stack to `pylabrobot.legacy` and started a new layout, one package per vendor and device: `pylabrobot/hamilton/star`, `pylabrobot/bmg_labtech/vantastar`, `pylabrobot/brooks/precise_flex` [4][15]. Importing from the old path now raises a deprecation warning [16]. The contributor guide is blunt: "The old Driver/Backend split and capability machinery are deprecated — don't use them. Instead write a single plain class whose public methods are the device's operations" [5].
 
-The STAR's own design note explains the new shape in 20 numbered rules [6]. A few worth knowing:
+The STAR's own design note explains the new shape in 21 numbered rules [6]. A few worth knowing:
 
 - **One driver, features hang off it** (P1): `pipettes`, `head96`, `head384`, `iswap`, `autoload`, `x_arm`, `cover` are plain classes on one `STARDriver` [6].
 - **Nothing exists until the device says it is fitted** (P2): features are built from what the instrument reports at setup, so a STAR without an iSWAP simply has `iswap = None` [6].
@@ -39,13 +41,13 @@ The STAR's own design note explains the new shape in 20 numbered rules [6]. A fe
 - **The device is the authority on where it is** (P8): after every move the driver reads the drive back, so the model matches where the arm actually stopped, even after an error [6].
 - **Tests assert the wire** (P15): a test compares the exact firmware string a method would send [6].
 
-*Analysis:* the trade-off is deliberate. The legacy layer hid each robot behind a lowest common denominator. In v1, the STAR's `pipettes.aspirate` exposes the knobs a Hamilton method developer actually tunes: liquid-level detection mode, immersion depth, surface following, clot detection height, settling time, transport air, liquid class and more, over 30 arguments in all [17]. Universality is no longer promised by one class; the hardware registry still lists the STAR's production entry as v0 ("full") while the v1 driver matures [3].
+*Analysis:* the trade-off is deliberate. The legacy layer hid each robot behind a lowest common denominator. In v1, the STAR's `pipettes.aspirate` exposes the knobs a Hamilton method developer actually tunes: liquid-level detection mode, immersion depth, surface following, clot detection height, settling time, transport air, liquid class and more, 33 arguments in all [17]. Universality is no longer promised by one class; the hardware registry still lists the STAR's production entry as v0 ("full") while the v1 driver matures [3].
 
 ## The resource model: the deck as a tree
 
 Everything physical in PLR (deck, carrier, plate, well, tip rack, tip spot, trough, even the reader's plate holder) is a `Resource`: a named box with `size_x/size_y/size_z`, a location relative to its parent, and a list of children [18]. Absolute positions are computed by walking up the tree and adding each child's offset, with rotations applied; `get_absolute_location(x="c", y="c", z="t")` gives, for example, the centre of a well's top [19].
 
-Labware comes as factory functions named after the catalogue item, such as `cor_96_wellplate_2mL_Vb` (a Corning 2 mL V-bottom deep-well plate) or `hamilton_96_tiprack_300uL_filter` [20][21]. Hamilton carriers (`PLT_CAR_L5AC`, `TIP_CAR_480_A00`) and decks (`STARDeck`) are modelled the same way [22][23][24]. Volume and tip tracking can be switched on globally (`set_volume_tracking`, `set_tip_tracking`), so the software knows what should be in each well and which tips are used [25][26].
+Labware comes as factory functions named after the catalogue item, such as `cor_96_wellplate_2mL_Vb` (a Corning 2 mL V-bottom deep-well plate) or `hamilton_96_tiprack_300uL_filter` [20][21]. Hamilton carriers (`PLT_CAR_L5AC_A00`, `TIP_CAR_480_A00`) and decks (`STARDeck`) are modelled the same way [22][23][24]. Volume and tip tracking can be switched on globally (`set_volume_tracking`, `set_tip_tracking`), so the software knows what should be in each well and which tips are used [25][26].
 
 *Why it matters:* because the deck is data, a program (or an agent) can inspect it, check whether a move makes sense, and draw it before any hardware moves.
 
@@ -107,12 +109,12 @@ Counting from `git log` at commit 7779f50 [7]:
 | Jul–Sep 2026 | 276 | 62% |
 | Oct–3 Nov 2026 | 105 | 80% |
 
-- **790 commits, 53 distinct authors, ~538,000 lines added** over the 12 months; September 2026 alone had 205 commits as the v1 drivers landed [7].
+- **790 commits, 53 distinct authors, ~533,000 lines added** over the 12 months; September 2026 alone had 205 commits as the v1 drivers landed [7].
 - **Two people do most of the work:** Camillo Moschner (389 commits) and project founder Rick Wierenga (266) [7].
 - **Since May 2026 the busiest areas** are `hamilton` (STAR and Prep drivers), `legacy`, `resources`, `bmg_labtech` and `brooks` [7].
 - **AI co-authors are mostly Claude models** (444 trailers) with some GitHub Copilot (60) [7]. Trailers are added voluntarily, so this is a floor, not a full count.
 
-*Analysis:* this is one of the clearest public examples of a lab-automation codebase being written largely with AI coding assistants under close human review. The style rules (P1–P20, byte-exact protocols, "tests assert the wire") look designed to keep that kind of fast, AI-assisted output checkable.
+*Analysis:* this is one of the clearest public examples of a lab-automation codebase being written largely with AI coding assistants. The trailers show disclosed AI help, not how much of the code an AI wrote. The style rules (P1–P21, byte-exact protocols, "tests assert the wire") look designed to keep that kind of fast, AI-assisted output checkable.
 
 ## Where AI agents plug in
 
@@ -131,7 +133,7 @@ Counting from `git log` at commit 7779f50 [7]:
 - **labloop**, a public demo from October 2026, joins Bayesian optimisation, a scheduler and an LLM to PLR: every plate is pipetted on a simulated STARlet through `STARChatterboxBackend` [46].
 - **Labwire** exposes a PLR liquid handler through an "agent-to-instrument" protocol; per its forum post it uses hardware-free back ends only [47]. An agent "skill" for writing PLR protocols carries a "non-negotiable hardware boundary": never command physical equipment automatically [48].
 
-We found no public example of an AI agent driving a physical liquid handler through PyLabRobot. *Analysis:* the pattern these projects converge on (simulate by default, label destructive tools, require an explicit human "go", tag every result as simulated or real) is the same rule PLR's `AGENTS.md` sets for coding agents [8].
+We found no public example of an AI agent driving a physical liquid handler through PyLabRobot (outside PLR, Coscientist and CRESt did drive real Opentrons robots [50][51]). ✅🔬 *Analysis:* the pattern these projects converge on (simulate by default, label destructive tools, require an explicit human "go", tag every result as simulated or real) is the same rule PLR's `AGENTS.md` sets for coding agents [8].
 
 **The most mature commercial path is Opentrons'.** The OpentronsAI protocol-writing assistant was launched in February 2024 and is open source in the Opentrons monorepo; its server now defaults to an Anthropic Claude model, with an older OpenAI path still present, and gives the model exactly two tools, `simulate_protocol` and `get_relevant_api_docs` [49]. The landmark academic system, Coscientist (*Nature*, December 2023), had GPT-4 plan and run palladium-catalysed couplings on an Opentrons robot; its public repository holds supporting data but no robot code [50].
 
@@ -146,7 +148,7 @@ We found no public example of an AI agent driving a physical liquid handler thro
 
 CRESt (MIT) shows the glue in practice: Ax proposes the next batch, a GPT front end insists on three human confirmations (`recipe_confirm`, `ot2_deck_check`, `start`), then posts the recipes to a small web service on the OT-2's computer [51]. On the standards side, a SiLA 2 "feature" is an XML definition of typed commands and properties from which a server and client are generated [56], a self-describing format close to what an AI tool schema needs; PLR can discover SiLA 1 and 2 devices on the network [57].
 
-**What the evidence says about letting models write protocols.** In a February 2026 company preprint, OpenAI and Ginkgo report GPT-5 designing about 36,000 cell-free protein-synthesis reactions run on Ginkgo's automation, cutting cost per gram by 40%, with every design checked against a strict schema before execution and humans doing the reagent prep [58]. Benchmarks are sobering: in LabSafety Bench no model scored above 70% on hazard identification [59], and early GPT-4 work on OT-2 scripts found simulators catch syntax and API errors but not experiments that are scientifically wrong [60]. *Analysis:* simulation checks that a protocol *runs*; it does not check that it measures CLint correctly.
+**What the evidence says about letting models write protocols.** In a 5 February 2026 company preprint, OpenAI and Ginkgo report GPT-5 designing about 36,000 cell-free protein-synthesis reactions run on Ginkgo's automation, cutting cost per gram by 40%, with every design checked against a strict schema before execution and humans doing the reagent prep [58]. ✅ Benchmarks are sobering: in LabSafety Bench (*Nature Machine Intelligence*, January 2026) no model scored above 70% on hazard identification [59] 🟡, and early GPT-4 work on OT-2 scripts found simulators catch syntax and API errors but not experiments that are scientifically wrong [60]. *Analysis:* simulation checks that a protocol *runs*; it does not check that it measures CLint correctly.
 
 **DMPK specifically.** We found no public, AI-driven closed-loop microsomal stability or permeability workflow. The closest are commercial "lab-in-the-loop" ADMET offers, such as ADME-One from Ginkgo Datapoints, Inductive Bio and Tangible Scientific (launched 26 May 2026), where models pick compounds, an automated lab runs a Tier-1 ADME panel and the results retrain the models [61], and Novartis' MicroCycle miniaturised design-make-test platform (*J. Med. Chem.* 2024) [62]. Our [2 Nov deep dive on closed-loop DMTA](2026-11-02_deepdive-closed-loop-dmta.md) covers the pharma deployments.
 
@@ -160,10 +162,10 @@ CRESt (MIT) shows the glue in practice: Ax proposes the next batch, a GPT front 
 | Position | Item | PLR resource |
 |---|---|---|
 | Tip carrier | 300 µL filter tips | `TIP_CAR_480_A00` + `hamilton_96_tiprack_300uL_filter` [23][21] |
-| Plate carrier, site 0 | Compound plate (10 µM in buffer) | `PLT_CAR_L5AC` + `cor_96_wellplate_2mL_Vb` [22][20] |
+| Plate carrier, site 0 | Compound plate (10 µM in buffer) | `PLT_CAR_L5AC_A00` + `cor_96_wellplate_2mL_Vb` [22][20] |
 | Plate carrier, site 1 | NADPH (start) plate | same |
 | Plate carrier, site 2 | Quench plate: cold ACN + internal standard | same |
-| Heater-shaker at 37 °C | Reaction plate: HLM in phosphate buffer | QInstruments `BioShake3000T` (v1, "full") [42][3] |
+| Heater-shaker at 37 °C | Reaction plate: HLM in phosphate buffer (300 µL per well) | QInstruments `BioShakeQ1` (v1) [42][3] |
 
 **The steps.** Pre-warm the reaction plate; add compound; start every row with NADPH and note the exact time; at each timepoint move one aliquot per compound into the quench plate; seal, centrifuge, and send to LC-MS/MS.
 
@@ -174,9 +176,9 @@ CRESt (MIT) shows the glue in practice: Ax proposes the next batch, a GPT front 
 import asyncio, time
 from pylabrobot.legacy.liquid_handling import LiquidHandler
 from pylabrobot.legacy.liquid_handling.backends import STARBackend
-from pylabrobot.resources import (Coordinate, STARDeck, TIP_CAR_480_A00, PLT_CAR_L5AC,
+from pylabrobot.resources import (Coordinate, STARDeck, TIP_CAR_480_A00, PLT_CAR_L5AC_A00,
     hamilton_96_tiprack_300uL_filter, cor_96_wellplate_2mL_Vb, set_volume_tracking)
-from pylabrobot.qinstruments import BioShake3000T
+from pylabrobot.qinstruments import BioShakeQ1
 
 TIMEPOINTS_MIN = [0, 5, 15, 30, 45]          # one quench column per timepoint
 ALIQUOT_UL, QUENCH_COLS = 50, range(len(TIMEPOINTS_MIN))
@@ -185,15 +187,18 @@ async def run():
     set_volume_tracking(True)                                # PLR keeps a running tally per well
     deck = STARDeck()
     tips = TIP_CAR_480_A00("tip_car");  tips[0] = hamilton_96_tiprack_300uL_filter("tips")
-    plates = PLT_CAR_L5AC("plate_car")
+    plates = PLT_CAR_L5AC_A00("plate_car")      # PLT_CAR_L5AC (no suffix) raises at 7779f50
     plates[0] = compounds = cor_96_wellplate_2mL_Vb("compounds")
     plates[1] = nadph = cor_96_wellplate_2mL_Vb("nadph")
     plates[2] = quench = cor_96_wellplate_2mL_Vb("quench")
     deck.assign_child_resource(tips, track=1)               # `track=` replaced `rails=` in 2026
     deck.assign_child_resource(plates, track=7)
-    shaker = BioShake3000T("bioshake", port="/dev/ttyUSB0")
+    shaker = BioShakeQ1("bioshake", port="/dev/ttyUSB0")   # BioShake3000T is not implemented
     deck.assign_child_resource(shaker, location=Coordinate(500, 100, 100))  # placement illustrative
     shaker.assign_child_resource(reaction := cor_96_wellplate_2mL_Vb("reaction"))
+    # volume tracking needs starting volumes, or the first aspirate raises TooLittleLiquidError
+    for plate, ul in [(compounds, 200), (nadph, 200), (reaction, 300), (quench, 150)]:
+        for well in plate.children: well.tracker.set_volume(ul)   # 300 + 50 + 50 = 400 uL >= 5 x 50 uL samples
 
     lh = LiquidHandler(backend=STARBackend(), deck=deck)
     await lh.setup(); await shaker.setup()
@@ -223,7 +228,7 @@ async def run():
     return sampled_at   # quench plate -> seal, spin, LC-MS/MS (outside PLR)
 ```
 
-The calls (`pick_up_tips`, `aspirate`, `dispense`, `discard_tips`, `start_shaking`, `set_temperature`) and resource names are taken from the repository [43][42][20][21][22][23][24][25]; deck positions, volumes and the shaker placement are illustrative and would need checking on a real deck (and the 0-minute aliquot would normally be taken from a separate pre-quenched control well).
+The calls (`pick_up_tips`, `aspirate`, `dispense`, `discard_tips`, `start_shaking`, `set_temperature`) and resource names are taken from the repository, and the independent verifier checked each against the code at 7779f50 🟡 [43][42][20][21][22][23][24][25]; deck positions, volumes and the shaker placement are illustrative and would need checking on a real deck (and the 0-minute aliquot would normally be taken from a separate pre-quenched control well).
 
 **What PLR does not cover yet (at 7779f50).**
 
@@ -265,7 +270,7 @@ Code links point to commit 7779f50 (3 Nov 2026). "code" = repository file or com
 19. `Resource.get_absolute_location`: [https://github.com/PyLabRobot/pylabrobot/blob/7779f506d12755f5f274b4c5cab4d095f4fccb62/pylabrobot/resources/resource.py#L347-L380](https://github.com/PyLabRobot/pylabrobot/blob/7779f506d12755f5f274b4c5cab4d095f4fccb62/pylabrobot/resources/resource.py#L347-L380) (code)
 20. `cor_96_wellplate_2mL_Vb`: [https://github.com/PyLabRobot/pylabrobot/blob/7779f506d12755f5f274b4c5cab4d095f4fccb62/pylabrobot/resources/corning/plates.py#L101](https://github.com/PyLabRobot/pylabrobot/blob/7779f506d12755f5f274b4c5cab4d095f4fccb62/pylabrobot/resources/corning/plates.py#L101) (code)
 21. `hamilton_96_tiprack_300uL_filter`: [https://github.com/PyLabRobot/pylabrobot/blob/7779f506d12755f5f274b4c5cab4d095f4fccb62/pylabrobot/resources/hamilton/tip_racks.py#L214](https://github.com/PyLabRobot/pylabrobot/blob/7779f506d12755f5f274b4c5cab4d095f4fccb62/pylabrobot/resources/hamilton/tip_racks.py#L214) (code)
-22. `PLT_CAR_L5AC`: [https://github.com/PyLabRobot/pylabrobot/blob/7779f506d12755f5f274b4c5cab4d095f4fccb62/pylabrobot/resources/hamilton/plate_carriers.py#L82](https://github.com/PyLabRobot/pylabrobot/blob/7779f506d12755f5f274b4c5cab4d095f4fccb62/pylabrobot/resources/hamilton/plate_carriers.py#L82) (code)
+22. `PLT_CAR_L5AC_A00`: [https://github.com/PyLabRobot/pylabrobot/blob/7779f506d12755f5f274b4c5cab4d095f4fccb62/pylabrobot/resources/hamilton/plate_carriers.py#L752](https://github.com/PyLabRobot/pylabrobot/blob/7779f506d12755f5f274b4c5cab4d095f4fccb62/pylabrobot/resources/hamilton/plate_carriers.py#L752) (code)
 23. `TIP_CAR_480_A00`: [https://github.com/PyLabRobot/pylabrobot/blob/7779f506d12755f5f274b4c5cab4d095f4fccb62/pylabrobot/resources/hamilton/tip_carriers.py#L374](https://github.com/PyLabRobot/pylabrobot/blob/7779f506d12755f5f274b4c5cab4d095f4fccb62/pylabrobot/resources/hamilton/tip_carriers.py#L374) (code)
 24. `STARDeck`: [https://github.com/PyLabRobot/pylabrobot/blob/7779f506d12755f5f274b4c5cab4d095f4fccb62/pylabrobot/resources/hamilton/star_decks.py#L237-L262](https://github.com/PyLabRobot/pylabrobot/blob/7779f506d12755f5f274b4c5cab4d095f4fccb62/pylabrobot/resources/hamilton/star_decks.py#L237-L262) (code)
 25. `set_volume_tracking`: [https://github.com/PyLabRobot/pylabrobot/blob/7779f506d12755f5f274b4c5cab4d095f4fccb62/pylabrobot/resources/volume_tracker.py#L17](https://github.com/PyLabRobot/pylabrobot/blob/7779f506d12755f5f274b4c5cab4d095f4fccb62/pylabrobot/resources/volume_tracker.py#L17) (code)
