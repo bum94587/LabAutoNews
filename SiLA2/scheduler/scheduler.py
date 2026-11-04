@@ -6,8 +6,11 @@ in file order, of its own device that is
   2. has all `depends_on` steps finished successfully, and
   3. is due: `start_after_t0_s` (workflow seconds, scaled to real seconds) has passed since t0.
 It runs that step to completion (a device does one thing at a time), records it, and wakes
-the other lanes. t0 is the moment the `marks_t0` step finishes. If any step fails, no new
-step is started anywhere; steps already running finish, the rest are marked "skipped".
+the other lanes. t0 is the moment the `marks_t0` step *finishes* (for the NADPH Transfer: after
+the tip drop, a few tenths of a second after the dispense). If any step fails, no new step is
+started anywhere; steps already running finish, the rest are marked "skipped". Every step has
+a watchdog (`timeout_s` in the YAML, else the scheduler default): a call that does not return
+in time fails the step and therefore the run.
 
 SiLA 2 in one paragraph (sila2 0.14 dynamic client): `SilaClient(host, port, insecure=True)`
 reads the server's feature definitions and exposes each feature as an attribute, e.g.
@@ -107,13 +110,13 @@ class Scheduler:
         workflow: Workflow,
         features: dict[str, Any],
         log: Callable[[str], None] = print,
-        result_timeout_s: float = 120.0,
+        step_timeout_s: float = 120.0,
         intermediate_log_interval_s: float = 0.5,
     ):
         self.wf = workflow
         self.features = features
         self._log_sink = log
-        self.result_timeout_s = result_timeout_s
+        self.step_timeout_s = step_timeout_s
         self.intermediate_log_interval_s = intermediate_log_interval_s
         self.records = {
             s.id: StepRecord(
@@ -194,16 +197,21 @@ class Scheduler:
                 step = self._wait_for_next_step(my_steps)
                 if step is None:
                     return
-            self._execute(step)
+            status, responses, error = self._execute(step)
+            end_s, end_wall = round(self._now(), 3), _now_wall()
+            # Status, end time and t0 change together under the lock, so another lane never sees
+            # the t0 step "succeeded" while t0 is still unset.
             with self._cond:
                 rec = self.records[step.id]
-                if rec.status == "failed":
+                rec.status, rec.responses, rec.error = status, responses, error
+                rec.end_s, rec.end_wall = end_s, end_wall
+                rec.duration_s = round(end_s - rec.start_s, 3)
+                if status == "failed":
                     self.failed = True
-                    self.log("run marked FAILED: no new steps will be started", device, step.id)
                 elif step.marks_t0:
-                    self.t0_s = rec.end_s
-                    self.log("t0 set (reaction started); timed steps now count from here", device, step.id)
+                    self.t0_s = end_s
                 self._cond.notify_all()
+            self._log_outcome(rec)
 
     def _wait_for_next_step(self, my_steps: list[Step]) -> Step | None:
         """Block (holding the condition) until a step is runnable; None when the lane is done."""
@@ -226,7 +234,9 @@ class Scheduler:
             if any(self.records[d].status != "succeeded" for d in step.depends_on):
                 continue
             if step.start_after_t0_s is not None:
-                due = self.t0_s + self.wf.real_delay(step.start_after_t0_s)  # t0 set: validated
+                if self.t0_s is None:  # cannot happen (t0 step is an ancestor), but never crash
+                    continue
+                due = self.t0_s + self.wf.real_delay(step.start_after_t0_s)
                 self.records[step.id].planned_start_s = round(due, 3)
                 remaining = due - self._now()
                 if remaining > 0:
@@ -237,8 +247,12 @@ class Scheduler:
 
     # -------------------------------------------------------- SiLA execution
 
-    def _execute(self, step: Step) -> None:
-        """Call one SiLA command and record the outcome (never raises)."""
+    def _execute(self, step: Step) -> tuple[str, dict[str, Any], str | None]:
+        """Call one SiLA command under a watchdog; return (status, responses, error). Never raises.
+
+        Only start time and intermediate responses are written to the record here; the outcome
+        is written by the lane under the lock (see `_lane`).
+        """
         rec = self.records[step.id]
         rec.start_s = round(self._now(), 3)
         rec.start_wall = _now_wall()
@@ -249,23 +263,52 @@ class Scheduler:
         if step.start_after_t0_s is not None:
             timing = f"  [due t0+{step.start_after_t0_s / 60:g} min, late by {rec.late_s:+.2f} s]"
         self.log(f"START {step.command}({params}){timing}", step.device, step.id)
-        try:
+
+        def call() -> Any:
             command = getattr(self.features[step.device], step.command)
             result = command(**step.params)
             if hasattr(result, "get_responses"):  # observable command: we got an instance handle
                 result = self._follow_observable(rec, result)
-            rec.responses = as_plain_dict(result)
-            rec.status = "succeeded"
+            return result
+
+        timeout_s = step.timeout_s or self.step_timeout_s
+        try:
+            return "succeeded", as_plain_dict(self._with_watchdog(call, timeout_s)), None
         except Exception as ex:  # noqa: BLE001 - any failure fails the step, and the run
-            rec.status = "failed"
-            rec.error = describe_error(ex)
-        rec.end_s = round(self._now(), 3)
-        rec.end_wall = _now_wall()
-        rec.duration_s = round(rec.end_s - rec.start_s, 3)
+            return "failed", {}, describe_error(ex)
+
+    @staticmethod
+    def _with_watchdog(func: Callable[[], Any], timeout_s: float) -> Any:
+        """Run func in a helper thread; raise TimeoutError if it has not returned in time.
+
+        A timed-out call keeps its (daemon) thread; the run fails and stops scheduling, and
+        run_demo.py stops the servers, which ends any call still waiting on them.
+        """
+        box: dict[str, Any] = {}
+
+        def target() -> None:
+            try:
+                box["result"] = func()
+            except BaseException as ex:  # noqa: BLE001 - handed back to the caller below
+                box["error"] = ex
+
+        worker = threading.Thread(target=target, daemon=True, name="sila-call")
+        worker.start()
+        worker.join(timeout_s)
+        if worker.is_alive():
+            raise TimeoutError(f"no result within {timeout_s:g} s (step watchdog)")
+        if "error" in box:
+            raise box["error"]
+        return box["result"]
+
+    def _log_outcome(self, rec: StepRecord) -> None:
         if rec.status == "succeeded":
-            self.log(f"DONE  in {rec.duration_s:.2f} s -> {self._short(rec.responses)}", step.device, step.id)
+            self.log(f"DONE  in {rec.duration_s:.2f} s -> {self._short(rec.responses)}", rec.device, rec.id)
+            if rec.marks_t0:
+                self.log("t0 set (reaction started); timed steps now count from here", rec.device, rec.id)
         else:
-            self.log(f"FAIL  after {rec.duration_s:.2f} s: {rec.error}", step.device, step.id)
+            self.log(f"FAIL  after {rec.duration_s:.2f} s: {rec.error}", rec.device, rec.id)
+            self.log("run marked FAILED: no new steps will be started", rec.device, rec.id)
 
     def _follow_observable(self, rec: StepRecord, instance: Any) -> Any:
         """Stream intermediate responses into the log, then return the final responses."""
@@ -291,15 +334,16 @@ class Scheduler:
             if hasattr(instance, "cancel_execution_info_subscription"):
                 instance.cancel_execution_info_subscription()
 
-    def _wait_for_responses(self, instance: Any) -> Any:
-        """get_responses() raises CommandExecutionNotFinished until the server is done."""
-        deadline = time.monotonic() + self.result_timeout_s
+    @staticmethod
+    def _wait_for_responses(instance: Any) -> Any:
+        """get_responses() raises CommandExecutionNotFinished until the server is done.
+
+        (The step watchdog bounds this loop.)
+        """
         while True:
             try:
                 return instance.get_responses()
             except CommandExecutionNotFinished:
-                if time.monotonic() > deadline:
-                    raise TimeoutError(f"no final response within {self.result_timeout_s:g} s")
                 time.sleep(0.05)
 
     # --------------------------------------------------------------- helpers

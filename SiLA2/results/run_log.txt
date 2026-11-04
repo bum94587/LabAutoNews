@@ -1,123 +1,126 @@
 [   0.00s] run start: mini microsomal stability (1 compound, 5 time points) (27 steps, 1 workflow-min = 2 s)
 [   0.00s] hhs | heat_to_37        | START SetTemperature(TargetTemperature=37.0)
 [   0.00s] lh  | lh_init           | START Initialize()
-[   0.02s] hhs | heat_to_37        |   ... CurrentTemperature=22.00
-[   0.21s] lh  | lh_init           | DONE  in 0.21 s -> Summary=STAR twin initialised: 148 firmware commands exchanged with the simulator. Deck...
-[   0.21s] lh  | add_compound      | START Transfer(SourcePlate=compounds, SourceColumn=1, TargetPlate=reaction, TargetColumn=1, VolumeUl=50.0)
-[   0.28s] lh  | add_compound      |   ... Step=1/4 pick up tips: tips column 1
-[   0.62s] lh  | add_compound      |   ... Step=2/4 aspirate 50 uL x8 from compounds column 1
+[   0.01s] hhs | heat_to_37        |   ... CurrentTemperature=22.00
+[   0.19s] lh  | lh_init           | DONE  in 0.19 s -> Summary=STAR twin initialised: 148 firmware commands exchanged with the simulator. Deck...
+[   0.19s] lh  | add_compound      | START Transfer(SourcePlate=compounds, SourceColumn=1, TargetPlate=reaction, TargetColumn=1, VolumeUl=50.0)
+[   0.25s] lh  | add_compound      |   ... Step=1/4 pick up tips: tips column 1
+[   0.58s] lh  | add_compound      |   ... Step=2/4 aspirate 50 uL x8 from compounds column 1
+[   0.72s] lh  | add_compound      |   ... Step=3/4 dispense 50 uL x8 into reaction column 1
 [   0.76s] hhs | heat_to_37        |   ... CurrentTemperature=25.32
-[   0.77s] lh  | add_compound      |   ... Step=3/4 dispense 50 uL x8 into reaction column 1
-[   0.91s] lh  | add_compound      |   ... Step=4/4 drop tips: back to their rack spots
-[   1.12s] lh  | add_compound      | DONE  in 0.91 s -> Message=Transfer 50 uL compounds col 1 -> reaction col 1: done (pick up tips: tips colu...
+[   0.90s] lh  | add_compound      |   ... Step=4/4 drop tips: back to their rack spots
+[   1.13s] lh  | add_compound      | DONE  in 0.93 s -> Message=Transfer 50 uL compounds col 1 -> reaction col 1: done (pick up tips: tips colu...
 [   1.26s] hhs | heat_to_37        |   ... CurrentTemperature=27.12
 [   1.76s] hhs | heat_to_37        |   ... CurrentTemperature=28.64
-[   2.51s] hhs | heat_to_37        |   ... CurrentTemperature=30.49
-[   3.01s] hhs | heat_to_37        |   ... CurrentTemperature=31.49
-[   3.51s] hhs | heat_to_37        |   ... CurrentTemperature=32.34
-[   4.01s] hhs | heat_to_37        |   ... CurrentTemperature=33.05
-[   4.51s] hhs | heat_to_37        |   ... CurrentTemperature=33.66
-[   5.01s] hhs | heat_to_37        |   ... CurrentTemperature=34.17
-[   5.51s] hhs | heat_to_37        |   ... CurrentTemperature=34.61
-[   6.02s] hhs | heat_to_37        |   ... CurrentTemperature=34.98
-[   6.77s] hhs | heat_to_37        |   ... CurrentTemperature=35.42
-[   7.27s] hhs | heat_to_37        |   ... CurrentTemperature=35.67
-[   7.77s] hhs | heat_to_37        |   ... CurrentTemperature=35.87
-[   8.27s] hhs | heat_to_37        |   ... CurrentTemperature=36.05
-[   8.77s] hhs | heat_to_37        |   ... CurrentTemperature=36.19
-[   9.52s] hhs | heat_to_37        |   ... CurrentTemperature=36.37
-[  10.02s] hhs | heat_to_37        |   ... CurrentTemperature=36.47
-[  10.28s] hhs | heat_to_37        | DONE  in 10.28 s -> ReachedTemperature=36.51
-[  10.28s] lh  | add_nadph         | START Transfer(SourcePlate=nadph, SourceColumn=1, TargetPlate=reaction, TargetColumn=1, VolumeUl=50.0)
-[  10.31s] lh  | add_nadph         |   ... Step=1/4 pick up tips: tips column 2
-[  10.56s] lh  | add_nadph         |   ... Step=2/4 aspirate 50 uL x8 from nadph column 1
-[  10.73s] lh  | add_nadph         |   ... Step=3/4 dispense 50 uL x8 into reaction column 1
-[  10.84s] lh  | add_nadph         |   ... Step=4/4 drop tips: back to their rack spots
-[  11.06s] lh  | add_nadph         | DONE  in 0.78 s -> Message=Transfer 50 uL nadph col 1 -> reaction col 1: done (pick up tips: tips column 2...
-[  11.06s] lh  | add_nadph         | t0 set (reaction started); timed steps now count from here
-[  11.06s] hhs | shake_start       | START StartShaking(Speed=600)
-[  11.06s] hhs | shake_start       | DONE  in 0.00 s -> Message=Shaking at 600 rpm (was 0 rpm)
-[  11.06s] hhs | stop_t0           | START StopShaking()  [due t0+0 min, late by +0.00 s]
-[  11.07s] hhs | stop_t0           | DONE  in 0.00 s -> Message=Shaking stopped (was 600 rpm)
-[  11.07s] lh  | sample_t0         | START Transfer(SourcePlate=reaction, SourceColumn=1, TargetPlate=quench, TargetColumn=1, VolumeUl=50.0)
-[  11.09s] lh  | sample_t0         |   ... Step=1/4 pick up tips: tips column 3
-[  11.37s] lh  | sample_t0         |   ... Step=2/4 aspirate 50 uL x8 from reaction column 1
-[  11.59s] lh  | sample_t0         |   ... Step=3/4 dispense 50 uL x8 into quench column 1
-[  11.69s] lh  | sample_t0         |   ... Step=4/4 drop tips: back to their rack spots
-[  11.93s] lh  | sample_t0         | DONE  in 0.86 s -> Message=Transfer 50 uL reaction col 1 -> quench col 1: done (pick up tips: tips column ...
-[  11.93s] hhs | shake_t0          | START StartShaking(Speed=600)
-[  11.93s] hhs | shake_t0          | DONE  in 0.00 s -> Message=Shaking at 600 rpm (was 0 rpm)
-[  13.06s] hhs | stop_t1           | START StopShaking()  [due t0+1 min, late by +0.00 s]
-[  13.06s] hhs | stop_t1           | DONE  in 0.00 s -> Message=Shaking stopped (was 600 rpm)
-[  13.06s] lh  | sample_t1         | START Transfer(SourcePlate=reaction, SourceColumn=1, TargetPlate=quench, TargetColumn=2, VolumeUl=50.0)
-[  13.11s] lh  | sample_t1         |   ... Step=1/4 pick up tips: tips column 4
-[  13.35s] lh  | sample_t1         |   ... Step=2/4 aspirate 50 uL x8 from reaction column 1
-[  13.54s] lh  | sample_t1         |   ... Step=3/4 dispense 50 uL x8 into quench column 2
-[  13.66s] lh  | sample_t1         |   ... Step=4/4 drop tips: back to their rack spots
-[  13.89s] lh  | sample_t1         | DONE  in 0.82 s -> Message=Transfer 50 uL reaction col 1 -> quench col 2: done (pick up tips: tips column ...
-[  13.89s] hhs | shake_t1          | START StartShaking(Speed=600)
-[  13.89s] hhs | shake_t1          | DONE  in 0.00 s -> Message=Shaking at 600 rpm (was 0 rpm)
-[  15.06s] hhs | stop_t2           | START StopShaking()  [due t0+2 min, late by +0.00 s]
-[  15.06s] hhs | stop_t2           | DONE  in 0.00 s -> Message=Shaking stopped (was 600 rpm)
-[  15.06s] lh  | sample_t2         | START Transfer(SourcePlate=reaction, SourceColumn=1, TargetPlate=quench, TargetColumn=3, VolumeUl=50.0)
-[  15.10s] lh  | sample_t2         |   ... Step=1/4 pick up tips: tips column 5
-[  15.33s] lh  | sample_t2         |   ... Step=2/4 aspirate 50 uL x8 from reaction column 1
-[  15.54s] lh  | sample_t2         |   ... Step=3/4 dispense 50 uL x8 into quench column 3
-[  15.65s] lh  | sample_t2         |   ... Step=4/4 drop tips: back to their rack spots
-[  15.88s] lh  | sample_t2         | DONE  in 0.82 s -> Message=Transfer 50 uL reaction col 1 -> quench col 3: done (pick up tips: tips column ...
-[  15.88s] hhs | shake_t2          | START StartShaking(Speed=600)
-[  15.88s] hhs | shake_t2          | DONE  in 0.00 s -> Message=Shaking at 600 rpm (was 0 rpm)
-[  17.06s] hhs | stop_t3           | START StopShaking()  [due t0+3 min, late by +0.00 s]
-[  17.06s] hhs | stop_t3           | DONE  in 0.00 s -> Message=Shaking stopped (was 600 rpm)
-[  17.06s] lh  | sample_t3         | START Transfer(SourcePlate=reaction, SourceColumn=1, TargetPlate=quench, TargetColumn=4, VolumeUl=50.0)
-[  17.12s] lh  | sample_t3         |   ... Step=1/4 pick up tips: tips column 6
-[  17.37s] lh  | sample_t3         |   ... Step=2/4 aspirate 50 uL x8 from reaction column 1
-[  17.55s] lh  | sample_t3         |   ... Step=3/4 dispense 50 uL x8 into quench column 4
-[  17.68s] lh  | sample_t3         |   ... Step=4/4 drop tips: back to their rack spots
-[  17.92s] lh  | sample_t3         | DONE  in 0.85 s -> Message=Transfer 50 uL reaction col 1 -> quench col 4: done (pick up tips: tips column ...
-[  17.92s] hhs | shake_t3          | START StartShaking(Speed=600)
-[  17.92s] hhs | shake_t3          | DONE  in 0.00 s -> Message=Shaking at 600 rpm (was 0 rpm)
-[  21.06s] hhs | stop_t5           | START StopShaking()  [due t0+5 min, late by +0.00 s]
-[  21.06s] hhs | stop_t5           | DONE  in 0.00 s -> Message=Shaking stopped (was 600 rpm)
-[  21.06s] lh  | sample_t5         | START Transfer(SourcePlate=reaction, SourceColumn=1, TargetPlate=quench, TargetColumn=5, VolumeUl=50.0)
-[  21.10s] lh  | sample_t5         |   ... Step=1/4 pick up tips: tips column 7
-[  21.33s] lh  | sample_t5         |   ... Step=2/4 aspirate 50 uL x8 from reaction column 1
-[  21.53s] lh  | sample_t5         |   ... Step=3/4 dispense 50 uL x8 into quench column 5
-[  21.64s] lh  | sample_t5         |   ... Step=4/4 drop tips: back to their rack spots
-[  21.87s] lh  | sample_t5         | DONE  in 0.80 s -> Message=Transfer 50 uL reaction col 1 -> quench col 5: done (pick up tips: tips column ...
-[  21.87s] lh  | volumes_compounds | START GetWellVolumes(Plate=compounds)
-[  21.87s] hhs | shake_t5          | START StartShaking(Speed=600)
-[  21.87s] hhs | shake_t5          | DONE  in 0.00 s -> Message=Shaking at 600 rpm (was 0 rpm)
-[  21.87s] hhs | stop_final        | START StopShaking()
-[  21.87s] lh  | volumes_compounds | DONE  in 0.00 s -> VolumesJson={"A1": 150.0, "A2": 200.0, "A3": 200.0, "A4": 200.0, "A5": 200.0, "A6": 200...
-[  21.87s] lh  | volumes_nadph     | START GetWellVolumes(Plate=nadph)
-[  21.87s] hhs | stop_final        | DONE  in 0.00 s -> Message=Shaking stopped (was 600 rpm)
-[  21.87s] hhs | cool_to_22        | START SetTemperature(TargetTemperature=22.0)
-[  21.87s] lh  | volumes_nadph     | DONE  in 0.00 s -> VolumesJson={"A1": 150.0, "A2": 200.0, "A3": 200.0, "A4": 200.0, "A5": 200.0, "A6": 200...
-[  21.87s] lh  | volumes_reaction  | START GetWellVolumes(Plate=reaction)
-[  21.88s] lh  | volumes_reaction  | DONE  in 0.00 s -> VolumesJson={"A1": 150.0, "A2": 300.0, "A3": 300.0, "A4": 300.0, "A5": 300.0, "A6": 300...
-[  21.88s] lh  | volumes_quench    | START GetWellVolumes(Plate=quench)
-[  21.88s] hhs | cool_to_22        |   ... CurrentTemperature=36.99
-[  21.88s] lh  | volumes_quench    | DONE  in 0.00 s -> VolumesJson={"A1": 200.0, "A2": 200.0, "A3": 200.0, "A4": 200.0, "A5": 200.0, "A6": 150...
-[  21.88s] lh  | firmware_trace    | START GetFirmwareTrace(SinceIndex=0)
-[  21.89s] lh  | firmware_trace    | DONE  in 0.01 s -> TraceJson=[{"index": 0, "time": "2026-11-04T04:50:48.002+00:00", "command": "C0RM", "re...
-[  22.63s] hhs | cool_to_22        |   ... CurrentTemperature=33.67
-[  23.13s] hhs | cool_to_22        |   ... CurrentTemperature=31.87
-[  23.63s] hhs | cool_to_22        |   ... CurrentTemperature=30.35
-[  24.13s] hhs | cool_to_22        |   ... CurrentTemperature=29.07
-[  24.63s] hhs | cool_to_22        |   ... CurrentTemperature=27.98
-[  25.13s] hhs | cool_to_22        |   ... CurrentTemperature=27.06
-[  25.64s] hhs | cool_to_22        |   ... CurrentTemperature=26.28
-[  26.14s] hhs | cool_to_22        |   ... CurrentTemperature=25.62
-[  26.64s] hhs | cool_to_22        |   ... CurrentTemperature=25.07
-[  27.14s] hhs | cool_to_22        |   ... CurrentTemperature=24.60
-[  27.89s] hhs | cool_to_22        |   ... CurrentTemperature=24.02
-[  28.39s] hhs | cool_to_22        |   ... CurrentTemperature=23.71
-[  28.89s] hhs | cool_to_22        |   ... CurrentTemperature=23.45
-[  29.39s] hhs | cool_to_22        |   ... CurrentTemperature=23.22
-[  29.89s] hhs | cool_to_22        |   ... CurrentTemperature=23.04
-[  30.39s] hhs | cool_to_22        |   ... CurrentTemperature=22.88
-[  31.15s] hhs | cool_to_22        |   ... CurrentTemperature=22.68
-[  31.90s] hhs | cool_to_22        |   ... CurrentTemperature=22.53
-[  32.15s] hhs | cool_to_22        | DONE  in 10.28 s -> ReachedTemperature=22.49
-[  32.15s] run SUCCEEDED after 32.15 s
+[   2.26s] hhs | heat_to_37        |   ... CurrentTemperature=29.92
+[   2.76s] hhs | heat_to_37        |   ... CurrentTemperature=31.01
+[   3.30s] hhs | heat_to_37        |   ... CurrentTemperature=32.00
+[   3.80s] hhs | heat_to_37        |   ... CurrentTemperature=32.77
+[   4.31s] hhs | heat_to_37        |   ... CurrentTemperature=33.42
+[   4.81s] hhs | heat_to_37        |   ... CurrentTemperature=33.97
+[   5.31s] hhs | heat_to_37        |   ... CurrentTemperature=34.44
+[   5.81s] hhs | heat_to_37        |   ... CurrentTemperature=34.83
+[   6.31s] hhs | heat_to_37        |   ... CurrentTemperature=35.16
+[   6.81s] hhs | heat_to_37        |   ... CurrentTemperature=35.45
+[   7.31s] hhs | heat_to_37        |   ... CurrentTemperature=35.69
+[   7.81s] hhs | heat_to_37        |   ... CurrentTemperature=35.89
+[   8.31s] hhs | heat_to_37        |   ... CurrentTemperature=36.06
+[   8.81s] hhs | heat_to_37        |   ... CurrentTemperature=36.20
+[   9.31s] hhs | heat_to_37        |   ... CurrentTemperature=36.33
+[   9.82s] hhs | heat_to_37        |   ... CurrentTemperature=36.43
+[  10.32s] hhs | heat_to_37        |   ... CurrentTemperature=36.52
+[  10.32s] hhs | heat_to_37        | DONE  in 10.32 s -> ReachedTemperature=36.52
+[  10.32s] lh  | add_nadph         | START Transfer(SourcePlate=nadph, SourceColumn=1, TargetPlate=reaction, TargetColumn=1, VolumeUl=50.0)
+[  10.39s] lh  | add_nadph         |   ... Step=1/4 pick up tips: tips column 2
+[  10.59s] lh  | add_nadph         |   ... Step=2/4 aspirate 50 uL x8 from nadph column 1
+[  10.76s] lh  | add_nadph         |   ... Step=3/4 dispense 50 uL x8 into reaction column 1
+[  10.89s] lh  | add_nadph         |   ... Step=4/4 drop tips: back to their rack spots
+[  11.12s] lh  | add_nadph         | DONE  in 0.80 s -> Message=Transfer 50 uL nadph col 1 -> reaction col 1: done (pick up tips: tips column 2...
+[  11.12s] lh  | add_nadph         | t0 set (reaction started); timed steps now count from here
+[  11.12s] hhs | shake_start       | START StartShaking(Speed=600)
+[  11.12s] hhs | shake_start       | DONE  in 0.01 s -> Message=Shaking at 600 rpm (was 0 rpm)
+[  11.12s] hhs | stop_t0           | START StopShaking()  [due t0+0 min, late by +0.01 s]
+[  11.13s] hhs | stop_t0           | DONE  in 0.00 s -> Message=Shaking stopped (was 600 rpm)
+[  11.13s] lh  | sample_t0         | START Transfer(SourcePlate=reaction, SourceColumn=1, TargetPlate=quench, TargetColumn=1, VolumeUl=50.0)
+[  11.16s] lh  | sample_t0         |   ... Step=1/4 pick up tips: tips column 3
+[  11.42s] lh  | sample_t0         |   ... Step=2/4 aspirate 50 uL x8 from reaction column 1
+[  11.60s] lh  | sample_t0         |   ... Step=3/4 dispense 50 uL x8 into quench column 1
+[  11.72s] lh  | sample_t0         |   ... Step=4/4 drop tips: back to their rack spots
+[  11.95s] lh  | sample_t0         | DONE  in 0.83 s -> Message=Transfer 50 uL reaction col 1 -> quench col 1: done (pick up tips: tips column ...
+[  11.95s] hhs | shake_t0          | START StartShaking(Speed=600)
+[  11.96s] hhs | shake_t0          | DONE  in 0.00 s -> Message=Shaking at 600 rpm (was 0 rpm)
+[  13.12s] hhs | stop_t1           | START StopShaking()  [due t0+1 min, late by +0.00 s]
+[  13.12s] hhs | stop_t1           | DONE  in 0.00 s -> Message=Shaking stopped (was 600 rpm)
+[  13.12s] lh  | sample_t1         | START Transfer(SourcePlate=reaction, SourceColumn=1, TargetPlate=quench, TargetColumn=2, VolumeUl=50.0)
+[  13.16s] lh  | sample_t1         |   ... Step=1/4 pick up tips: tips column 4
+[  13.40s] lh  | sample_t1         |   ... Step=2/4 aspirate 50 uL x8 from reaction column 1
+[  13.57s] lh  | sample_t1         |   ... Step=3/4 dispense 50 uL x8 into quench column 2
+[  13.68s] lh  | sample_t1         |   ... Step=4/4 drop tips: back to their rack spots
+[  13.92s] lh  | sample_t1         | DONE  in 0.80 s -> Message=Transfer 50 uL reaction col 1 -> quench col 2: done (pick up tips: tips column ...
+[  13.92s] hhs | shake_t1          | START StartShaking(Speed=600)
+[  13.92s] hhs | shake_t1          | DONE  in 0.00 s -> Message=Shaking at 600 rpm (was 0 rpm)
+[  15.12s] hhs | stop_t2           | START StopShaking()  [due t0+2 min, late by +0.00 s]
+[  15.12s] hhs | stop_t2           | DONE  in 0.00 s -> Message=Shaking stopped (was 600 rpm)
+[  15.12s] lh  | sample_t2         | START Transfer(SourcePlate=reaction, SourceColumn=1, TargetPlate=quench, TargetColumn=3, VolumeUl=50.0)
+[  15.18s] lh  | sample_t2         |   ... Step=1/4 pick up tips: tips column 5
+[  15.41s] lh  | sample_t2         |   ... Step=2/4 aspirate 50 uL x8 from reaction column 1
+[  15.67s] lh  | sample_t2         |   ... Step=3/4 dispense 50 uL x8 into quench column 3
+[  15.81s] lh  | sample_t2         |   ... Step=4/4 drop tips: back to their rack spots
+[  16.05s] lh  | sample_t2         | DONE  in 0.93 s -> Message=Transfer 50 uL reaction col 1 -> quench col 3: done (pick up tips: tips column ...
+[  16.05s] hhs | shake_t2          | START StartShaking(Speed=600)
+[  16.05s] hhs | shake_t2          | DONE  in 0.00 s -> Message=Shaking at 600 rpm (was 0 rpm)
+[  17.12s] hhs | stop_t3           | START StopShaking()  [due t0+3 min, late by +0.00 s]
+[  17.12s] hhs | stop_t3           | DONE  in 0.00 s -> Message=Shaking stopped (was 600 rpm)
+[  17.12s] lh  | sample_t3         | START Transfer(SourcePlate=reaction, SourceColumn=1, TargetPlate=quench, TargetColumn=4, VolumeUl=50.0)
+[  17.19s] lh  | sample_t3         |   ... Step=1/4 pick up tips: tips column 6
+[  17.39s] lh  | sample_t3         |   ... Step=2/4 aspirate 50 uL x8 from reaction column 1
+[  17.59s] lh  | sample_t3         |   ... Step=3/4 dispense 50 uL x8 into quench column 4
+[  17.72s] lh  | sample_t3         |   ... Step=4/4 drop tips: back to their rack spots
+[  17.95s] lh  | sample_t3         | DONE  in 0.83 s -> Message=Transfer 50 uL reaction col 1 -> quench col 4: done (pick up tips: tips column ...
+[  17.95s] hhs | shake_t3          | START StartShaking(Speed=600)
+[  17.95s] hhs | shake_t3          | DONE  in 0.00 s -> Message=Shaking at 600 rpm (was 0 rpm)
+[  21.12s] hhs | stop_t5           | START StopShaking()  [due t0+5 min, late by +0.00 s]
+[  21.13s] hhs | stop_t5           | DONE  in 0.01 s -> Message=Shaking stopped (was 600 rpm)
+[  21.13s] lh  | sample_t5         | START Transfer(SourcePlate=reaction, SourceColumn=1, TargetPlate=quench, TargetColumn=5, VolumeUl=50.0)
+[  21.18s] lh  | sample_t5         |   ... Step=1/4 pick up tips: tips column 7
+[  21.47s] lh  | sample_t5         |   ... Step=2/4 aspirate 50 uL x8 from reaction column 1
+[  21.67s] lh  | sample_t5         |   ... Step=3/4 dispense 50 uL x8 into quench column 5
+[  21.79s] lh  | sample_t5         |   ... Step=4/4 drop tips: back to their rack spots
+[  22.02s] lh  | sample_t5         | DONE  in 0.89 s -> Message=Transfer 50 uL reaction col 1 -> quench col 5: done (pick up tips: tips column ...
+[  22.02s] lh  | volumes_compounds | START GetWellVolumes(Plate=compounds)
+[  22.02s] hhs | shake_t5          | START StartShaking(Speed=600)
+[  22.03s] lh  | volumes_compounds | DONE  in 0.00 s -> VolumesJson={"A1": 150.0, "A2": 200.0, "A3": 200.0, "A4": 200.0, "A5": 200.0, "A6": 200...
+[  22.03s] hhs | shake_t5          | DONE  in 0.00 s -> Message=Shaking at 600 rpm (was 0 rpm)
+[  22.03s] lh  | volumes_nadph     | START GetWellVolumes(Plate=nadph)
+[  22.03s] hhs | stop_final        | START StopShaking()
+[  22.03s] hhs | stop_final        | DONE  in 0.00 s -> Message=Shaking stopped (was 600 rpm)
+[  22.03s] hhs | cool_to_22        | START SetTemperature(TargetTemperature=22.0)
+[  22.03s] lh  | volumes_nadph     | DONE  in 0.00 s -> VolumesJson={"A1": 150.0, "A2": 200.0, "A3": 200.0, "A4": 200.0, "A5": 200.0, "A6": 200...
+[  22.03s] lh  | volumes_reaction  | START GetWellVolumes(Plate=reaction)
+[  22.03s] lh  | volumes_reaction  | DONE  in 0.00 s -> VolumesJson={"A1": 150.0, "A2": 300.0, "A3": 300.0, "A4": 300.0, "A5": 300.0, "A6": 300...
+[  22.03s] hhs | cool_to_22        |   ... CurrentTemperature=36.99
+[  22.03s] lh  | volumes_quench    | START GetWellVolumes(Plate=quench)
+[  22.04s] lh  | volumes_quench    | DONE  in 0.00 s -> VolumesJson={"A1": 200.0, "A2": 200.0, "A3": 200.0, "A4": 200.0, "A5": 200.0, "A6": 150...
+[  22.04s] lh  | firmware_trace    | START GetFirmwareTrace(SinceIndex=0)
+[  22.04s] lh  | firmware_trace    | DONE  in 0.01 s -> TraceJson=[{"index": 0, "time": "2026-11-04T05:02:13.989+00:00", "command": "C0RM", "re...
+[  22.53s] hhs | cool_to_22        |   ... CurrentTemperature=34.68
+[  23.04s] hhs | cool_to_22        |   ... CurrentTemperature=32.73
+[  23.79s] hhs | cool_to_22        |   ... CurrentTemperature=30.36
+[  24.29s] hhs | cool_to_22        |   ... CurrentTemperature=29.07
+[  25.04s] hhs | cool_to_22        |   ... CurrentTemperature=27.51
+[  25.54s] hhs | cool_to_22        |   ... CurrentTemperature=26.66
+[  26.04s] hhs | cool_to_22        |   ... CurrentTemperature=25.94
+[  26.54s] hhs | cool_to_22        |   ... CurrentTemperature=25.34
+[  27.04s] hhs | cool_to_22        |   ... CurrentTemperature=24.82
+[  27.54s] hhs | cool_to_22        |   ... CurrentTemperature=24.39
+[  28.04s] hhs | cool_to_22        |   ... CurrentTemperature=24.02
+[  28.55s] hhs | cool_to_22        |   ... CurrentTemperature=23.71
+[  29.05s] hhs | cool_to_22        |   ... CurrentTemperature=23.45
+[  29.55s] hhs | cool_to_22        |   ... CurrentTemperature=23.22
+[  30.05s] hhs | cool_to_22        |   ... CurrentTemperature=23.04
+[  30.55s] hhs | cool_to_22        |   ... CurrentTemperature=22.88
+[  31.05s] hhs | cool_to_22        |   ... CurrentTemperature=22.74
+[  31.55s] hhs | cool_to_22        |   ... CurrentTemperature=22.63
+[  32.05s] hhs | cool_to_22        |   ... CurrentTemperature=22.53
+[  32.31s] hhs | cool_to_22        | DONE  in 10.28 s -> ReachedTemperature=22.49
+[  32.31s] run SUCCEEDED after 32.31 s

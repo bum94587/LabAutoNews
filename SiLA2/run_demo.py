@@ -4,9 +4,10 @@
     uv run python run_demo.py --time-scale 1.0    # 1 workflow-minute = 1 s (faster)
 
 Steps:
-  1. start servers/lh_twin and servers/hhs_twin as subprocesses (insecure, no discovery,
-     localhost only); their output goes to results/logs/lh_twin.log and results/logs/hhs_twin.log
-  2. wait until each one answers a SiLA connection (SilaClient lists its features)
+  1. check the ports are free, then start servers/lh_twin and servers/hhs_twin as subprocesses
+     (insecure, no discovery, localhost only, each with a fresh server UUID); their output goes
+     to results/logs/lh_twin.log and results/logs/hhs_twin.log
+  2. wait until each one answers a SiLA connection with *its* UUID and lists its feature
   3. run scheduler/workflow.yaml with the scheduler (live log on the console)
   4. read back the firmware trace and well volumes, write timeline/trace/volumes JSON,
      gantt.svg, plate_volumes.svg and run_summary.md
@@ -18,11 +19,13 @@ from __future__ import annotations
 import argparse
 import dataclasses
 import json
+import socket
 import subprocess
 import sys
 import time
+import uuid
 from pathlib import Path
-from typing import Any
+from typing import IO, Any
 
 from sila2.client import SilaClient
 
@@ -34,37 +37,79 @@ HERE = Path(__file__).resolve().parent
 SERVER_MODULES = {"lh": "lh_twin", "hhs": "hhs_twin"}  # workflow device -> server package
 
 
-def start_server(module: str, port: int, log_path: Path) -> subprocess.Popen:
-    """Launch `python -m <module>` as a SiLA 2 server on localhost:<port>."""
-    log = log_path.open("w")
+@dataclasses.dataclass
+class ServerProcess:
+    """A twin server subprocess and what we need to talk to it and clean it up."""
+
+    module: str
+    port: int
+    server_uuid: str
+    log_path: Path
+    log_file: IO[str]
+    proc: subprocess.Popen
+
+
+def ensure_port_free(port: int, host: str = "127.0.0.1") -> None:
+    """Fail loudly if something already listens on the port.
+
+    gRPC servers bind with SO_REUSEPORT, so a second twin on the same port would start
+    without complaint and the kernel would spread our connections across both. A plain
+    bind (SO_REUSEADDR only, no SO_REUSEPORT) fails if the port is taken.
+    """
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        try:
+            sock.bind((host, port))
+        except OSError as ex:
+            raise RuntimeError(
+                f"port {port} is already in use ({ex.strerror}); is an old twin server still running? "
+                f"Stop it, or pick other ports with --lh-port/--hhs-port."
+            ) from None
+
+
+def start_server(module: str, port: int, log_path: Path) -> ServerProcess:
+    """Launch `python -m <module>` as a SiLA 2 server on localhost:<port> with a fresh UUID."""
+    ensure_port_free(port)
+    server_uuid = str(uuid.uuid4())
+    log_file = log_path.open("w")
     cmd = [sys.executable, "-m", module, "--ip-address", "127.0.0.1", "--port", str(port),
-           "--insecure", "--disable-discovery"]
-    return subprocess.Popen(cmd, stdout=log, stderr=subprocess.STDOUT, cwd=HERE)
+           "--server-uuid", server_uuid, "--insecure", "--disable-discovery"]
+    proc = subprocess.Popen(cmd, stdout=log_file, stderr=subprocess.STDOUT, cwd=HERE)
+    return ServerProcess(module, port, server_uuid, log_path, log_file, proc)
 
 
-def wait_for_server(proc: subprocess.Popen, host: str, port: int, feature: str, log_path: Path,
-                    timeout_s: float = 90.0) -> SilaClient:
-    """Retry SilaClient until the server lists `feature`; fail early if the process died."""
+def wait_for_server(server: ServerProcess, host: str, feature: str, timeout_s: float = 90.0) -> SilaClient:
+    """Retry SilaClient until *our* server (matching UUID) lists `feature`; fail early if it died."""
     deadline = time.monotonic() + timeout_s
     last_error = "no attempt"
     while time.monotonic() < deadline:
-        if proc.poll() is not None:
-            tail = "\n".join(log_path.read_text().splitlines()[-15:])
-            raise RuntimeError(f"server on port {port} exited with code {proc.returncode}:\n{tail}")
+        if server.proc.poll() is not None:
+            server.log_file.flush()
+            tail = "\n".join(server.log_path.read_text().splitlines()[-15:])
+            raise RuntimeError(f"{server.module} on port {server.port} exited with code "
+                               f"{server.proc.returncode}:\n{tail}")
         try:
-            client = SilaClient(host, port, insecure=True)
-            if hasattr(client, feature):
-                return client
-            client.close()
-            last_error = f"feature {feature} not offered"
+            client = SilaClient(host, server.port, insecure=True)
         except Exception as ex:  # noqa: BLE001 - not up yet
             last_error = describe_error(ex)
+            time.sleep(0.5)
+            continue
+        answered_uuid = str(client.SiLAService.ServerUUID.get())
+        if answered_uuid != server.server_uuid:
+            client.close()
+            raise RuntimeError(f"port {server.port} is answered by another SiLA server (UUID {answered_uuid}, "
+                               f"expected {server.server_uuid}); stop the other server first")
+        if hasattr(client, feature):
+            return client
+        client.close()
+        last_error = f"feature {feature} not offered"
         time.sleep(0.5)
-    raise TimeoutError(f"server on port {port} not ready after {timeout_s:g} s ({last_error})")
+    raise TimeoutError(f"{server.module} on port {server.port} not ready after {timeout_s:g} s ({last_error})")
 
 
-def stop_server(proc: subprocess.Popen) -> None:
-    """SIGTERM (the generated server stops its gRPC server on it), then kill if needed."""
+def stop_server(server: ServerProcess) -> None:
+    """SIGTERM (the server stops its gRPC server on it), kill if needed, close the log file."""
+    proc = server.proc
     if proc.poll() is None:
         proc.terminate()
         try:
@@ -72,6 +117,7 @@ def stop_server(proc: subprocess.Popen) -> None:
         except subprocess.TimeoutExpired:
             proc.kill()
             proc.wait()
+    server.log_file.close()
 
 
 def collect_lh_state(lh: Any) -> tuple[list[dict[str, Any]], dict[str, dict[str, Any]], str]:
@@ -119,16 +165,18 @@ def run(args: argparse.Namespace) -> int:
     out = Path(args.out)
     logs = out / "logs"
     logs.mkdir(parents=True, exist_ok=True)
-    procs: list[subprocess.Popen] = []
+    servers: list[ServerProcess] = []
     clients: list[SilaClient] = []
     try:
         features = {}
+        for dev in wf.devices.values():  # check every port before starting anything
+            ensure_port_free(dev.port)
         for name, dev in wf.devices.items():
             log_path = logs / f"{SERVER_MODULES[name]}.log"
             print(f"starting {SERVER_MODULES[name]} on {dev.host}:{dev.port} (log: {log_path})")
-            procs.append(start_server(SERVER_MODULES[name], dev.port, log_path))
-        for proc, (name, dev) in zip(procs, wf.devices.items()):
-            client = wait_for_server(proc, dev.host, dev.port, dev.feature, logs / f"{SERVER_MODULES[name]}.log")
+            servers.append(start_server(SERVER_MODULES[name], dev.port, log_path))
+        for server, (name, dev) in zip(servers, wf.devices.items()):
+            client = wait_for_server(server, dev.host, dev.feature)
             clients.append(client)
             features[name] = getattr(client, dev.feature)
             print(f"connected to {dev.feature} on port {dev.port}")
@@ -146,8 +194,8 @@ def run(args: argparse.Namespace) -> int:
     finally:
         for client in clients:
             client.close()
-        for proc in procs:
-            stop_server(proc)
+        for server in servers:
+            stop_server(server)
         print("servers stopped")
 
 
@@ -183,4 +231,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 
 
 if __name__ == "__main__":
-    sys.exit(run(parse_args()))
+    try:
+        sys.exit(run(parse_args()))
+    except (RuntimeError, TimeoutError) as err:  # setup problems (busy port, server did not start)
+        print(f"ERROR: {err}", file=sys.stderr)
+        sys.exit(2)

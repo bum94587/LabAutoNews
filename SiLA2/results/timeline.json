@@ -2,10 +2,10 @@
   "workflow": "mini microsomal stability (1 compound, 5 time points)",
   "real_seconds_per_workflow_minute": 2.0,
   "run_status": "succeeded",
-  "run_started_wall": "2026-11-04T04:50:47.936+00:00",
-  "run_ended_wall": "2026-11-04T04:51:20.085+00:00",
-  "duration_s": 32.149,
-  "t0_s": 11.061,
+  "run_started_wall": "2026-11-04T05:02:13.936+00:00",
+  "run_ended_wall": "2026-11-04T05:02:46.244+00:00",
+  "duration_s": 32.307,
+  "t0_s": 11.117,
   "devices": {
     "lh": {
       "name": "lh",
@@ -34,183 +34,183 @@
       "status": "succeeded",
       "planned_start_s": null,
       "start_s": 0.001,
-      "end_s": 10.276,
-      "duration_s": 10.275,
+      "end_s": 10.319,
+      "duration_s": 10.318,
       "late_s": null,
-      "start_wall": "2026-11-04T04:50:47.936+00:00",
-      "end_wall": "2026-11-04T04:50:58.212+00:00",
+      "start_wall": "2026-11-04T05:02:13.937+00:00",
+      "end_wall": "2026-11-04T05:02:24.255+00:00",
       "responses": {
-        "ReachedTemperature": 36.51026340398365
+        "ReachedTemperature": 36.517258590889895
       },
       "intermediate_count": 42,
       "intermediates": [
         {
-          "t_s": 0.016,
-          "CurrentTemperature": 22.000901847888564
+          "t_s": 0.01,
+          "CurrentTemperature": 22.000952139778242
         },
         {
-          "t_s": 0.26,
-          "CurrentTemperature": 23.20168734327589
+          "t_s": 0.256,
+          "CurrentTemperature": 23.201409042301655
         },
         {
           "t_s": 0.508,
-          "CurrentTemperature": 24.30746554917186
+          "CurrentTemperature": 24.306399268028983
         },
         {
           "t_s": 0.757,
-          "CurrentTemperature": 25.323843722188982
+          "CurrentTemperature": 25.322681057748905
         },
         {
           "t_s": 1.009,
-          "CurrentTemperature": 26.258740095236167
+          "CurrentTemperature": 26.25762395231662
         },
         {
           "t_s": 1.258,
-          "CurrentTemperature": 27.118709129815485
+          "CurrentTemperature": 27.117716181471536
         },
         {
-          "t_s": 1.508,
-          "CurrentTemperature": 27.90987874241423
+          "t_s": 1.509,
+          "CurrentTemperature": 27.90914998848148
         },
         {
-          "t_s": 1.76,
-          "CurrentTemperature": 28.637766790314053
+          "t_s": 1.759,
+          "CurrentTemperature": 28.637356492851108
         },
         {
           "t_s": 2.01,
-          "CurrentTemperature": 29.30729026455314
+          "CurrentTemperature": 29.307018955845667
         },
         {
-          "t_s": 2.259,
-          "CurrentTemperature": 29.923230548331407
+          "t_s": 2.26,
+          "CurrentTemperature": 29.92317970155945
         },
         {
           "t_s": 2.51,
-          "CurrentTemperature": 30.489812112948766
+          "CurrentTemperature": 30.48996244447167
         },
         {
-          "t_s": 2.763,
-          "CurrentTemperature": 31.011227718492695
+          "t_s": 2.764,
+          "CurrentTemperature": 31.01159277493926
         },
         {
-          "t_s": 3.011,
-          "CurrentTemperature": 31.490819425178138
+          "t_s": 3.012,
+          "CurrentTemperature": 31.491184275107045
         },
         {
-          "t_s": 3.262,
-          "CurrentTemperature": 31.93181109534464
+          "t_s": 3.304,
+          "CurrentTemperature": 32.00238609380015
         },
         {
-          "t_s": 3.511,
-          "CurrentTemperature": 32.337498460758006
+          "t_s": 3.554,
+          "CurrentTemperature": 32.40266023875181
         },
         {
-          "t_s": 3.762,
-          "CurrentTemperature": 32.71089823983428
+          "t_s": 3.804,
+          "CurrentTemperature": 32.770823564080985
         },
         {
-          "t_s": 4.013,
-          "CurrentTemperature": 33.05431838396851
+          "t_s": 4.055,
+          "CurrentTemperature": 33.10951255840683
         },
         {
-          "t_s": 4.262,
-          "CurrentTemperature": 33.37013634450316
+          "t_s": 4.306,
+          "CurrentTemperature": 33.42098798413732
         },
         {
-          "t_s": 4.513,
-          "CurrentTemperature": 33.66083177869885
+          "t_s": 4.556,
+          "CurrentTemperature": 33.70762262534155
         },
         {
-          "t_s": 4.764,
-          "CurrentTemperature": 33.928300773549566
+          "t_s": 4.807,
+          "CurrentTemperature": 33.97131706198044
         },
         {
-          "t_s": 5.014,
-          "CurrentTemperature": 34.17429013097829
+          "t_s": 5.058,
+          "CurrentTemperature": 34.21385264806073
         },
         {
-          "t_s": 5.264,
-          "CurrentTemperature": 34.400522945007744
+          "t_s": 5.307,
+          "CurrentTemperature": 34.4369221364484
         },
         {
-          "t_s": 5.514,
-          "CurrentTemperature": 34.60859330662399
+          "t_s": 5.556,
+          "CurrentTemperature": 34.64206424443731
         },
         {
-          "t_s": 5.765,
-          "CurrentTemperature": 34.800097310290894
+          "t_s": 5.809,
+          "CurrentTemperature": 34.831249254551416
         },
         {
-          "t_s": 6.016,
-          "CurrentTemperature": 34.97628160851718
+          "t_s": 6.059,
+          "CurrentTemperature": 35.004925071525776
         },
         {
-          "t_s": 6.266,
-          "CurrentTemperature": 35.138323255020026
+          "t_s": 6.309,
+          "CurrentTemperature": 35.164698606603075
         },
         {
-          "t_s": 6.516,
-          "CurrentTemperature": 35.287387469729644
+          "t_s": 6.559,
+          "CurrentTemperature": 35.31171715765351
         },
         {
-          "t_s": 6.766,
-          "CurrentTemperature": 35.42451756848059
+          "t_s": 6.81,
+          "CurrentTemperature": 35.44686658701074
         },
         {
-          "t_s": 7.017,
-          "CurrentTemperature": 35.550677726712145
+          "t_s": 7.06,
+          "CurrentTemperature": 35.571241213195655
         },
         {
-          "t_s": 7.268,
-          "CurrentTemperature": 35.66668952160344
+          "t_s": 7.311,
+          "CurrentTemperature": 35.68566641754578
         },
         {
-          "t_s": 7.518,
-          "CurrentTemperature": 35.77346087150855
+          "t_s": 7.561,
+          "CurrentTemperature": 35.79091533583991
         },
         {
-          "t_s": 7.769,
-          "CurrentTemperature": 35.87169141480037
+          "t_s": 7.811,
+          "CurrentTemperature": 35.88776983561749
         },
         {
-          "t_s": 8.019,
-          "CurrentTemperature": 35.96204710542102
+          "t_s": 8.062,
+          "CurrentTemperature": 35.97686267676816
         },
         {
-          "t_s": 8.269,
-          "CurrentTemperature": 36.045142838277044
+          "t_s": 8.313,
+          "CurrentTemperature": 36.05878029053437
         },
         {
-          "t_s": 8.52,
-          "CurrentTemperature": 36.121605498477685
+          "t_s": 8.563,
+          "CurrentTemperature": 36.134163710609215
         },
         {
-          "t_s": 8.77,
-          "CurrentTemperature": 36.19194087386705
+          "t_s": 8.813,
+          "CurrentTemperature": 36.20349694084929
         },
         {
-          "t_s": 9.02,
-          "CurrentTemperature": 36.2566443856854
+          "t_s": 9.064,
+          "CurrentTemperature": 36.26728139803605
         },
         {
-          "t_s": 9.27,
-          "CurrentTemperature": 36.31614525400292
+          "t_s": 9.314,
+          "CurrentTemperature": 36.3259517318924
         },
         {
-          "t_s": 9.52,
-          "CurrentTemperature": 36.37091684780108
+          "t_s": 9.564,
+          "CurrentTemperature": 36.37990653826158
         },
         {
-          "t_s": 9.771,
-          "CurrentTemperature": 36.421299519579684
+          "t_s": 9.815,
+          "CurrentTemperature": 36.42955320095215
         },
         {
-          "t_s": 10.022,
-          "CurrentTemperature": 36.46764569167911
+          "t_s": 10.065,
+          "CurrentTemperature": 36.475244189034804
         },
         {
-          "t_s": 10.272,
-          "CurrentTemperature": 36.51026340398365
+          "t_s": 10.316,
+          "CurrentTemperature": 36.517258590889895
         }
       ],
       "error": null,
@@ -226,11 +226,11 @@
       "status": "succeeded",
       "planned_start_s": null,
       "start_s": 0.001,
-      "end_s": 0.209,
-      "duration_s": 0.208,
+      "end_s": 0.193,
+      "duration_s": 0.192,
       "late_s": null,
-      "start_wall": "2026-11-04T04:50:47.937+00:00",
-      "end_wall": "2026-11-04T04:50:48.145+00:00",
+      "start_wall": "2026-11-04T05:02:13.937+00:00",
+      "end_wall": "2026-11-04T05:02:14.129+00:00",
       "responses": {
         "Summary": "STAR twin initialised: 148 firmware commands exchanged with the simulator. Deck: tips (96 x 300 uL filter tips) on tip_car track 1; compounds (200 uL/well), nadph (200 uL/well), reaction (300 uL/well), quench (150 uL/well) on plate_car track 7.\n[Hamilton STAR] Connected on simulation (no link)\n  Firmware: master 7.6S 25 2021_11_05 (GRU C0), pipettes 4.0S j 2022-03-16, x_arm 1.4S 2012-04-25, head96 5.0S i 2021-10-22 (H0 XE167), iswap 4.1S 2011-12-19, autoload 3.4S f 2017-01-09\n  Arms: 1\n  Configuration: 54 slots\n  Autoload: 1D barcode scanner\n    left: hamilton_legacy_star_dual_rail_arm, 354.0 ... [752 chars; full data in results/*.json]"
       },
@@ -256,31 +256,31 @@
       ],
       "status": "succeeded",
       "planned_start_s": null,
-      "start_s": 0.21,
-      "end_s": 1.12,
-      "duration_s": 0.91,
+      "start_s": 0.193,
+      "end_s": 1.126,
+      "duration_s": 0.933,
       "late_s": null,
-      "start_wall": "2026-11-04T04:50:48.145+00:00",
-      "end_wall": "2026-11-04T04:50:49.056+00:00",
+      "start_wall": "2026-11-04T05:02:14.130+00:00",
+      "end_wall": "2026-11-04T05:02:15.063+00:00",
       "responses": {
         "Message": "Transfer 50 uL compounds col 1 -> reaction col 1: done (pick up tips: tips column 1; aspirate 50 uL x8 from compounds column 1; dispense 50 uL x8 into reaction column 1; drop tips: back to their rack spots)."
       },
       "intermediate_count": 4,
       "intermediates": [
         {
-          "t_s": 0.282,
+          "t_s": 0.249,
           "Step": "1/4 pick up tips: tips column 1"
         },
         {
-          "t_s": 0.618,
+          "t_s": 0.581,
           "Step": "2/4 aspirate 50 uL x8 from compounds column 1"
         },
         {
-          "t_s": 0.765,
+          "t_s": 0.715,
           "Step": "3/4 dispense 50 uL x8 into reaction column 1"
         },
         {
-          "t_s": 0.912,
+          "t_s": 0.896,
           "Step": "4/4 drop tips: back to their rack spots"
         }
       ],
@@ -305,31 +305,31 @@
       ],
       "status": "succeeded",
       "planned_start_s": null,
-      "start_s": 10.277,
-      "end_s": 11.061,
-      "duration_s": 0.784,
+      "start_s": 10.319,
+      "end_s": 11.117,
+      "duration_s": 0.798,
       "late_s": null,
-      "start_wall": "2026-11-04T04:50:58.212+00:00",
-      "end_wall": "2026-11-04T04:50:58.997+00:00",
+      "start_wall": "2026-11-04T05:02:24.256+00:00",
+      "end_wall": "2026-11-04T05:02:25.053+00:00",
       "responses": {
         "Message": "Transfer 50 uL nadph col 1 -> reaction col 1: done (pick up tips: tips column 2; aspirate 50 uL x8 from nadph column 1; dispense 50 uL x8 into reaction column 1; drop tips: back to their rack spots)."
       },
       "intermediate_count": 4,
       "intermediates": [
         {
-          "t_s": 10.312,
+          "t_s": 10.385,
           "Step": "1/4 pick up tips: tips column 2"
         },
         {
-          "t_s": 10.558,
+          "t_s": 10.589,
           "Step": "2/4 aspirate 50 uL x8 from nadph column 1"
         },
         {
-          "t_s": 10.726,
+          "t_s": 10.756,
           "Step": "3/4 dispense 50 uL x8 into reaction column 1"
         },
         {
-          "t_s": 10.845,
+          "t_s": 10.89,
           "Step": "4/4 drop tips: back to their rack spots"
         }
       ],
@@ -349,12 +349,12 @@
       ],
       "status": "succeeded",
       "planned_start_s": null,
-      "start_s": 11.061,
-      "end_s": 11.064,
-      "duration_s": 0.003,
+      "start_s": 11.117,
+      "end_s": 11.122,
+      "duration_s": 0.005,
       "late_s": null,
-      "start_wall": "2026-11-04T04:50:58.997+00:00",
-      "end_wall": "2026-11-04T04:50:58.999+00:00",
+      "start_wall": "2026-11-04T05:02:25.053+00:00",
+      "end_wall": "2026-11-04T05:02:25.058+00:00",
       "responses": {
         "Message": "Shaking at 600 rpm (was 0 rpm)"
       },
@@ -373,13 +373,13 @@
         "shake_start"
       ],
       "status": "succeeded",
-      "planned_start_s": 11.061,
-      "start_s": 11.064,
-      "end_s": 11.066,
-      "duration_s": 0.002,
-      "late_s": 0.003,
-      "start_wall": "2026-11-04T04:50:59.000+00:00",
-      "end_wall": "2026-11-04T04:50:59.002+00:00",
+      "planned_start_s": 11.117,
+      "start_s": 11.122,
+      "end_s": 11.125,
+      "duration_s": 0.003,
+      "late_s": 0.005,
+      "start_wall": "2026-11-04T05:02:25.058+00:00",
+      "end_wall": "2026-11-04T05:02:25.061+00:00",
       "responses": {
         "Message": "Shaking stopped (was 600 rpm)"
       },
@@ -405,31 +405,31 @@
       ],
       "status": "succeeded",
       "planned_start_s": null,
-      "start_s": 11.066,
-      "end_s": 11.93,
-      "duration_s": 0.864,
+      "start_s": 11.125,
+      "end_s": 11.951,
+      "duration_s": 0.826,
       "late_s": null,
-      "start_wall": "2026-11-04T04:50:59.002+00:00",
-      "end_wall": "2026-11-04T04:50:59.866+00:00",
+      "start_wall": "2026-11-04T05:02:25.061+00:00",
+      "end_wall": "2026-11-04T05:02:25.887+00:00",
       "responses": {
         "Message": "Transfer 50 uL reaction col 1 -> quench col 1: done (pick up tips: tips column 3; aspirate 50 uL x8 from reaction column 1; dispense 50 uL x8 into quench column 1; drop tips: back to their rack spots)."
       },
       "intermediate_count": 4,
       "intermediates": [
         {
-          "t_s": 11.093,
+          "t_s": 11.158,
           "Step": "1/4 pick up tips: tips column 3"
         },
         {
-          "t_s": 11.373,
+          "t_s": 11.418,
           "Step": "2/4 aspirate 50 uL x8 from reaction column 1"
         },
         {
-          "t_s": 11.587,
+          "t_s": 11.604,
           "Step": "3/4 dispense 50 uL x8 into quench column 1"
         },
         {
-          "t_s": 11.692,
+          "t_s": 11.716,
           "Step": "4/4 drop tips: back to their rack spots"
         }
       ],
@@ -449,12 +449,12 @@
       ],
       "status": "succeeded",
       "planned_start_s": null,
-      "start_s": 11.93,
-      "end_s": 11.932,
-      "duration_s": 0.002,
+      "start_s": 11.951,
+      "end_s": 11.955,
+      "duration_s": 0.004,
       "late_s": null,
-      "start_wall": "2026-11-04T04:50:59.866+00:00",
-      "end_wall": "2026-11-04T04:50:59.868+00:00",
+      "start_wall": "2026-11-04T05:02:25.888+00:00",
+      "end_wall": "2026-11-04T05:02:25.891+00:00",
       "responses": {
         "Message": "Shaking at 600 rpm (was 0 rpm)"
       },
@@ -473,13 +473,13 @@
         "shake_t0"
       ],
       "status": "succeeded",
-      "planned_start_s": 13.061,
-      "start_s": 13.061,
-      "end_s": 13.064,
-      "duration_s": 0.003,
+      "planned_start_s": 13.117,
+      "start_s": 13.117,
+      "end_s": 13.121,
+      "duration_s": 0.004,
       "late_s": 0.0,
-      "start_wall": "2026-11-04T04:51:00.997+00:00",
-      "end_wall": "2026-11-04T04:51:01.000+00:00",
+      "start_wall": "2026-11-04T05:02:27.054+00:00",
+      "end_wall": "2026-11-04T05:02:27.057+00:00",
       "responses": {
         "Message": "Shaking stopped (was 600 rpm)"
       },
@@ -505,31 +505,31 @@
       ],
       "status": "succeeded",
       "planned_start_s": null,
-      "start_s": 13.065,
-      "end_s": 13.89,
-      "duration_s": 0.825,
+      "start_s": 13.121,
+      "end_s": 13.916,
+      "duration_s": 0.795,
       "late_s": null,
-      "start_wall": "2026-11-04T04:51:01.001+00:00",
-      "end_wall": "2026-11-04T04:51:01.826+00:00",
+      "start_wall": "2026-11-04T05:02:27.057+00:00",
+      "end_wall": "2026-11-04T05:02:27.853+00:00",
       "responses": {
         "Message": "Transfer 50 uL reaction col 1 -> quench col 2: done (pick up tips: tips column 4; aspirate 50 uL x8 from reaction column 1; dispense 50 uL x8 into quench column 2; drop tips: back to their rack spots)."
       },
       "intermediate_count": 4,
       "intermediates": [
         {
-          "t_s": 13.11,
+          "t_s": 13.16,
           "Step": "1/4 pick up tips: tips column 4"
         },
         {
-          "t_s": 13.348,
+          "t_s": 13.4,
           "Step": "2/4 aspirate 50 uL x8 from reaction column 1"
         },
         {
-          "t_s": 13.536,
+          "t_s": 13.575,
           "Step": "3/4 dispense 50 uL x8 into quench column 2"
         },
         {
-          "t_s": 13.66,
+          "t_s": 13.684,
           "Step": "4/4 drop tips: back to their rack spots"
         }
       ],
@@ -549,12 +549,12 @@
       ],
       "status": "succeeded",
       "planned_start_s": null,
-      "start_s": 13.89,
-      "end_s": 13.893,
+      "start_s": 13.917,
+      "end_s": 13.92,
       "duration_s": 0.003,
       "late_s": null,
-      "start_wall": "2026-11-04T04:51:01.826+00:00",
-      "end_wall": "2026-11-04T04:51:01.829+00:00",
+      "start_wall": "2026-11-04T05:02:27.853+00:00",
+      "end_wall": "2026-11-04T05:02:27.856+00:00",
       "responses": {
         "Message": "Shaking at 600 rpm (was 0 rpm)"
       },
@@ -573,13 +573,13 @@
         "shake_t1"
       ],
       "status": "succeeded",
-      "planned_start_s": 15.061,
-      "start_s": 15.061,
-      "end_s": 15.064,
-      "duration_s": 0.003,
+      "planned_start_s": 15.117,
+      "start_s": 15.117,
+      "end_s": 15.121,
+      "duration_s": 0.004,
       "late_s": 0.0,
-      "start_wall": "2026-11-04T04:51:02.997+00:00",
-      "end_wall": "2026-11-04T04:51:03.000+00:00",
+      "start_wall": "2026-11-04T05:02:29.054+00:00",
+      "end_wall": "2026-11-04T05:02:29.057+00:00",
       "responses": {
         "Message": "Shaking stopped (was 600 rpm)"
       },
@@ -605,31 +605,31 @@
       ],
       "status": "succeeded",
       "planned_start_s": null,
-      "start_s": 15.065,
-      "end_s": 15.882,
-      "duration_s": 0.817,
+      "start_s": 15.121,
+      "end_s": 16.05,
+      "duration_s": 0.929,
       "late_s": null,
-      "start_wall": "2026-11-04T04:51:03.001+00:00",
-      "end_wall": "2026-11-04T04:51:03.818+00:00",
+      "start_wall": "2026-11-04T05:02:29.057+00:00",
+      "end_wall": "2026-11-04T05:02:29.986+00:00",
       "responses": {
         "Message": "Transfer 50 uL reaction col 1 -> quench col 3: done (pick up tips: tips column 5; aspirate 50 uL x8 from reaction column 1; dispense 50 uL x8 into quench column 3; drop tips: back to their rack spots)."
       },
       "intermediate_count": 4,
       "intermediates": [
         {
-          "t_s": 15.099,
+          "t_s": 15.18,
           "Step": "1/4 pick up tips: tips column 5"
         },
         {
-          "t_s": 15.335,
+          "t_s": 15.407,
           "Step": "2/4 aspirate 50 uL x8 from reaction column 1"
         },
         {
-          "t_s": 15.544,
+          "t_s": 15.669,
           "Step": "3/4 dispense 50 uL x8 into quench column 3"
         },
         {
-          "t_s": 15.651,
+          "t_s": 15.807,
           "Step": "4/4 drop tips: back to their rack spots"
         }
       ],
@@ -649,12 +649,12 @@
       ],
       "status": "succeeded",
       "planned_start_s": null,
-      "start_s": 15.882,
-      "end_s": 15.885,
+      "start_s": 16.05,
+      "end_s": 16.053,
       "duration_s": 0.003,
       "late_s": null,
-      "start_wall": "2026-11-04T04:51:03.818+00:00",
-      "end_wall": "2026-11-04T04:51:03.821+00:00",
+      "start_wall": "2026-11-04T05:02:29.986+00:00",
+      "end_wall": "2026-11-04T05:02:29.989+00:00",
       "responses": {
         "Message": "Shaking at 600 rpm (was 0 rpm)"
       },
@@ -673,13 +673,13 @@
         "shake_t2"
       ],
       "status": "succeeded",
-      "planned_start_s": 17.061,
-      "start_s": 17.061,
-      "end_s": 17.065,
+      "planned_start_s": 17.117,
+      "start_s": 17.117,
+      "end_s": 17.121,
       "duration_s": 0.004,
       "late_s": 0.0,
-      "start_wall": "2026-11-04T04:51:04.997+00:00",
-      "end_wall": "2026-11-04T04:51:05.000+00:00",
+      "start_wall": "2026-11-04T05:02:31.053+00:00",
+      "end_wall": "2026-11-04T05:02:31.057+00:00",
       "responses": {
         "Message": "Shaking stopped (was 600 rpm)"
       },
@@ -705,31 +705,31 @@
       ],
       "status": "succeeded",
       "planned_start_s": null,
-      "start_s": 17.065,
-      "end_s": 17.916,
-      "duration_s": 0.851,
+      "start_s": 17.121,
+      "end_s": 17.947,
+      "duration_s": 0.826,
       "late_s": null,
-      "start_wall": "2026-11-04T04:51:05.001+00:00",
-      "end_wall": "2026-11-04T04:51:05.852+00:00",
+      "start_wall": "2026-11-04T05:02:31.057+00:00",
+      "end_wall": "2026-11-04T05:02:31.883+00:00",
       "responses": {
         "Message": "Transfer 50 uL reaction col 1 -> quench col 4: done (pick up tips: tips column 6; aspirate 50 uL x8 from reaction column 1; dispense 50 uL x8 into quench column 4; drop tips: back to their rack spots)."
       },
       "intermediate_count": 4,
       "intermediates": [
         {
-          "t_s": 17.121,
+          "t_s": 17.189,
           "Step": "1/4 pick up tips: tips column 6"
         },
         {
-          "t_s": 17.367,
+          "t_s": 17.391,
           "Step": "2/4 aspirate 50 uL x8 from reaction column 1"
         },
         {
-          "t_s": 17.554,
+          "t_s": 17.592,
           "Step": "3/4 dispense 50 uL x8 into quench column 4"
         },
         {
-          "t_s": 17.681,
+          "t_s": 17.715,
           "Step": "4/4 drop tips: back to their rack spots"
         }
       ],
@@ -749,12 +749,12 @@
       ],
       "status": "succeeded",
       "planned_start_s": null,
-      "start_s": 17.916,
-      "end_s": 17.919,
+      "start_s": 17.947,
+      "end_s": 17.95,
       "duration_s": 0.003,
       "late_s": null,
-      "start_wall": "2026-11-04T04:51:05.852+00:00",
-      "end_wall": "2026-11-04T04:51:05.855+00:00",
+      "start_wall": "2026-11-04T05:02:31.883+00:00",
+      "end_wall": "2026-11-04T05:02:31.886+00:00",
       "responses": {
         "Message": "Shaking at 600 rpm (was 0 rpm)"
       },
@@ -773,13 +773,13 @@
         "shake_t3"
       ],
       "status": "succeeded",
-      "planned_start_s": 21.061,
-      "start_s": 21.061,
-      "end_s": 21.064,
-      "duration_s": 0.003,
+      "planned_start_s": 21.117,
+      "start_s": 21.117,
+      "end_s": 21.127,
+      "duration_s": 0.01,
       "late_s": 0.0,
-      "start_wall": "2026-11-04T04:51:08.997+00:00",
-      "end_wall": "2026-11-04T04:51:09.000+00:00",
+      "start_wall": "2026-11-04T05:02:35.054+00:00",
+      "end_wall": "2026-11-04T05:02:35.064+00:00",
       "responses": {
         "Message": "Shaking stopped (was 600 rpm)"
       },
@@ -805,31 +805,31 @@
       ],
       "status": "succeeded",
       "planned_start_s": null,
-      "start_s": 21.064,
-      "end_s": 21.868,
-      "duration_s": 0.804,
+      "start_s": 21.128,
+      "end_s": 22.022,
+      "duration_s": 0.894,
       "late_s": null,
-      "start_wall": "2026-11-04T04:51:09.000+00:00",
-      "end_wall": "2026-11-04T04:51:09.804+00:00",
+      "start_wall": "2026-11-04T05:02:35.064+00:00",
+      "end_wall": "2026-11-04T05:02:35.958+00:00",
       "responses": {
         "Message": "Transfer 50 uL reaction col 1 -> quench col 5: done (pick up tips: tips column 7; aspirate 50 uL x8 from reaction column 1; dispense 50 uL x8 into quench column 5; drop tips: back to their rack spots)."
       },
       "intermediate_count": 4,
       "intermediates": [
         {
-          "t_s": 21.102,
+          "t_s": 21.18,
           "Step": "1/4 pick up tips: tips column 7"
         },
         {
-          "t_s": 21.333,
+          "t_s": 21.473,
           "Step": "2/4 aspirate 50 uL x8 from reaction column 1"
         },
         {
-          "t_s": 21.532,
+          "t_s": 21.671,
           "Step": "3/4 dispense 50 uL x8 into quench column 5"
         },
         {
-          "t_s": 21.641,
+          "t_s": 21.788,
           "Step": "4/4 drop tips: back to their rack spots"
         }
       ],
@@ -849,12 +849,12 @@
       ],
       "status": "succeeded",
       "planned_start_s": null,
-      "start_s": 21.869,
-      "end_s": 21.871,
-      "duration_s": 0.002,
+      "start_s": 22.023,
+      "end_s": 22.026,
+      "duration_s": 0.003,
       "late_s": null,
-      "start_wall": "2026-11-04T04:51:09.804+00:00",
-      "end_wall": "2026-11-04T04:51:09.807+00:00",
+      "start_wall": "2026-11-04T05:02:35.959+00:00",
+      "end_wall": "2026-11-04T05:02:35.963+00:00",
       "responses": {
         "Message": "Shaking at 600 rpm (was 0 rpm)"
       },
@@ -874,12 +874,12 @@
       ],
       "status": "succeeded",
       "planned_start_s": null,
-      "start_s": 21.871,
-      "end_s": 21.873,
+      "start_s": 22.027,
+      "end_s": 22.029,
       "duration_s": 0.002,
       "late_s": null,
-      "start_wall": "2026-11-04T04:51:09.807+00:00",
-      "end_wall": "2026-11-04T04:51:09.808+00:00",
+      "start_wall": "2026-11-04T05:02:35.963+00:00",
+      "end_wall": "2026-11-04T05:02:35.965+00:00",
       "responses": {
         "Message": "Shaking stopped (was 600 rpm)"
       },
@@ -901,184 +901,184 @@
       ],
       "status": "succeeded",
       "planned_start_s": null,
-      "start_s": 21.873,
-      "end_s": 32.149,
-      "duration_s": 10.276,
+      "start_s": 22.029,
+      "end_s": 32.307,
+      "duration_s": 10.278,
       "late_s": null,
-      "start_wall": "2026-11-04T04:51:09.809+00:00",
-      "end_wall": "2026-11-04T04:51:20.085+00:00",
+      "start_wall": "2026-11-04T05:02:35.965+00:00",
+      "end_wall": "2026-11-04T05:02:46.243+00:00",
       "responses": {
-        "ReachedTemperature": 22.488792067119856
+        "ReachedTemperature": 22.488874772113753
       },
       "intermediate_count": 42,
       "intermediates": [
         {
-          "t_s": 21.878,
-          "CurrentTemperature": 36.9892999983239
+          "t_s": 22.034,
+          "CurrentTemperature": 36.9891388167826
         },
         {
-          "t_s": 22.126,
-          "CurrentTemperature": 35.789897402438726
+          "t_s": 22.284,
+          "CurrentTemperature": 35.78908615058104
         },
         {
-          "t_s": 22.377,
-          "CurrentTemperature": 34.686079886978746
+          "t_s": 22.535,
+          "CurrentTemperature": 34.68450049861101
         },
         {
-          "t_s": 22.628,
-          "CurrentTemperature": 33.67032843905579
+          "t_s": 22.786,
+          "CurrentTemperature": 33.66818413739429
         },
         {
-          "t_s": 22.877,
-          "CurrentTemperature": 32.73599821300509
+          "t_s": 23.037,
+          "CurrentTemperature": 32.73363330628881
         },
         {
-          "t_s": 23.132,
-          "CurrentTemperature": 31.86672357564469
+          "t_s": 23.286,
+          "CurrentTemperature": 31.874103494339327
         },
         {
-          "t_s": 23.382,
-          "CurrentTemperature": 31.076461933530247
+          "t_s": 23.536,
+          "CurrentTemperature": 31.083366534564853
         },
         {
-          "t_s": 23.632,
-          "CurrentTemperature": 30.34948980484928
+          "t_s": 23.787,
+          "CurrentTemperature": 30.355868563284453
         },
         {
-          "t_s": 23.883,
-          "CurrentTemperature": 29.681133054740858
+          "t_s": 24.038,
+          "CurrentTemperature": 29.686754331881573
         },
         {
-          "t_s": 24.133,
-          "CurrentTemperature": 29.066276621721055
+          "t_s": 24.288,
+          "CurrentTemperature": 29.071303804926988
         },
         {
-          "t_s": 24.384,
-          "CurrentTemperature": 28.500410872864254
+          "t_s": 24.539,
+          "CurrentTemperature": 28.505191156471977
         },
         {
-          "t_s": 24.634,
-          "CurrentTemperature": 27.979940310835627
+          "t_s": 24.788,
+          "CurrentTemperature": 27.984323796680172
         },
         {
-          "t_s": 24.883,
-          "CurrentTemperature": 27.5011591291073
+          "t_s": 25.038,
+          "CurrentTemperature": 27.505060910086492
         },
         {
-          "t_s": 25.134,
-          "CurrentTemperature": 27.06078324141397
+          "t_s": 25.29,
+          "CurrentTemperature": 27.064082731787735
         },
         {
-          "t_s": 25.384,
-          "CurrentTemperature": 26.6556566917168
+          "t_s": 25.54,
+          "CurrentTemperature": 26.658137078357356
         },
         {
-          "t_s": 25.635,
-          "CurrentTemperature": 26.28293890978192
+          "t_s": 25.79,
+          "CurrentTemperature": 26.285256018827468
         },
         {
-          "t_s": 25.885,
-          "CurrentTemperature": 25.93999402619151
+          "t_s": 26.041,
+          "CurrentTemperature": 25.942033238632803
         },
         {
-          "t_s": 26.135,
-          "CurrentTemperature": 25.624450847359004
+          "t_s": 26.292,
+          "CurrentTemperature": 25.62622529019722
         },
         {
-          "t_s": 26.387,
-          "CurrentTemperature": 25.334355731610636
+          "t_s": 26.541,
+          "CurrentTemperature": 25.33588237400012
         },
         {
-          "t_s": 26.637,
-          "CurrentTemperature": 25.067071556955547
+          "t_s": 26.792,
+          "CurrentTemperature": 25.06859578196778
         },
         {
-          "t_s": 26.887,
-          "CurrentTemperature": 24.821479686270123
+          "t_s": 27.042,
+          "CurrentTemperature": 24.822867097261252
         },
         {
-          "t_s": 27.139,
-          "CurrentTemperature": 24.595527374437943
+          "t_s": 27.293,
+          "CurrentTemperature": 24.596808433133155
         },
         {
-          "t_s": 27.388,
-          "CurrentTemperature": 24.38768341338067
+          "t_s": 27.544,
+          "CurrentTemperature": 24.388806187349985
         },
         {
-          "t_s": 27.638,
-          "CurrentTemperature": 24.1965141367488
+          "t_s": 27.793,
+          "CurrentTemperature": 24.197494923866138
         },
         {
-          "t_s": 27.889,
-          "CurrentTemperature": 24.020656031547908
+          "t_s": 28.045,
+          "CurrentTemperature": 24.021492407632177
         },
         {
-          "t_s": 28.138,
-          "CurrentTemperature": 23.858933159073985
+          "t_s": 28.295,
+          "CurrentTemperature": 23.859569344960562
         },
         {
-          "t_s": 28.389,
-          "CurrentTemperature": 23.710060093190542
+          "t_s": 28.546,
+          "CurrentTemperature": 23.71058033183618
         },
         {
-          "t_s": 28.64,
-          "CurrentTemperature": 23.573111423265683
+          "t_s": 28.796,
+          "CurrentTemperature": 23.573579164923714
         },
         {
-          "t_s": 28.89,
-          "CurrentTemperature": 23.44719164101827
+          "t_s": 29.047,
+          "CurrentTemperature": 23.44750953686238
         },
         {
-          "t_s": 29.14,
-          "CurrentTemperature": 23.331301879341655
+          "t_s": 29.297,
+          "CurrentTemperature": 23.331568029418623
         },
         {
-          "t_s": 29.391,
-          "CurrentTemperature": 23.224746382800756
+          "t_s": 29.548,
+          "CurrentTemperature": 23.224913261171338
         },
         {
-          "t_s": 29.642,
-          "CurrentTemperature": 23.126322926492847
+          "t_s": 29.798,
+          "CurrentTemperature": 23.126834327278278
         },
         {
-          "t_s": 29.892,
-          "CurrentTemperature": 23.036154456261702
+          "t_s": 30.048,
+          "CurrentTemperature": 23.036577270212184
         },
         {
-          "t_s": 30.144,
-          "CurrentTemperature": 22.952945311226188
+          "t_s": 30.299,
+          "CurrentTemperature": 22.953584143944664
         },
         {
-          "t_s": 30.395,
-          "CurrentTemperature": 22.876637978154097
+          "t_s": 30.549,
+          "CurrentTemperature": 22.87717553732764
         },
         {
-          "t_s": 30.644,
-          "CurrentTemperature": 22.806450195214133
+          "t_s": 30.8,
+          "CurrentTemperature": 22.806817216637956
         },
         {
-          "t_s": 30.894,
-          "CurrentTemperature": 22.74188517394466
+          "t_s": 31.051,
+          "CurrentTemperature": 22.74212120577733
         },
         {
-          "t_s": 31.145,
-          "CurrentTemperature": 22.682496335009937
+          "t_s": 31.301,
+          "CurrentTemperature": 22.68269663168519
         },
         {
-          "t_s": 31.395,
-          "CurrentTemperature": 22.627866004933985
+          "t_s": 31.551,
+          "CurrentTemperature": 22.628008566269354
         },
         {
-          "t_s": 31.645,
-          "CurrentTemperature": 22.57759448732564
+          "t_s": 31.802,
+          "CurrentTemperature": 22.577697889363964
         },
         {
-          "t_s": 31.896,
-          "CurrentTemperature": 22.531341394472353
+          "t_s": 32.053,
+          "CurrentTemperature": 22.53143339490139
         },
         {
-          "t_s": 32.147,
-          "CurrentTemperature": 22.488792067119856
+          "t_s": 32.303,
+          "CurrentTemperature": 22.488874772113753
         }
       ],
       "error": null,
@@ -1097,12 +1097,12 @@
       ],
       "status": "succeeded",
       "planned_start_s": null,
-      "start_s": 21.868,
-      "end_s": 21.872,
+      "start_s": 22.022,
+      "end_s": 22.026,
       "duration_s": 0.004,
       "late_s": null,
-      "start_wall": "2026-11-04T04:51:09.804+00:00",
-      "end_wall": "2026-11-04T04:51:09.807+00:00",
+      "start_wall": "2026-11-04T05:02:35.958+00:00",
+      "end_wall": "2026-11-04T05:02:35.962+00:00",
       "responses": {
         "VolumesJson": "{\"A1\": 150.0, \"A2\": 200.0, \"A3\": 200.0, \"A4\": 200.0, \"A5\": 200.0, \"A6\": 200.0, \"A7\": 200.0, \"A8\": 200.0, \"A9\": 200.0, \"A10\": 200.0, \"A11\": 200.0, \"A12\": 200.0, \"B1\": 150.0, \"B2\": 200.0, \"B3\": 200.0, \"B4\": 200.0, \"B5\": 200.0, \"B6\": 200.0, \"B7\": 200.0, \"B8\": 200.0, \"B9\": 200.0, \"B10\": 200.0, \"B11\": 200.0, \"B12\": 200.0, \"C1\": 150.0, \"C2\": 200.0, \"C3\": 200.0, \"C4\": 200.0, \"C5\": 200.0, \"C6\": 200.0, \"C7\": 200.0, \"C8\": 200.0, \"C9\": 200.0, \"C10\": 200.0, \"C11\": 200.0, \"C12\": 200.0, \"D1\": 150.0, \"D2\": 200.0, \"D3\": 200.0, \"D4\": 200.0, \"D5\": 200.0, \"D6\": 200.0, \"D7\": 200.0, \"D8\": 200.0, \"D9\": 200.0, \"D10\"... [1272 chars; full data in results/*.json]"
       },
@@ -1124,12 +1124,12 @@
       ],
       "status": "succeeded",
       "planned_start_s": null,
-      "start_s": 21.872,
-      "end_s": 21.874,
-      "duration_s": 0.002,
+      "start_s": 22.026,
+      "end_s": 22.03,
+      "duration_s": 0.004,
       "late_s": null,
-      "start_wall": "2026-11-04T04:51:09.808+00:00",
-      "end_wall": "2026-11-04T04:51:09.810+00:00",
+      "start_wall": "2026-11-04T05:02:35.963+00:00",
+      "end_wall": "2026-11-04T05:02:35.966+00:00",
       "responses": {
         "VolumesJson": "{\"A1\": 150.0, \"A2\": 200.0, \"A3\": 200.0, \"A4\": 200.0, \"A5\": 200.0, \"A6\": 200.0, \"A7\": 200.0, \"A8\": 200.0, \"A9\": 200.0, \"A10\": 200.0, \"A11\": 200.0, \"A12\": 200.0, \"B1\": 150.0, \"B2\": 200.0, \"B3\": 200.0, \"B4\": 200.0, \"B5\": 200.0, \"B6\": 200.0, \"B7\": 200.0, \"B8\": 200.0, \"B9\": 200.0, \"B10\": 200.0, \"B11\": 200.0, \"B12\": 200.0, \"C1\": 150.0, \"C2\": 200.0, \"C3\": 200.0, \"C4\": 200.0, \"C5\": 200.0, \"C6\": 200.0, \"C7\": 200.0, \"C8\": 200.0, \"C9\": 200.0, \"C10\": 200.0, \"C11\": 200.0, \"C12\": 200.0, \"D1\": 150.0, \"D2\": 200.0, \"D3\": 200.0, \"D4\": 200.0, \"D5\": 200.0, \"D6\": 200.0, \"D7\": 200.0, \"D8\": 200.0, \"D9\": 200.0, \"D10\"... [1272 chars; full data in results/*.json]"
       },
@@ -1151,12 +1151,12 @@
       ],
       "status": "succeeded",
       "planned_start_s": null,
-      "start_s": 21.874,
-      "end_s": 21.877,
-      "duration_s": 0.003,
+      "start_s": 22.03,
+      "end_s": 22.034,
+      "duration_s": 0.004,
       "late_s": null,
-      "start_wall": "2026-11-04T04:51:09.810+00:00",
-      "end_wall": "2026-11-04T04:51:09.813+00:00",
+      "start_wall": "2026-11-04T05:02:35.966+00:00",
+      "end_wall": "2026-11-04T05:02:35.970+00:00",
       "responses": {
         "VolumesJson": "{\"A1\": 150.0, \"A2\": 300.0, \"A3\": 300.0, \"A4\": 300.0, \"A5\": 300.0, \"A6\": 300.0, \"A7\": 300.0, \"A8\": 300.0, \"A9\": 300.0, \"A10\": 300.0, \"A11\": 300.0, \"A12\": 300.0, \"B1\": 150.0, \"B2\": 300.0, \"B3\": 300.0, \"B4\": 300.0, \"B5\": 300.0, \"B6\": 300.0, \"B7\": 300.0, \"B8\": 300.0, \"B9\": 300.0, \"B10\": 300.0, \"B11\": 300.0, \"B12\": 300.0, \"C1\": 150.0, \"C2\": 300.0, \"C3\": 300.0, \"C4\": 300.0, \"C5\": 300.0, \"C6\": 300.0, \"C7\": 300.0, \"C8\": 300.0, \"C9\": 300.0, \"C10\": 300.0, \"C11\": 300.0, \"C12\": 300.0, \"D1\": 150.0, \"D2\": 300.0, \"D3\": 300.0, \"D4\": 300.0, \"D5\": 300.0, \"D6\": 300.0, \"D7\": 300.0, \"D8\": 300.0, \"D9\": 300.0, \"D10\"... [1272 chars; full data in results/*.json]"
       },
@@ -1178,12 +1178,12 @@
       ],
       "status": "succeeded",
       "planned_start_s": null,
-      "start_s": 21.877,
-      "end_s": 21.88,
+      "start_s": 22.034,
+      "end_s": 22.037,
       "duration_s": 0.003,
       "late_s": null,
-      "start_wall": "2026-11-04T04:51:09.813+00:00",
-      "end_wall": "2026-11-04T04:51:09.816+00:00",
+      "start_wall": "2026-11-04T05:02:35.970+00:00",
+      "end_wall": "2026-11-04T05:02:35.973+00:00",
       "responses": {
         "VolumesJson": "{\"A1\": 200.0, \"A2\": 200.0, \"A3\": 200.0, \"A4\": 200.0, \"A5\": 200.0, \"A6\": 150.0, \"A7\": 150.0, \"A8\": 150.0, \"A9\": 150.0, \"A10\": 150.0, \"A11\": 150.0, \"A12\": 150.0, \"B1\": 200.0, \"B2\": 200.0, \"B3\": 200.0, \"B4\": 200.0, \"B5\": 200.0, \"B6\": 150.0, \"B7\": 150.0, \"B8\": 150.0, \"B9\": 150.0, \"B10\": 150.0, \"B11\": 150.0, \"B12\": 150.0, \"C1\": 200.0, \"C2\": 200.0, \"C3\": 200.0, \"C4\": 200.0, \"C5\": 200.0, \"C6\": 150.0, \"C7\": 150.0, \"C8\": 150.0, \"C9\": 150.0, \"C10\": 150.0, \"C11\": 150.0, \"C12\": 150.0, \"D1\": 200.0, \"D2\": 200.0, \"D3\": 200.0, \"D4\": 200.0, \"D5\": 200.0, \"D6\": 150.0, \"D7\": 150.0, \"D8\": 150.0, \"D9\": 150.0, \"D10\"... [1272 chars; full data in results/*.json]"
       },
@@ -1205,14 +1205,14 @@
       ],
       "status": "succeeded",
       "planned_start_s": null,
-      "start_s": 21.88,
-      "end_s": 21.887,
-      "duration_s": 0.007,
+      "start_s": 22.037,
+      "end_s": 22.043,
+      "duration_s": 0.006,
       "late_s": null,
-      "start_wall": "2026-11-04T04:51:09.816+00:00",
-      "end_wall": "2026-11-04T04:51:09.823+00:00",
+      "start_wall": "2026-11-04T05:02:35.974+00:00",
+      "end_wall": "2026-11-04T05:02:35.979+00:00",
       "responses": {
-        "TraceJson": "[{\"index\": 0, \"time\": \"2026-11-04T04:50:48.002+00:00\", \"command\": \"C0RM\", \"reply\": null, \"operation\": \"Initialize\"}, {\"index\": 1, \"time\": \"2026-11-04T04:50:48.002+00:00\", \"command\": \"C0QM\", \"reply\": null, \"operation\": \"Initialize\"}, {\"index\": 2, \"time\": \"2026-11-04T04:50:48.002+00:00\", \"command\": \"C0RU\", \"reply\": \"simulation: ru950 13402 0 0 from model the declared arms' X ranges\", \"operation\": \"Initialize\"}, {\"index\": 3, \"time\": \"2026-11-04T04:50:48.002+00:00\", \"command\": \"C0UA\", \"reply\": \"simulation: ua5952 0 -3232 15172 0 0 from model the declared arms' envelopes\", \"operation\": \"Initialize\"... [208667 chars; full data in results/*.json]"
+        "TraceJson": "[{\"index\": 0, \"time\": \"2026-11-04T05:02:13.989+00:00\", \"command\": \"C0RM\", \"reply\": null, \"operation\": \"Initialize\"}, {\"index\": 1, \"time\": \"2026-11-04T05:02:13.989+00:00\", \"command\": \"C0QM\", \"reply\": null, \"operation\": \"Initialize\"}, {\"index\": 2, \"time\": \"2026-11-04T05:02:13.989+00:00\", \"command\": \"C0RU\", \"reply\": \"simulation: ru950 13402 0 0 from model the declared arms' X ranges\", \"operation\": \"Initialize\"}, {\"index\": 3, \"time\": \"2026-11-04T05:02:13.990+00:00\", \"command\": \"C0UA\", \"reply\": \"simulation: ua5952 0 -3232 15172 0 0 from model the declared arms' envelopes\", \"operation\": \"Initialize\"... [208667 chars; full data in results/*.json]"
       },
       "intermediate_count": 0,
       "intermediates": [],

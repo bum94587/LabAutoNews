@@ -39,6 +39,7 @@ class Step:
     depends_on: tuple[str, ...] = ()
     start_after_t0_s: float | None = None  # workflow seconds after t0
     marks_t0: bool = False
+    timeout_s: float | None = None  # real seconds; None = scheduler default
 
 
 @dataclass
@@ -78,6 +79,7 @@ def load_workflow(path: str | Path = DEFAULT_WORKFLOW) -> Workflow:
             depends_on=tuple(s.get("depends_on") or ()),
             start_after_t0_s=s.get("start_after_t0_s"),
             marks_t0=bool(s.get("marks_t0", False)),
+            timeout_s=s.get("timeout_s"),
         )
         for s in raw["steps"]
     ]

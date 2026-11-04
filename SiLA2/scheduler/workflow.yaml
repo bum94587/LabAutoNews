@@ -13,7 +13,10 @@
 #   params           SiLA parameter identifiers -> values (omit for parameterless commands)
 #   depends_on       step ids that must have finished successfully first
 #   start_after_t0_s earliest start, in WORKFLOW seconds after t0 (scaled by time_scale below)
-#   marks_t0         true on the one step whose completion defines t0
+#   marks_t0         true on the one step whose completion defines t0 (t0 = when that step
+#                    ends; for the NADPH Transfer that is after the tip drop, ~0.2 s after dispense)
+#   timeout_s        optional watchdog in REAL seconds (default 120 s): a call that takes longer
+#                    fails the step and the run
 #
 # Time compression: 1 workflow minute = `real_seconds_per_workflow_minute` real seconds, so
 # the 5-minute time point (start_after_t0_s: 300) is due 10 real seconds after t0.

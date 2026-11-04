@@ -135,9 +135,11 @@ def write_gantt(timeline: dict[str, Any], path: Path) -> None:
         ax.barh(ypos[s["device"]], width, left=s["start_s"], height=0.5,
                 color=COLORS[family(s["command"])], edgecolor=FAILED if failed else "white",
                 linewidth=2 if failed else 0.8, hatch="//" if failed else None)
-        if s["command"] == "Transfer":  # label above the bar: "compound", "nadph", "t0", "t1", ...
-            ax.text(s["start_s"] + width / 2, ypos[s["device"]] + 0.3, s["id"].split("_")[-1],
-                    ha="center", va="bottom", fontsize=7, color=MUTED)
+        if s["command"] == "Transfer":  # time points ("t0", "t1", ...) inside, additions above the bar
+            label, inside = s["id"].split("_")[-1], s["id"].startswith("sample_")
+            ax.text(s["start_s"] + width / 2, ypos[s["device"]] + (0 if inside else 0.3), label,
+                    ha="center", va="center" if inside else "bottom", fontsize=7,
+                    color="white" if inside else MUTED)
 
     t0 = timeline.get("t0_s")
     if t0 is not None:
@@ -243,8 +245,9 @@ def write_summary(timeline: dict[str, Any], volumes: dict[str, dict[str, Any]], 
         f"- Result: **{timeline['run_status'].upper()}**: "
         + ", ".join(f"{n} {k}" for k, n in sorted(by_status.items())),
         f"- Started {timeline['run_started_wall']} (UTC), real duration {timeline['duration_s']:.2f} s",
-        f"- Time scale: 1 workflow minute = {scale:g} s real; t0 (NADPH added) at "
-        f"{_fmt(t0)} s after run start",
+        f"- Time scale: 1 workflow minute = {scale:g} s real; t0 at {_fmt(t0)} s after run start. "
+        "t0 = the end of the `marks_t0` step (the NADPH Transfer), i.e. after its tip drop, "
+        "a few tenths of a second after the NADPH was dispensed",
         "",
         "## Liquid handler twin (InstrumentInfo)",
         "",
