@@ -7,7 +7,7 @@ Scope: a guided read of the PyLabRobot source code at commit [`7779f50`](https:/
 - **PyLabRobot (PLR) is a pure-Python, MIT-style open-source library that talks to lab robots at the firmware level**, from Hamilton STARs and Opentrons to plate readers, sealers and arms: 84 devices in its registry, 50 of them on the new "v1" API [1][2][3].
 - **It is in the middle of a big rewrite.** The famous "one protocol, any robot" front end now lives under `pylabrobot.legacy`; new drivers are one plain Python class per device that exposes the machine's real parameters (the v1 STAR `aspirate` takes 30+ arguments) [4][5][6].
 - **Development is fast and AI-assisted**: 790 commits from 53 people in the last 12 months, and 54% of them credit an AI coding assistant as co-author, rising to 80% since October [7].
-- **At run time there is no built-in "AI agent" in PLR** (yet). Agents plug in through the same doors a scientist uses: an async Python API, simulators that answer like the hardware, an event bus that reports what happened, and optional gRPC device services [8][9][10].
+- **At run time there is no built-in "AI agent" in PLR.** Third-party MCP servers and demos drive it, but only in simulation, behind human confirmation gates; no public example drives a real liquid handler [8][44][45][46].
 - **For a DMPK lab, PLR can already run the liquid handling, 37 °C shaking, plate moves, sealing and centrifugation of a microsomal stability assay**, but not the LC-MS/MS readout or a Caco-2 TEER check; that is where the loop still has to be closed by other software [3][11].
 
 ## Why a DMPK scientist should care
@@ -114,7 +114,42 @@ Counting from `git log` at commit 7779f50 [7]:
 
 *Analysis:* this is one of the clearest public examples of a lab-automation codebase being written largely with AI coding assistants under close human review. The style rules (P1–P20, byte-exact protocols, "tests assert the wire") look designed to keep that kind of fast, AI-assisted output checkable.
 
-<!-- AI-SECTION -->
+## Where AI agents plug in
+
+**First, what PLR itself ships: nothing agent-specific at run time.** A search of the repository finds no LLM, agent or MCP (Model Context Protocol, the open standard for exposing tools to AI assistants) code; the only "MCP" strings are Brooks error messages about the arm's Manual Control Pendant [11]. What PLR offers is the set of doors an agent needs: a typed async Python API, simulators that answer like the hardware, an event bus that is "an observation mechanism, not a control mechanism" [9], and optional gRPC device services whose listener "does not authenticate callers" and is meant to sit behind SSH [10].
+
+**Other people are building the agent layer on top, all of it in simulation so far.**
+
+- **plr-mcp** wraps a PyLabRobot liquid handler, plate reader, thermocycler and heater-shaker as MCP tools. It runs on PLR's chatterbox back end by default, tags motion tools as destructive so the AI client must ask first, and requires `confirm=true` before its one real-STAR protocol runs [44]:
+
+```python
+@mcp.tool(name="plr_drop_tips",
+          annotations=ToolAnnotations(title="Drop tips", readOnlyHint=False, destructiveHint=True, ...))
+```
+
+- **OpenLabAI** puts an AI agent in front of OT-2, Hamilton, Biomek and Cellario servers; its Hamilton server writes PyLabRobot protocols and dry-runs them, and states plainly that it "does not execute protocols on a physical Hamilton" [45].
+- **labloop**, a public demo from October 2026, joins Bayesian optimisation, a scheduler and an LLM to PLR: every plate is pipetted on a simulated STARlet through `STARChatterboxBackend` [46].
+- **Labwire** exposes a PLR liquid handler through an "agent-to-instrument" protocol; per its forum post it uses hardware-free back ends only [47]. An agent "skill" for writing PLR protocols carries a "non-negotiable hardware boundary": never command physical equipment automatically [48].
+
+We found no public example of an AI agent driving a physical liquid handler through PyLabRobot. *Analysis:* the pattern these projects converge on (simulate by default, label destructive tools, require an explicit human "go", tag every result as simulated or real) is the same rule PLR's `AGENTS.md` sets for coding agents [8].
+
+**The most mature commercial path is Opentrons'.** The OpentronsAI protocol-writing assistant was launched in February 2024 and is open source in the Opentrons monorepo; its server now defaults to an Anthropic Claude model, with an older OpenAI path still present, and gives the model exactly two tools, `simulate_protocol` and `get_relevant_api_docs` [49]. The landmark academic system, Coscientist (*Nature*, December 2023), had GPT-4 plan and run palladium-catalysed couplings on an Opentrons robot; its public repository holds supporting data but no robot code [50].
+
+**How an optimiser hands the next experiment to a robot.** Every closed-loop framework we read uses the same "ask/tell" loop, and none ships a robot driver; the robot side is your own glue code, which is where PLR fits [52][53][54][55]:
+
+| Framework | Ask | Tell |
+|---|---|---|
+| BayBE (Merck KGaA) | `campaign.recommend(batch_size=...)` returns a table of conditions | `campaign.add_measurements(df)` |
+| Ax (Meta) | `client.get_next_trials(...)` | `client.complete_trial(...)` |
+| Atlas (Aspuru-Guzik group) | `planner.recommend(observations)` | `campaign.add_observation(...)` |
+| MADSci (Argonne) | logic in an `ExperimentScript` | `workcell_client.start_workflow(...)`, results read back as datapoints |
+
+CRESt (MIT) shows the glue in practice: Ax proposes the next batch, a GPT front end insists on three human confirmations (`recipe_confirm`, `ot2_deck_check`, `start`), then posts the recipes to a small web service on the OT-2's computer [51]. On the standards side, a SiLA 2 "feature" is an XML definition of typed commands and properties from which a server and client are generated [56], a self-describing format close to what an AI tool schema needs; PLR can discover SiLA 1 and 2 devices on the network [57].
+
+**What the evidence says about letting models write protocols.** In a February 2026 company preprint, OpenAI and Ginkgo report GPT-5 designing about 36,000 cell-free protein-synthesis reactions run on Ginkgo's automation, cutting cost per gram by 40%, with every design checked against a strict schema before execution and humans doing the reagent prep [58]. Benchmarks are sobering: in LabSafety Bench no model scored above 70% on hazard identification [59], and early GPT-4 work on OT-2 scripts found simulators catch syntax and API errors but not experiments that are scientifically wrong [60]. *Analysis:* simulation checks that a protocol *runs*; it does not check that it measures CLint correctly.
+
+**DMPK specifically.** We found no public, AI-driven closed-loop microsomal stability or permeability workflow. The closest are commercial "lab-in-the-loop" ADMET offers, such as ADME-One from Ginkgo Datapoints, Inductive Bio and Tangible Scientific (launched 26 May 2026), where models pick compounds, an automated lab runs a Tier-1 ADME panel and the results retrain the models [61], and Novartis' MicroCycle miniaturised design-make-test platform (*J. Med. Chem.* 2024) [62]. Our [2 Nov deep dive on closed-loop DMTA](2026-11-02_deepdive-closed-loop-dmta.md) covers the pharma deployments.
+
 
 ## Worked example: a microsomal stability assay on PyLabRobot
 
@@ -252,3 +287,24 @@ Code links point to commit 7779f50 (3 Nov 2026). "code" = repository file or com
 41. "Harmonised high throughput microsomal stability assay": [https://pubmed.ncbi.nlm.nih.gov/27773845/](https://pubmed.ncbi.nlm.nih.gov/27773845/) (paper)
 42. QInstruments `BioShake` (v1): [https://github.com/PyLabRobot/pylabrobot/blob/7779f506d12755f5f274b4c5cab4d095f4fccb62/pylabrobot/qinstruments/bioshake.py#L20-L280](https://github.com/PyLabRobot/pylabrobot/blob/7779f506d12755f5f274b4c5cab4d095f4fccb62/pylabrobot/qinstruments/bioshake.py#L20-L280) (code)
 43. Legacy `LiquidHandler` methods `pick_up_tips`, `discard_tips`, `aspirate`, `dispense`: [https://github.com/PyLabRobot/pylabrobot/blob/7779f506d12755f5f274b4c5cab4d095f4fccb62/pylabrobot/legacy/liquid_handling/liquid_handler.py#L660](https://github.com/PyLabRobot/pylabrobot/blob/7779f506d12755f5f274b4c5cab4d095f4fccb62/pylabrobot/legacy/liquid_handling/liquid_handler.py#L660), [#L1028](https://github.com/PyLabRobot/pylabrobot/blob/7779f506d12755f5f274b4c5cab4d095f4fccb62/pylabrobot/legacy/liquid_handling/liquid_handler.py#L1028), [#L1124](https://github.com/PyLabRobot/pylabrobot/blob/7779f506d12755f5f274b4c5cab4d095f4fccb62/pylabrobot/legacy/liquid_handling/liquid_handler.py#L1124), [#L1316](https://github.com/PyLabRobot/pylabrobot/blob/7779f506d12755f5f274b4c5cab4d095f4fccb62/pylabrobot/legacy/liquid_handling/liquid_handler.py#L1316) (code)
+44. di-omics/plr-mcp, `plr_drop_tips` tool and README: [https://github.com/di-omics/plr-mcp/blob/db90c579439bdea0930be5f7dc0ac5fddb93b3b3/plr_mcp/server.py#L199-L206](https://github.com/di-omics/plr-mcp/blob/db90c579439bdea0930be5f7dc0ac5fddb93b3b3/plr_mcp/server.py#L199-L206), [README](https://github.com/di-omics/plr-mcp/blob/db90c579439bdea0930be5f7dc0ac5fddb93b3b3/README.md) (code)
+45. nygmeta/OpenLabAI, Hamilton MCP server: [https://github.com/nygmeta/OpenLabAI/blob/daade8e9f92e573362b20f9c46738b60db55cb6d/mcp_servers/hamilton_server.py](https://github.com/nygmeta/OpenLabAI/blob/daade8e9f92e573362b20f9c46738b60db55cb6d/mcp_servers/hamilton_server.py) (code)
+46. sl148/closed-loop-lab-demo ("labloop"), PLR bridge: [https://github.com/sl148/closed-loop-lab-demo/blob/86b27d6c66d54e57abd22e93fefa084d2dc20f15/src/labloop/execution/plr_bridge.py#L21-L65](https://github.com/sl148/closed-loop-lab-demo/blob/86b27d6c66d54e57abd22e93fefa084d2dc20f15/src/labloop/execution/plr_bridge.py#L21-L65) (code)
+47. PyLabRobot forum, "Bridged PyLabRobot into an agent-facing protocol" (Labwire): [https://discuss.pylabrobot.org/t/bridged-pylabrobot-into-an-agent-facing-protocol/552](https://discuss.pylabrobot.org/t/bridged-pylabrobot-into-an-agent-facing-protocol/552) (secondary)
+48. K-Dense-AI/claude-scientific-skills, `skills/pylabrobot/SKILL.md`: [https://github.com/K-Dense-AI/claude-scientific-skills/blob/a25cf9ec00e2745d03f8704acf6f6919694ccd9a/skills/pylabrobot/SKILL.md](https://github.com/K-Dense-AI/claude-scientific-skills/blob/a25cf9ec00e2745d03f8704acf6f6919694ccd9a/skills/pylabrobot/SKILL.md) (code)
+49. Opentrons, OpentronsAI server settings and tools: [https://github.com/Opentrons/opentrons/blob/631207155300fe9e96e08e4cfca48d11837fbd0c/opentrons-ai-server/api/settings.py#L32-L34](https://github.com/Opentrons/opentrons/blob/631207155300fe9e96e08e4cfca48d11837fbd0c/opentrons-ai-server/api/settings.py#L32-L34), [anthropic_predict.py#L145-L160](https://github.com/Opentrons/opentrons/blob/631207155300fe9e96e08e4cfca48d11837fbd0c/opentrons-ai-server/api/domain/anthropic_predict.py#L145-L160) (code); launch release, 1 Feb 2024: [https://www.businesswire.com/news/home/20240201923858/en/](https://www.businesswire.com/news/home/20240201923858/en/) (primary)
+50. Boiko D.A. et al., "Autonomous chemical research with large language models", *Nature* 624, 570–578 (2023): [https://www.nature.com/articles/s41586-023-06792-0](https://www.nature.com/articles/s41586-023-06792-0) (paper); repo [https://github.com/gomesgroup/coscientist/tree/417e82b85743f88719ba7cf8838220fcb872e2ae](https://github.com/gomesgroup/coscientist/tree/417e82b85743f88719ba7cf8838220fcb872e2ae) (code)
+51. CRESt, human-confirmation flags: [https://github.com/zhang21mit/CRESt/blob/8bcb140d285b58508c9b34d53bf2dc39360b2b64/Auto_SEM/main_workflow/main_workflow_func_list.py#L193-L210](https://github.com/zhang21mit/CRESt/blob/8bcb140d285b58508c9b34d53bf2dc39360b2b64/Auto_SEM/main_workflow/main_workflow_func_list.py#L193-L210) (code)
+52. BayBE `Campaign.recommend` / `add_measurements`: [https://github.com/emdgroup/baybe/blob/ed54e0092acd0dc07b2a920ef4b58198f608bfa1/baybe/campaign.py#L495](https://github.com/emdgroup/baybe/blob/ed54e0092acd0dc07b2a920ef4b58198f608bfa1/baybe/campaign.py#L495), [#L324](https://github.com/emdgroup/baybe/blob/ed54e0092acd0dc07b2a920ef4b58198f608bfa1/baybe/campaign.py#L324) (code)
+53. Ax README (`Client.get_next_trials` / `complete_trial`): [https://github.com/facebook/Ax/blob/5a7b3367f2d372e1653fd6c6ff1eaf8069ecc850/README.md](https://github.com/facebook/Ax/blob/5a7b3367f2d372e1653fd6c6ff1eaf8069ecc850/README.md) (code)
+54. MADSci example experiment: [https://github.com/AD-SDL/MADSci/blob/bbfcba5efcaeacb750252a921256de5d61d51bb2/examples/example_experiment.py#L105](https://github.com/AD-SDL/MADSci/blob/bbfcba5efcaeacb750252a921256de5d61d51bb2/examples/example_experiment.py#L105) (code)
+55. Atlas README (ask/tell): [https://github.com/aspuru-guzik-group/atlas/blob/ebb1f4f728107f759c48289c2faecfa3af19254f/README.md](https://github.com/aspuru-guzik-group/atlas/blob/ebb1f4f728107f759c48289c2faecfa3af19254f/README.md) (code)
+56. SiLA 2 Python reference implementation, GreetingProvider feature: [https://gitlab.com/SiLA2/sila_python/-/tree/e6df5262ae6098cc7a04cd6c02a77a1621172cf6/example_server](https://gitlab.com/SiLA2/sila_python/-/tree/e6df5262ae6098cc7a04cd6c02a77a1621172cf6/example_server) (code)
+57. PLR SiLA discovery guide: [https://github.com/PyLabRobot/pylabrobot/blob/7779f506d12755f5f274b4c5cab4d095f4fccb62/docs/user_guide/machine-agnostic-features/sila-discovery.ipynb](https://github.com/PyLabRobot/pylabrobot/blob/7779f506d12755f5f274b4c5cab4d095f4fccb62/docs/user_guide/machine-agnostic-features/sila-discovery.ipynb) (code)
+58. OpenAI, "GPT-5 lowers the cost of cell-free protein synthesis" (Feb 2026): [https://openai.com/index/gpt-5-lowers-protein-synthesis-cost/](https://openai.com/index/gpt-5-lowers-protein-synthesis-cost/) (primary)
+59. Zhou et al., LabSafety Bench, *Nature Machine Intelligence*: [https://www.nature.com/articles/s42256-025-01152-1](https://www.nature.com/articles/s42256-025-01152-1); preprint [https://arxiv.org/abs/2410.14182](https://arxiv.org/abs/2410.14182) (paper)
+60. Inagaki T. et al., "LLMs can generate robotic scripts from goal-oriented instructions in biological laboratory automation", arXiv 2304.10267 (2023): [https://arxiv.org/abs/2304.10267](https://arxiv.org/abs/2304.10267) (paper)
+61. Inductive Bio, "Ginkgo Datapoints, Tangible Scientific and Inductive Bio launch ADME-One" (26 May 2026): [https://www.inductive.bio/news/ginkgo-datapoints-tangible-scientific-and-inductive-bio-launch-adme-one](https://www.inductive.bio/news/ginkgo-datapoints-tangible-scientific-and-inductive-bio-launch-adme-one) (primary)
+62. Brocklehurst C.E. et al. (Novartis), "MicroCycle", *J. Med. Chem.* (2024): [https://doi.org/10.1021/acs.jmedchem.3c02029](https://doi.org/10.1021/acs.jmedchem.3c02029) (paper)
+
+> **Rate:** _/5 · **Tags:** _ · `LAN-F20261102`
