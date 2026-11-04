@@ -8,3 +8,6 @@ wheels/
 
 # Virtual environments
 .venv
+
+# SiLA2 POC: raw server logs are regenerated on every run
+SiLA2/results/logs/
