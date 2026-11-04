@@ -1,0 +1,196 @@
+{
+ "date": "2026-11-04",
+ "sources_checked": [
+  {
+   "id": "slas",
+   "method": "site-search",
+   "queries": [
+    "lab automation news November 2026"
+   ],
+   "candidates": 0,
+   "kept": 0
+  },
+  {
+   "id": "lrig",
+   "method": "site-search",
+   "queries": [
+    "lab automation news November 2026"
+   ],
+   "candidates": 0,
+   "kept": 0
+  },
+  {
+   "id": "elrig",
+   "method": "site-search",
+   "queries": [
+    "lab automation news November 2026"
+   ],
+   "candidates": 0,
+   "kept": 0
+  },
+  {
+   "id": "labautomation-io",
+   "method": "site-search",
+   "queries": [
+    "lab automation news November 2026"
+   ],
+   "candidates": 0,
+   "kept": 0
+  },
+  {
+   "id": "hamilton",
+   "method": "site-search",
+   "queries": [
+    "lab automation news November 2026"
+   ],
+   "candidates": 0,
+   "kept": 0
+  },
+  {
+   "id": "tecan",
+   "method": "site-search",
+   "queries": [
+    "lab automation news November 2026"
+   ],
+   "candidates": 0,
+   "kept": 0
+  },
+  {
+   "id": "agilent",
+   "method": "site-search",
+   "queries": [
+    "lab automation news November 2026"
+   ],
+   "candidates": 0,
+   "kept": 0
+  },
+  {
+   "id": "beckman",
+   "method": "site-search",
+   "queries": [
+    "lab automation news November 2026"
+   ],
+   "candidates": 0,
+   "kept": 0
+  },
+  {
+   "id": "slas-discovery",
+   "method": "site-search",
+   "queries": [
+    "lab automation news November 2026"
+   ],
+   "candidates": 0,
+   "kept": 0
+  },
+  {
+   "id": "slas-technology",
+   "method": "site-search",
+   "queries": [
+    "lab automation news November 2026"
+   ],
+   "candidates": 0,
+   "kept": 0
+  },
+  {
+   "id": "hardwarex",
+   "method": "site-search",
+   "queries": [
+    "lab automation news November 2026"
+   ],
+   "candidates": 0,
+   "kept": 0
+  },
+  {
+   "id": "pubmed",
+   "method": "site-search",
+   "queries": [
+    "lab automation news November 2026"
+   ],
+   "candidates": 0,
+   "kept": 0
+  },
+  {
+   "id": "preprints",
+   "method": "site-search",
+   "queries": [
+    "lab automation news November 2026"
+   ],
+   "candidates": 0,
+   "kept": 0
+  },
+  {
+   "id": "trade-press",
+   "method": "site-search",
+   "queries": [
+    "lab automation news November 2026"
+   ],
+   "candidates": 0,
+   "kept": 0
+  },
+  {
+   "id": "wires",
+   "method": "site-search",
+   "queries": [
+    "lab automation news November 2026"
+   ],
+   "candidates": 0,
+   "kept": 0
+  },
+  {
+   "id": "pylabrobot",
+   "method": "feed+site-search",
+   "queries": [
+    "PyLabRobot release"
+   ],
+   "candidates": 1,
+   "kept": 1
+  }
+ ],
+ "fetch_failed": [
+  "labautomation-io",
+  "slas",
+  "lrig",
+  "elrig",
+  "hamilton",
+  "tecan",
+  "agilent",
+  "beckman",
+  "slas-discovery",
+  "slas-technology",
+  "hardwarex",
+  "pubmed"
+ ],
+ "rejected": [
+  {
+   "title": "Hamilton and Ahlstrom automated DBS processing",
+   "url": "https://www.hamiltoncompany.com/press-releases",
+   "source_id": "hamilton",
+   "reason": "9 Oct, outside window"
+  },
+  {
+   "title": "Tecan agentic AI with NVIDIA",
+   "url": "https://www.tecan.com/news-archive",
+   "source_id": "tecan",
+   "reason": "May/June, outside window"
+  },
+  {
+   "title": "Shimadzu and ePrep sample prep partnership",
+   "url": "https://www.selectscience.net/technique/automated-liquid-handling",
+   "source_id": "trade-press",
+   "reason": "August, outside window"
+  },
+  {
+   "title": "Latent-Y antibody design agent",
+   "url": "https://www.businesswire.com/news/home/20260323538522/en/Latent-Y-The-Autonomous-AI-Agent-for-Drug-Design-at-Scale",
+   "source_id": "wires",
+   "reason": "March, outside window"
+  },
+  {
+   "title": "Caco-2 96-well platform (Cai et al.)",
+   "url": "https://doi.org/10.1177/1540658x251408742",
+   "source_id": "pubmed",
+   "reason": "duplicate of LAN-20261102-16"
+  }
+ ],
+ "notes": "No new in-window news found; extended searches. Orca items are deep-dive items (published before window). arxiv.org and labautomation.io unreachable by WebFetch. No Scope requests; no ratings yet."
+}
