@@ -12,6 +12,7 @@ for real (both twin servers as subprocesses) on spare ports.
 from __future__ import annotations
 
 import json
+import socket
 import subprocess
 import sys
 import tempfile
@@ -194,6 +195,20 @@ def test_fake_failure_stops_the_run():
     assert "simulated LiquidHandlingError" in next(s["error"] for s in timeline["steps"] if s["id"] == "sample_t1")
 
 
+def test_step_watchdog_fails_a_hanging_call():
+    class SlowLH(FakeLH):
+        def Initialize(self):
+            time.sleep(2.0)  # longer than the watchdog below
+            return Message("too late")
+
+    wf = fast_workflow()
+    timeline = Scheduler(wf, {"lh": SlowLH(), "hhs": FakeHHS()}, log=lambda _: None, step_timeout_s=0.5).run()
+    init = next(s for s in timeline["steps"] if s["id"] == "lh_init")
+    assert timeline["run_status"] == "failed"
+    assert init["status"] == "failed" and "watchdog" in init["error"], init
+    assert init["duration_s"] < 1.5
+
+
 def test_validation_rejects_cycles_and_untimed_t0():
     wf = fast_workflow()
     cyclic = Workflow("x", 1.0, wf.devices, [Step("a", "lh", "Initialize", depends_on=("b",)),
@@ -213,14 +228,44 @@ def servers_implemented() -> bool:
     return all("raise NotImplementedError" not in p.read_text() for p in impls)
 
 
+def free_ports(n: int) -> list[int]:
+    """n distinct ports nobody listens on right now (the OS picks them; sockets held together)."""
+    socks = [socket.socket() for _ in range(n)]
+    try:
+        for sock in socks:
+            sock.bind(("127.0.0.1", 0))
+        return [sock.getsockname()[1] for sock in socks]
+    finally:
+        for sock in socks:
+            sock.close()
+
+
+def test_port_in_use_is_detected():
+    """A listener with SO_REUSEPORT (as gRPC uses) must still make run_demo refuse the port."""
+    import run_demo
+
+    with socket.socket() as listener:
+        listener.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
+        listener.bind(("127.0.0.1", 0))
+        listener.listen()
+        try:
+            run_demo.ensure_port_free(listener.getsockname()[1])
+        except RuntimeError as ex:
+            assert "already in use" in str(ex)
+        else:
+            raise AssertionError("busy port not detected")
+    run_demo.ensure_port_free(free_ports(1)[0])  # and a free one passes
+
+
 def test_end_to_end_demo():
     if not servers_implemented():
         print("  SKIP end-to-end: server implementations are still stubs")
         return
     with tempfile.TemporaryDirectory() as tmp:
+        lh_port, hhs_port = free_ports(2)
         proc = subprocess.run(
             [sys.executable, str(ROOT / "run_demo.py"), "--out", tmp, "--time-scale", "1.0",
-             "--lh-port", "50062", "--hhs-port", "50063"],
+             "--lh-port", str(lh_port), "--hhs-port", str(hhs_port)],
             cwd=ROOT, capture_output=True, text=True, timeout=300,
         )
         assert proc.returncode == 0, proc.stdout[-3000:] + proc.stderr[-3000:]

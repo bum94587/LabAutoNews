@@ -400,14 +400,28 @@ class STARTwin:
       }
 
   def shutdown(self) -> None:
-    """Put the simulated STAR down and stop the event loop (called when the server stops)."""
-    if self.star is not None:
-      try:
-        self._run(self.star.stop(), timeout=10)
-      except Exception:  # noqa: BLE001
-        pass
-      self.star = None
+    """Put the simulated STAR down and stop the event loop (called when the server stops).
+
+    Takes the operation lock first, so a Transfer that is still running finishes before the STAR
+    is put down (the timeout keeps a stuck operation from blocking server exit forever). Then the
+    loop is stopped, its thread joined and the loop closed.
+    """
+    got_lock = self._op_lock.acquire(timeout=30)
+    try:
+      if self.star is not None:
+        try:
+          self._run(self.star.stop(), timeout=10)
+        except Exception:  # noqa: BLE001 - shutting down; nothing useful to do with it
+          pass
+        self.star = None
+      self._on_status("not initialized")
+    finally:
+      if got_lock:
+        self._op_lock.release()
     self._loop.call_soon_threadsafe(self._loop.stop)
+    self._loop_thread.join(timeout=5)
+    if not self._loop_thread.is_alive():
+      self._loop.close()
 
   # -- the four primitive steps (called with the lock held) -------------------------------------
 

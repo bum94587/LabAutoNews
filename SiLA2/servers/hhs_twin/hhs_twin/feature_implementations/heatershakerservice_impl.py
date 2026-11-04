@@ -107,7 +107,18 @@ class HeaterShakerServiceImpl(HeaterShakerServiceBase):
     # --- background tick ------------------------------------------------------------------
 
     def _tick(self) -> None:
-        """Advance the model, publish the observable property, log reached/left-band events."""
+        """
+        One background tick. Never lets an exception escape: sila2's run_periodically loop runs on
+        a worker thread whose future nobody reads, so an exception would end the loop silently and
+        CurrentTemperature would stop updating. Log it and try again on the next tick instead.
+        """
+        try:
+            self._tick_once()
+        except Exception:
+            logger.exception("Background tick failed; will retry on the next tick")
+
+    def _tick_once(self) -> None:
+        """Advance the model, publish the observable property, log the setpoint-reached event."""
         temperature, target, _ = self._model.snapshot()
 
         rounded = round(temperature, PUBLISH_DECIMALS)

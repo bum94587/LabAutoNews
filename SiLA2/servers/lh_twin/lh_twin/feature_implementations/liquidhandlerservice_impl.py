@@ -82,8 +82,10 @@ class LiquidHandlerServiceImpl(LiquidHandlerServiceBase):
 
         # The twin calls update_Status whenever its state changes; the sila2 framework forwards
         # each value to every client subscribed to the observable property `Status`.
+        # Vocabulary: "not initialized" (until Initialize succeeds), "idle", "busy: <operation>",
+        # "error: <message>" (until the next operation starts).
         self.twin = STARTwin(on_status=self.update_Status)
-        self.update_Status("idle")
+        self.update_Status("not initialized")
 
     def stop(self) -> None:
         """Called by the sila2 server on shutdown: put the simulated STAR down too."""

@@ -9,7 +9,7 @@ Run from SiLA2/:
 (also collectable by pytest: one ``test_lh_twin`` function runs the checks in order).
 
 Covers:
-- InstrumentInfo and the observable Status property (idle / busy: ... / error: ...).
+- InstrumentInfo and the observable Status property (not initialized / idle / busy: ... / error: ...).
 - NotInitialized before Initialize; Initialize; GetDeckLayout (contract resource names).
 - Transfer as an observable command: 4 intermediate Step responses, final Message,
   automatic tip-column tracking (column 1, then 2, ...).
@@ -131,7 +131,7 @@ def collect_status(lh, sink: list[str]):
 
 def check_all(lh) -> None:
     print("InstrumentInfo:", lh.InstrumentInfo.get().splitlines()[0][:160], "...")
-    assert lh.Status.get() == "idle"
+    assert lh.Status.get() == "not initialized"
 
     print("Before Initialize:")
     expect_error("NotInitialized", lh.GetDeckLayout)
