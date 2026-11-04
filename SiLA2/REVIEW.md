@@ -202,14 +202,19 @@ Tests run by the reviewer:
   *Fix (cheap):* run the whole step with a watchdog, or at least document it; the run_demo
   `finally` will kill servers, which then unblocks the call with an RpcError.
 
-- **S3. `run_demo.py` can talk to a stale server.** Default ports are fixed (50052/50053). If a
-  previous server still holds the port, `wait_for_server` (`run_demo.py:45-63`) connects to the
-  *old* server immediately (SilaClient succeeds before the new process has even imported PLR and
-  failed to bind), and the run uses its used tips / changed volumes. *Fix:* check the port is free
-  before `Popen` (bind test, clear error), and/or pass `--server-uuid <uuid4>` to the server and
-  verify `client.SiLAService.ServerUUID.get()` matches before accepting the connection.
-  Same applies to `tests/test_smoke.py:223`, which hard-codes `--lh-port 50062 --hhs-port 50063`:
-  use `free_port()` like the twin tests.
+- **S3 (high). Two servers can share a port, and nothing notices.** *Verified:* gRPC Python sets
+  `SO_REUSEPORT`, so a second `python -m lh_twin --port P` starts happily next to a running one,
+  and the kernel spreads connections over both (12 connections -> 2 distinct `ServerUUID`s).
+  sila2's `SilaServer` builds `grpc.server(...)` without options, so this can't be switched off
+  from the impl. Default ports are fixed (50052/50053), and `tests/test_smoke.py:223` hard-codes
+  50062/50063, so a leftover server from a crashed run, or a test running alongside a demo (this
+  happened during review: three agents running demos/tests at once), silently mixes two twins'
+  state: a Transfer may go to one STAR and `GetWellVolumes` to the other. *Fix:* in
+  `run_demo.py` before `Popen`, bind-test the port with a plain socket (no `SO_REUSEPORT`, so it
+  fails with `EADDRINUSE` if any server listens; do set `SO_REUSEADDR`, so leftover TIME_WAIT
+  connections from the previous run don't cause a false alarm) and stop with a clear message; additionally pass
+  `--server-uuid <uuid4>` to each server and check `client.SiLAService.ServerUUID.get()` in
+  `wait_for_server`. In `test_smoke.py`, use `free_port()` like the twin tests do.
 
 - **S4. Server log file handles leak** (`run_demo.py:39`): `log_path.open("w")` is never closed.
   Keep the handle with the proc (e.g. return `(proc, fp)`) and close it in `stop_server`.
@@ -235,3 +240,22 @@ Tests run by the reviewer:
 - **N5. t0 semantics:** t0 = end of the NADPH Transfer (after the tip drop), ~0.2 s after the
   actual dispense. Either say so in the summary or take t0 from the time the `3/4 dispense`
   intermediate arrived.
+
+### Round 2 (04:55-05:00 UTC): end to end
+
+- `tests/test_smoke.py`: **4/4 pass** (fake-client dependency/timing run, fake failure drains the
+  run, validation rejects cycles and untimed t0, real end-to-end demo in 31 s).
+- Builder's `run_demo.py` output in `results/` checked: 27/27 steps succeeded in 32 s; timed
+  StopShaking steps started 0.00 s late; heat 22 -> 36.51 C and cool 37 -> 22.49 C in 10.3 s each;
+  final volumes match the expected ones exactly (compounds/nadph col 1 150, reaction col 1 150,
+  quench cols 1-5 200 uL); 863 firmware commands traced. `run_summary.md` explains effective vs
+  nominal sample time well.
+- No new blockers. Open items, in order: **S3** (shared ports via SO_REUSEPORT), S1 (status/t0
+  race), S4 (log handles), S2/S5, then the nice-to-haves.
+
+### Verdict
+
+The three parts run together and the tests pass. The design holds up for a teaching POC:
+twin/SiLA separation in the LH server (`twin.py` knows PLR, the impl knows SiLA), analytic
+thermal model with generation counter in the HHS twin, and a scheduler whose "first runnable step
+per lane" rule plus validation avoids the deadlocks the plan risked.
