@@ -1,0 +1,65 @@
+# 3D viewer tour: a slowed-down stability run to watch in the STAR twin's 3D view.
+#
+# The same shape as the default microsomal-stability method, but three time points 0, 1 and
+# 2 min with 1 workflow minute = 12 s, so there is time to watch each pick-up, aspirate,
+# dispense and tip return. Start the STAR twin with the 3D viewer on and a motion scale of
+# about 0.5-1.0 (real STAR speed is 1.0) for moves you can follow.
+
+name: 3D viewer tour (stability, 3 time points)
+time_scale:
+  real_seconds_per_workflow_minute: 12.0
+
+devices:
+  lh:
+    description: Hamilton STAR digital twin (PyLabRobot simulator) via SiLA 2
+    host: 127.0.0.1
+    port: 50052
+    feature: LiquidHandlerService
+  hhs:
+    description: Heater-shaker digital twin (first-order thermal model) via SiLA 2
+    host: 127.0.0.1
+    port: 50053
+    feature: HeaterShakerService
+
+steps:
+  - {id: heat_to_37, device: hhs, command: SetTemperature, params: {TargetTemperature: 37.0}}
+  - {id: lh_init, device: lh, command: Initialize}
+  - id: add_compound
+    device: lh
+    command: Transfer
+    params: {SourcePlate: compounds, SourceColumn: 1, TargetPlate: reaction, TargetColumn: 1, VolumeUl: 50.0}
+    depends_on: [lh_init]
+  - id: add_nadph
+    device: lh
+    command: Transfer
+    params: {SourcePlate: nadph, SourceColumn: 1, TargetPlate: reaction, TargetColumn: 1, VolumeUl: 50.0}
+    depends_on: [add_compound, heat_to_37]
+    marks_t0: true
+  - {id: shake, device: hhs, command: StartShaking, params: {Speed: 600}, depends_on: [add_nadph]}
+
+  - {id: stop_t0, device: hhs, command: StopShaking, depends_on: [shake], start_after_t0_s: 0}
+  - id: sample_t0
+    device: lh
+    command: Transfer
+    params: {SourcePlate: reaction, SourceColumn: 1, TargetPlate: quench, TargetColumn: 1, VolumeUl: 50.0}
+    depends_on: [stop_t0]
+  - {id: shake_t0, device: hhs, command: StartShaking, params: {Speed: 600}, depends_on: [sample_t0]}
+
+  - {id: stop_t1, device: hhs, command: StopShaking, depends_on: [shake_t0], start_after_t0_s: 60}
+  - id: sample_t1
+    device: lh
+    command: Transfer
+    params: {SourcePlate: reaction, SourceColumn: 1, TargetPlate: quench, TargetColumn: 2, VolumeUl: 50.0}
+    depends_on: [stop_t1]
+  - {id: shake_t1, device: hhs, command: StartShaking, params: {Speed: 600}, depends_on: [sample_t1]}
+
+  - {id: stop_t2, device: hhs, command: StopShaking, depends_on: [shake_t1], start_after_t0_s: 120}
+  - id: sample_t2
+    device: lh
+    command: Transfer
+    params: {SourcePlate: reaction, SourceColumn: 1, TargetPlate: quench, TargetColumn: 3, VolumeUl: 50.0}
+    depends_on: [stop_t2]
+
+  - {id: cool_to_22, device: hhs, command: SetTemperature, params: {TargetTemperature: 22.0}, depends_on: [sample_t2]}
+  - {id: volumes_reaction, device: lh, command: GetWellVolumes, params: {Plate: reaction}, depends_on: [sample_t2]}
+  - {id: volumes_quench, device: lh, command: GetWellVolumes, params: {Plate: quench}, depends_on: [sample_t2]}

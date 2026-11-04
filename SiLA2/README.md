@@ -25,6 +25,31 @@ uv run python run_demo.py       # starts both SiLA 2 servers, runs scheduler/wor
 Tests: `uv run python tests/test_hhs_twin.py`, `uv run python tests/test_lh_twin.py`,
 `uv run python tests/test_smoke.py`.
 
+## Console: servers that stay up, a 3D view, SiLA traffic
+
+`run_demo.py` starts the servers for one run and stops them. `console/ctl.py` keeps them running
+instead, so methods, manual calls and PyLabRobot's 3D viewer all talk to the same twin. Every
+command prints one JSON object. The myday viewer's **SiLA 2 / PyLabRobot twin** project drives it,
+and it works just as well from a shell:
+
+```bash
+uv run python -m console.ctl start all --viewer --motion-scale 0.5 --initialize
+uv run python -m console.ctl status        # viewer link: http://127.0.0.1:1340/#token=...
+uv run python -m console.ctl features lh
+uv run python -m console.ctl call lh LiquidHandlerService GetWellVolumes --params '{"Plate": "reaction"}'
+uv run python -m console.ctl run viewer_tour
+uv run python -m console.ctl stop all
+```
+
+- **3D view:** `--viewer` serves PyLabRobot's `visualizer3D` for the twin's own STAR on ports
+  1340/2130. The link carries an access token. A re-Initialize keeps the same link.
+- **Motion speed:** `--motion-scale` 1 = real STAR speed, 0.1 = 10× faster (the default), 0 = instant.
+- **Traffic:** each server records its SiLA calls to `runtime/traffic/sila_<lh|hhs>.jsonl`
+  (`console/traffic.py`, a gRPC interceptor), and the STAR twin records its firmware commands to
+  `runtime/traffic/firmware_lh.jsonl`.
+- **Methods:** `scheduler/workflow.yaml` (the default) plus `methods/*.yaml`. `run` executes one in the
+  background against the running servers; reports go to `runtime/runs/<id>/`.
+
 ## Layout
 
 | Path | What it is |
@@ -33,6 +58,8 @@ Tests: `uv run python tests/test_hhs_twin.py`, `uv run python tests/test_lh_twin
 | `servers/lh_twin/` | SiLA 2 server for the STAR twin (`feature_implementations/twin.py` = PyLabRobot side, `liquidhandlerservice_impl.py` = SiLA adapter) |
 | `servers/hhs_twin/` | SiLA 2 server for the heater-shaker twin (`thermal.py` = model) |
 | `scheduler/` | Workflow file, scheduler (one lane per device, dependencies, timed steps, watchdog), report/plots |
+| `console/` | Control CLI (`ctl.py`), SiLA traffic recorder (`traffic.py`), runtime paths |
+| `methods/*.yaml` | Extra methods for the console: `quick_check`, `viewer_tour` |
 | `run_demo.py` | One command: start servers, run, collect results, stop servers |
 | `results/` | Output of the last run: timeline, firmware trace, well volumes, Gantt chart, plate heat maps, summary |
 | `PLAN.md`, `REVIEW.md` | The build contract and the independent reviewer's findings (all should-fix items addressed) |

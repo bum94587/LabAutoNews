@@ -6,6 +6,8 @@ A SiLA server always also serves the mandatory SiLAService feature (name, type, 
 ``SilaServer`` adds that automatically.
 """
 
+import contextlib
+import os
 from typing import Optional
 from uuid import UUID, uuid4
 
@@ -13,6 +15,18 @@ from sila2.server import SilaServer
 
 from .feature_implementations.liquidhandlerservice_impl import LiquidHandlerServiceImpl
 from .generated.liquidhandlerservice import LiquidHandlerServiceFeature
+
+
+def _traffic_recording(server_name: str):
+    """Record SiLA traffic when the console asks for it (``SILA_TRAFFIC_LOG`` set), else do nothing.
+
+    ``console.traffic`` lives at the SiLA2 project root; the console puts that on ``PYTHONPATH``.
+    """
+    if not os.environ.get("SILA_TRAFFIC_LOG"):
+        return contextlib.nullcontext()
+    from console.traffic import recording_grpc_servers  # noqa: PLC0415
+
+    return recording_grpc_servers(server_name)
 
 
 class Server(SilaServer):
@@ -30,14 +44,15 @@ class Server(SilaServer):
                 "firmware-level simulator, with the POC deck (tips, compounds, nadph, reaction, quench). "
                 "No hardware; localhost POC."
             )
-        super().__init__(
-            server_name=name,
-            server_description=description,
-            server_type="LiquidHandler",  # SiLA requires [A-Z][a-zA-Z0-9]*
-            server_version="0.1",
-            server_vendor_url="https://gitlab.com/SiLA2/sila_python",
-            server_uuid=server_uuid if server_uuid is not None else uuid4(),
-        )
+        with _traffic_recording("lh"):
+            super().__init__(
+                server_name=name,
+                server_description=description,
+                server_type="LiquidHandler",  # SiLA requires [A-Z][a-zA-Z0-9]*
+                server_version="0.1",
+                server_vendor_url="https://gitlab.com/SiLA2/sila_python",
+                server_uuid=server_uuid if server_uuid is not None else uuid4(),
+            )
 
         self.liquidhandlerservice = LiquidHandlerServiceImpl(self)
         self.set_feature_implementation(LiquidHandlerServiceFeature, self.liquidhandlerservice)

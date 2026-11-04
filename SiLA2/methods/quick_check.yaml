@@ -1,0 +1,33 @@
+# Quick check: initialise the STAR twin, move one column of liquid, read the plates back.
+#
+# About ten seconds end to end. Use it to see that both servers answer and that a Transfer
+# really moves liquid (compounds column 1 drops from 200 to 150 uL, reaction column 1 rises
+# from 300 to 350 uL). The heater-shaker warms to 30 C on its own lane at the same time.
+
+name: quick check (1 transfer)
+time_scale:
+  real_seconds_per_workflow_minute: 2.0
+
+devices:
+  lh:
+    description: Hamilton STAR digital twin (PyLabRobot simulator) via SiLA 2
+    host: 127.0.0.1
+    port: 50052
+    feature: LiquidHandlerService
+  hhs:
+    description: Heater-shaker digital twin (first-order thermal model) via SiLA 2
+    host: 127.0.0.1
+    port: 50053
+    feature: HeaterShakerService
+
+steps:
+  - {id: warm_to_30, device: hhs, command: SetTemperature, params: {TargetTemperature: 30.0}}
+  - {id: lh_init, device: lh, command: Initialize}
+  - id: transfer
+    device: lh
+    command: Transfer
+    params: {SourcePlate: compounds, SourceColumn: 1, TargetPlate: reaction, TargetColumn: 1, VolumeUl: 50.0}
+    depends_on: [lh_init]
+  - {id: volumes_compounds, device: lh, command: GetWellVolumes, params: {Plate: compounds}, depends_on: [transfer]}
+  - {id: volumes_reaction, device: lh, command: GetWellVolumes, params: {Plate: reaction}, depends_on: [transfer]}
+  - {id: cool_to_22, device: hhs, command: SetTemperature, params: {TargetTemperature: 22.0}, depends_on: [warm_to_30]}

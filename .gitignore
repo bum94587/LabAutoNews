@@ -11,3 +11,6 @@ wheels/
 
 # SiLA2 POC: raw server logs are regenerated on every run
 SiLA2/results/logs/
+
+# SiLA2 console: server state, logs, traffic and runs (python -m console.ctl)
+SiLA2/runtime/

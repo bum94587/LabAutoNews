@@ -74,6 +74,20 @@ PLR_COMMIT_FALLBACK = "7779f506d12755f5f274b4c5cab4d095f4fccb62"
 # the default keeps a full Transfer well under a second.
 MOTION_TIME_SCALE = float(os.environ.get("LH_TWIN_MOTION_SCALE", "0.1"))
 
+# Optional 3D view (PyLabRobot's ``visualizer3D``), switched on by the console with
+# ``LH_TWIN_VIEWER=1``. The twin's STAR stands in a persistent "lab" resource that is the viewer's
+# world, so the viewer (and its URL) survives a re-Initialize: the old STAR is taken out of the lab
+# and the new one put in. The viewer runs on the twin's own asyncio loop, the loop PLR runs on.
+# Ports 1340/2130 keep clear of PLR's demo (1338/2122). The URL, with its access token, is written
+# to ``LH_TWIN_VIEWER_FILE`` so the console can link to it.
+VIEWER_ENABLED = os.environ.get("LH_TWIN_VIEWER", "") not in ("", "0")
+VIEWER_PORT = int(os.environ.get("LH_TWIN_VIEWER_PORT", "1340"))
+VIEWER_WS_PORT = int(os.environ.get("LH_TWIN_VIEWER_WS_PORT", "2130"))
+VIEWER_INFO_FILE = os.environ.get("LH_TWIN_VIEWER_FILE")
+
+# Optional live copy of the firmware trace, one JSON line per exchange (the console sets it).
+FIRMWARE_LOG_FILE = os.environ.get("LH_TWIN_FIRMWARE_LOG")
+
 
 @dataclass(frozen=True)
 class PlateSpec:
@@ -153,6 +167,11 @@ class STARTwin:
     self._mounted_tip_rack = TIP_RACK_NAME  # where the mounted tips came from (rack, column)
     self._mounted_tip_column: Optional[int] = None
 
+    self._viewer: Any = None  # pylabrobot.visualizer3D.Viewer3D, when VIEWER_ENABLED
+    self._lab: Any = None  # the viewer's world: a Facility the STAR stands in
+    self.viewer_url: Optional[str] = None
+    self.viewer_error: Optional[str] = None
+
   # -- plumbing ---------------------------------------------------------------------------------
 
   def _run(self, coro: Any, timeout: float = 120.0) -> Any:
@@ -201,15 +220,20 @@ class STARTwin:
 
     def recording_log_exchange(written: str, read: Optional[str]) -> None:
       with self._trace_lock:
-        self._trace.append(
-          {
-            "index": len(self._trace),
-            "time": datetime.now(timezone.utc).isoformat(timespec="milliseconds"),
-            "command": written,
-            "reply": read,
-            "operation": self._current_operation,
-          }
-        )
+        entry = {
+          "index": len(self._trace),
+          "time": datetime.now(timezone.utc).isoformat(timespec="milliseconds"),
+          "command": written,
+          "reply": read,
+          "operation": self._current_operation,
+        }
+        self._trace.append(entry)
+        if FIRMWARE_LOG_FILE:
+          try:
+            with open(FIRMWARE_LOG_FILE, "a", encoding="utf-8") as f:
+              f.write(json.dumps(entry) + "\n")
+          except OSError:  # a monitoring copy; never a reason to fail a firmware command
+            pass
       original(written, read)
 
     driver._log_exchange = recording_log_exchange  # type: ignore[method-assign]
@@ -262,6 +286,7 @@ class STARTwin:
     """
 
     def run() -> str:
+      previous = self.star
       if self.star is not None:
         old, self.star = self.star, None
         try:
@@ -281,19 +306,66 @@ class STARTwin:
       except Exception as error:
         raise TwinError(f"STAR setup failed: {type(error).__name__}: {error}") from error
       self.star = star
+      self._show_in_viewer(previous, star)
       self._used_tip_columns.clear()
       self._mounted_tip_column = None
       self.setup_summary = star.driver.format_setup_summary()
 
       plates = ", ".join(f"{p.name} ({p.fill_ul:g} uL/well)" for p in PLATES)
+      viewer = ""
+      if self.viewer_url:
+        viewer = f" 3D view: {self.viewer_url.split('#')[0]}"
+      elif self.viewer_error:
+        viewer = f" 3D view failed: {self.viewer_error}"
       return (
         f"STAR twin initialised: {len(self._trace) - trace_start} firmware commands exchanged with the "
         f"simulator. Deck: {TIP_RACK_NAME} (96 x 300 uL filter tips) on {TIP_CARRIER_NAME} track "
-        f"{TIP_CARRIER_TRACK}; {plates} on {PLATE_CARRIER_NAME} track {PLATE_CARRIER_TRACK}.\n"
+        f"{TIP_CARRIER_TRACK}; {plates} on {PLATE_CARRIER_NAME} track {PLATE_CARRIER_TRACK}.{viewer}\n"
         f"{self.setup_summary}"
       )
 
     return self._operation("Initialize", run)
+
+  def _show_in_viewer(self, previous: Optional[STARDevice], star: STARDevice) -> None:
+    """Put the (new) STAR in the 3D viewer's lab, starting the viewer the first time.
+
+    A viewer problem never fails Initialize: it is reported in ``viewer_error`` instead.
+    """
+    if not VIEWER_ENABLED:
+      return
+
+    async def attach() -> None:
+      from pylabrobot.resources.coordinate import Coordinate  # noqa: PLC0415
+      from pylabrobot.visualizer3D import Viewer3D  # noqa: PLC0415
+      from pylabrobot.visualizer3D.facility import Facility  # noqa: PLC0415
+
+      if self._viewer is None:
+        self._lab = Facility(name="lab", size_x=2400, size_y=1400, size_z=1200)
+        self._lab.assign_child_resource(star, location=Coordinate(0, 0, 0))
+        viewer = Viewer3D(
+          self._lab,
+          host="127.0.0.1",
+          fs_port=VIEWER_PORT,
+          ws_port=VIEWER_WS_PORT,
+          open_browser=False,
+          name="STAR twin (SiLA 2)",
+        )
+        await viewer.start()
+        self._viewer = viewer
+        self.viewer_url = viewer.url
+        if VIEWER_INFO_FILE:
+          with open(VIEWER_INFO_FILE, "w", encoding="utf-8") as f:
+            json.dump({"url": viewer.url, "port": viewer.fs_port, "ws_port": viewer.ws_port}, f)
+        return
+      if previous is not None and previous.parent is self._lab:
+        self._lab.unassign_child_resource(previous)
+      self._lab.assign_child_resource(star, location=Coordinate(0, 0, 0))
+
+    try:
+      self._run(attach(), timeout=60)
+      self.viewer_error = None
+    except Exception as error:  # noqa: BLE001 - the twin works without its picture
+      self.viewer_error = f"{type(error).__name__}: {error}"
 
   def pick_up_tips(self, rack_name: str, column: int) -> str:
     return self._operation(f"PickUpTips {rack_name} column {column}", lambda: self._pick_up(rack_name, column))
@@ -408,6 +480,12 @@ class STARTwin:
     """
     got_lock = self._op_lock.acquire(timeout=30)
     try:
+      if self._viewer is not None:
+        try:
+          self._run(self._viewer.stop(), timeout=5)
+        except Exception:  # noqa: BLE001 - shutting down
+          pass
+        self._viewer = None
       if self.star is not None:
         try:
           self._run(self.star.stop(), timeout=10)
