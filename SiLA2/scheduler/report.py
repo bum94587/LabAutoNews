@@ -77,8 +77,8 @@ def column_mean(volumes: dict[str, Any], column: int) -> float | None:
 
 
 def firmware_stats(trace: list[dict[str, Any]]) -> Counter:
-    """Count firmware commands by their 4-character <module><command> code."""
-    return Counter(str(entry.get("command", ""))[:4] for entry in trace)
+    """Count firmware commands by <module><command> code; the 8 channel modules P1..P8 count as "Px"."""
+    return Counter(re.sub(r"^P[1-8]", "Px", str(entry.get("command", ""))[:4]) for entry in trace)
 
 
 def expected_column_volumes(timeline: dict[str, Any]) -> dict[tuple[str, int], float]:
@@ -135,9 +135,9 @@ def write_gantt(timeline: dict[str, Any], path: Path) -> None:
         ax.barh(ypos[s["device"]], width, left=s["start_s"], height=0.5,
                 color=COLORS[family(s["command"])], edgecolor=FAILED if failed else "white",
                 linewidth=2 if failed else 0.8, hatch="//" if failed else None)
-        if s["command"] == "Transfer" and width > end * 0.035:
-            ax.text(s["start_s"] + width / 2, ypos[s["device"]], s["id"].replace("sample_", ""),
-                    ha="center", va="center", fontsize=7, color="white")
+        if s["command"] == "Transfer":  # label above the bar: "compound", "nadph", "t0", "t1", ...
+            ax.text(s["start_s"] + width / 2, ypos[s["device"]] + 0.3, s["id"].split("_")[-1],
+                    ha="center", va="bottom", fontsize=7, color=MUTED)
 
     t0 = timeline.get("t0_s")
     if t0 is not None:
@@ -245,7 +245,12 @@ def write_summary(timeline: dict[str, Any], volumes: dict[str, dict[str, Any]], 
         f"- Started {timeline['run_started_wall']} (UTC), real duration {timeline['duration_s']:.2f} s",
         f"- Time scale: 1 workflow minute = {scale:g} s real; t0 (NADPH added) at "
         f"{_fmt(t0)} s after run start",
-        f"- Liquid handler: {instrument_info or 'n/a'}",
+        "",
+        "## Liquid handler twin (InstrumentInfo)",
+        "",
+        "```",
+        instrument_info.strip() or "n/a",
+        "```",
         "",
         "## Steps",
         "",
@@ -321,13 +326,25 @@ def _firmware_section(trace: list[dict[str, Any]]) -> list[str]:
     if not trace:
         return out + ["No firmware trace available."]
     counts = firmware_stats(trace)
-    out += [f"{len(trace)} firmware commands were sent to the STAR simulator. Most frequent:", "",
-            "| code | count | meaning |", "|---|---:|---|"]
-    for code, n in counts.most_common(12):
-        out.append(f"| `{code}` | {n} | {FIRMWARE_CODES.get(code, '')} |")
+    no_reply = sum(1 for e in trace if e.get("reply") in (None, ""))
+    out += [f"{len(trace)} firmware commands were sent to the STAR simulator "
+            f"({no_reply} action commands without a reply: the simulator only answers read commands).", ""]
+    if any("operation" in e for e in trace):
+        per_op = Counter(e.get("operation", "?") for e in trace)
+        out += ["Per twin operation (in order of first use):", "", "| operation | commands |", "|---|---:|"]
+        out += [f"| {op} | {n} |" for op, n in per_op.items()]
+        out.append("")
+    out += ["Liquid-handling actions (`TP`/`TR`/`AS`/`DS`: one each per Transfer):", "", "| code | count | meaning |", "|---|---:|---|"]
+    out += [f"| `{code}` | {counts.get(code, 0)} | {meaning} |" for code, meaning in FIRMWARE_CODES.items()]
+    out += ["", "Most frequent codes overall (`Px` = any of the 8 pipetting channels; a command starting "
+            "with `R` is a request/read, e.g. `RZ` Z position, `RD` dispensing-drive position, "
+            "`RY` Y position):", "", "| code | count |", "|---|---:|"]
+    out += [f"| `{code}` | {n} |" for code, n in counts.most_common(10)]
     example = next((e for e in trace if str(e.get("command", "")).startswith("C0AS")), trace[0])
-    out += ["", "Example (first aspirate, or first command):", "", "```",
-            f"> {example.get('command')}", f"< {example.get('reply')}", "```"]
+    command = str(example.get("command"))
+    if len(command) > 160:
+        command = command[:160] + f"... ({len(command)} chars)"
+    out += ["", "Example (first aspirate, cut):", "", "```", f"> {command}", f"< {example.get('reply')}", "```"]
     return out
 
 

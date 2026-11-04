@@ -1,0 +1,1224 @@
+{
+  "workflow": "mini microsomal stability (1 compound, 5 time points)",
+  "real_seconds_per_workflow_minute": 2.0,
+  "run_status": "succeeded",
+  "run_started_wall": "2026-11-04T04:50:47.936+00:00",
+  "run_ended_wall": "2026-11-04T04:51:20.085+00:00",
+  "duration_s": 32.149,
+  "t0_s": 11.061,
+  "devices": {
+    "lh": {
+      "name": "lh",
+      "host": "127.0.0.1",
+      "port": 50052,
+      "feature": "LiquidHandlerService",
+      "description": "Hamilton STAR digital twin (PyLabRobot simulator) via SiLA 2"
+    },
+    "hhs": {
+      "name": "hhs",
+      "host": "127.0.0.1",
+      "port": 50053,
+      "feature": "HeaterShakerService",
+      "description": "Heater-shaker digital twin (first-order thermal model) via SiLA 2"
+    }
+  },
+  "steps": [
+    {
+      "id": "heat_to_37",
+      "device": "hhs",
+      "command": "SetTemperature",
+      "params": {
+        "TargetTemperature": 37.0
+      },
+      "depends_on": [],
+      "status": "succeeded",
+      "planned_start_s": null,
+      "start_s": 0.001,
+      "end_s": 10.276,
+      "duration_s": 10.275,
+      "late_s": null,
+      "start_wall": "2026-11-04T04:50:47.936+00:00",
+      "end_wall": "2026-11-04T04:50:58.212+00:00",
+      "responses": {
+        "ReachedTemperature": 36.51026340398365
+      },
+      "intermediate_count": 42,
+      "intermediates": [
+        {
+          "t_s": 0.016,
+          "CurrentTemperature": 22.000901847888564
+        },
+        {
+          "t_s": 0.26,
+          "CurrentTemperature": 23.20168734327589
+        },
+        {
+          "t_s": 0.508,
+          "CurrentTemperature": 24.30746554917186
+        },
+        {
+          "t_s": 0.757,
+          "CurrentTemperature": 25.323843722188982
+        },
+        {
+          "t_s": 1.009,
+          "CurrentTemperature": 26.258740095236167
+        },
+        {
+          "t_s": 1.258,
+          "CurrentTemperature": 27.118709129815485
+        },
+        {
+          "t_s": 1.508,
+          "CurrentTemperature": 27.90987874241423
+        },
+        {
+          "t_s": 1.76,
+          "CurrentTemperature": 28.637766790314053
+        },
+        {
+          "t_s": 2.01,
+          "CurrentTemperature": 29.30729026455314
+        },
+        {
+          "t_s": 2.259,
+          "CurrentTemperature": 29.923230548331407
+        },
+        {
+          "t_s": 2.51,
+          "CurrentTemperature": 30.489812112948766
+        },
+        {
+          "t_s": 2.763,
+          "CurrentTemperature": 31.011227718492695
+        },
+        {
+          "t_s": 3.011,
+          "CurrentTemperature": 31.490819425178138
+        },
+        {
+          "t_s": 3.262,
+          "CurrentTemperature": 31.93181109534464
+        },
+        {
+          "t_s": 3.511,
+          "CurrentTemperature": 32.337498460758006
+        },
+        {
+          "t_s": 3.762,
+          "CurrentTemperature": 32.71089823983428
+        },
+        {
+          "t_s": 4.013,
+          "CurrentTemperature": 33.05431838396851
+        },
+        {
+          "t_s": 4.262,
+          "CurrentTemperature": 33.37013634450316
+        },
+        {
+          "t_s": 4.513,
+          "CurrentTemperature": 33.66083177869885
+        },
+        {
+          "t_s": 4.764,
+          "CurrentTemperature": 33.928300773549566
+        },
+        {
+          "t_s": 5.014,
+          "CurrentTemperature": 34.17429013097829
+        },
+        {
+          "t_s": 5.264,
+          "CurrentTemperature": 34.400522945007744
+        },
+        {
+          "t_s": 5.514,
+          "CurrentTemperature": 34.60859330662399
+        },
+        {
+          "t_s": 5.765,
+          "CurrentTemperature": 34.800097310290894
+        },
+        {
+          "t_s": 6.016,
+          "CurrentTemperature": 34.97628160851718
+        },
+        {
+          "t_s": 6.266,
+          "CurrentTemperature": 35.138323255020026
+        },
+        {
+          "t_s": 6.516,
+          "CurrentTemperature": 35.287387469729644
+        },
+        {
+          "t_s": 6.766,
+          "CurrentTemperature": 35.42451756848059
+        },
+        {
+          "t_s": 7.017,
+          "CurrentTemperature": 35.550677726712145
+        },
+        {
+          "t_s": 7.268,
+          "CurrentTemperature": 35.66668952160344
+        },
+        {
+          "t_s": 7.518,
+          "CurrentTemperature": 35.77346087150855
+        },
+        {
+          "t_s": 7.769,
+          "CurrentTemperature": 35.87169141480037
+        },
+        {
+          "t_s": 8.019,
+          "CurrentTemperature": 35.96204710542102
+        },
+        {
+          "t_s": 8.269,
+          "CurrentTemperature": 36.045142838277044
+        },
+        {
+          "t_s": 8.52,
+          "CurrentTemperature": 36.121605498477685
+        },
+        {
+          "t_s": 8.77,
+          "CurrentTemperature": 36.19194087386705
+        },
+        {
+          "t_s": 9.02,
+          "CurrentTemperature": 36.2566443856854
+        },
+        {
+          "t_s": 9.27,
+          "CurrentTemperature": 36.31614525400292
+        },
+        {
+          "t_s": 9.52,
+          "CurrentTemperature": 36.37091684780108
+        },
+        {
+          "t_s": 9.771,
+          "CurrentTemperature": 36.421299519579684
+        },
+        {
+          "t_s": 10.022,
+          "CurrentTemperature": 36.46764569167911
+        },
+        {
+          "t_s": 10.272,
+          "CurrentTemperature": 36.51026340398365
+        }
+      ],
+      "error": null,
+      "marks_t0": false,
+      "start_after_t0_s": null
+    },
+    {
+      "id": "lh_init",
+      "device": "lh",
+      "command": "Initialize",
+      "params": {},
+      "depends_on": [],
+      "status": "succeeded",
+      "planned_start_s": null,
+      "start_s": 0.001,
+      "end_s": 0.209,
+      "duration_s": 0.208,
+      "late_s": null,
+      "start_wall": "2026-11-04T04:50:47.937+00:00",
+      "end_wall": "2026-11-04T04:50:48.145+00:00",
+      "responses": {
+        "Summary": "STAR twin initialised: 148 firmware commands exchanged with the simulator. Deck: tips (96 x 300 uL filter tips) on tip_car track 1; compounds (200 uL/well), nadph (200 uL/well), reaction (300 uL/well), quench (150 uL/well) on plate_car track 7.\n[Hamilton STAR] Connected on simulation (no link)\n  Firmware: master 7.6S 25 2021_11_05 (GRU C0), pipettes 4.0S j 2022-03-16, x_arm 1.4S 2012-04-25, head96 5.0S i 2021-10-22 (H0 XE167), iswap 4.1S 2011-12-19, autoload 3.4S f 2017-01-09\n  Arms: 1\n  Configuration: 54 slots\n  Autoload: 1D barcode scanner\n    left: hamilton_legacy_star_dual_rail_arm, 354.0 ... [752 chars; full data in results/*.json]"
+      },
+      "intermediate_count": 0,
+      "intermediates": [],
+      "error": null,
+      "marks_t0": false,
+      "start_after_t0_s": null
+    },
+    {
+      "id": "add_compound",
+      "device": "lh",
+      "command": "Transfer",
+      "params": {
+        "SourcePlate": "compounds",
+        "SourceColumn": 1,
+        "TargetPlate": "reaction",
+        "TargetColumn": 1,
+        "VolumeUl": 50.0
+      },
+      "depends_on": [
+        "lh_init"
+      ],
+      "status": "succeeded",
+      "planned_start_s": null,
+      "start_s": 0.21,
+      "end_s": 1.12,
+      "duration_s": 0.91,
+      "late_s": null,
+      "start_wall": "2026-11-04T04:50:48.145+00:00",
+      "end_wall": "2026-11-04T04:50:49.056+00:00",
+      "responses": {
+        "Message": "Transfer 50 uL compounds col 1 -> reaction col 1: done (pick up tips: tips column 1; aspirate 50 uL x8 from compounds column 1; dispense 50 uL x8 into reaction column 1; drop tips: back to their rack spots)."
+      },
+      "intermediate_count": 4,
+      "intermediates": [
+        {
+          "t_s": 0.282,
+          "Step": "1/4 pick up tips: tips column 1"
+        },
+        {
+          "t_s": 0.618,
+          "Step": "2/4 aspirate 50 uL x8 from compounds column 1"
+        },
+        {
+          "t_s": 0.765,
+          "Step": "3/4 dispense 50 uL x8 into reaction column 1"
+        },
+        {
+          "t_s": 0.912,
+          "Step": "4/4 drop tips: back to their rack spots"
+        }
+      ],
+      "error": null,
+      "marks_t0": false,
+      "start_after_t0_s": null
+    },
+    {
+      "id": "add_nadph",
+      "device": "lh",
+      "command": "Transfer",
+      "params": {
+        "SourcePlate": "nadph",
+        "SourceColumn": 1,
+        "TargetPlate": "reaction",
+        "TargetColumn": 1,
+        "VolumeUl": 50.0
+      },
+      "depends_on": [
+        "add_compound",
+        "heat_to_37"
+      ],
+      "status": "succeeded",
+      "planned_start_s": null,
+      "start_s": 10.277,
+      "end_s": 11.061,
+      "duration_s": 0.784,
+      "late_s": null,
+      "start_wall": "2026-11-04T04:50:58.212+00:00",
+      "end_wall": "2026-11-04T04:50:58.997+00:00",
+      "responses": {
+        "Message": "Transfer 50 uL nadph col 1 -> reaction col 1: done (pick up tips: tips column 2; aspirate 50 uL x8 from nadph column 1; dispense 50 uL x8 into reaction column 1; drop tips: back to their rack spots)."
+      },
+      "intermediate_count": 4,
+      "intermediates": [
+        {
+          "t_s": 10.312,
+          "Step": "1/4 pick up tips: tips column 2"
+        },
+        {
+          "t_s": 10.558,
+          "Step": "2/4 aspirate 50 uL x8 from nadph column 1"
+        },
+        {
+          "t_s": 10.726,
+          "Step": "3/4 dispense 50 uL x8 into reaction column 1"
+        },
+        {
+          "t_s": 10.845,
+          "Step": "4/4 drop tips: back to their rack spots"
+        }
+      ],
+      "error": null,
+      "marks_t0": true,
+      "start_after_t0_s": null
+    },
+    {
+      "id": "shake_start",
+      "device": "hhs",
+      "command": "StartShaking",
+      "params": {
+        "Speed": 600
+      },
+      "depends_on": [
+        "add_nadph"
+      ],
+      "status": "succeeded",
+      "planned_start_s": null,
+      "start_s": 11.061,
+      "end_s": 11.064,
+      "duration_s": 0.003,
+      "late_s": null,
+      "start_wall": "2026-11-04T04:50:58.997+00:00",
+      "end_wall": "2026-11-04T04:50:58.999+00:00",
+      "responses": {
+        "Message": "Shaking at 600 rpm (was 0 rpm)"
+      },
+      "intermediate_count": 0,
+      "intermediates": [],
+      "error": null,
+      "marks_t0": false,
+      "start_after_t0_s": null
+    },
+    {
+      "id": "stop_t0",
+      "device": "hhs",
+      "command": "StopShaking",
+      "params": {},
+      "depends_on": [
+        "shake_start"
+      ],
+      "status": "succeeded",
+      "planned_start_s": 11.061,
+      "start_s": 11.064,
+      "end_s": 11.066,
+      "duration_s": 0.002,
+      "late_s": 0.003,
+      "start_wall": "2026-11-04T04:50:59.000+00:00",
+      "end_wall": "2026-11-04T04:50:59.002+00:00",
+      "responses": {
+        "Message": "Shaking stopped (was 600 rpm)"
+      },
+      "intermediate_count": 0,
+      "intermediates": [],
+      "error": null,
+      "marks_t0": false,
+      "start_after_t0_s": 0
+    },
+    {
+      "id": "sample_t0",
+      "device": "lh",
+      "command": "Transfer",
+      "params": {
+        "SourcePlate": "reaction",
+        "SourceColumn": 1,
+        "TargetPlate": "quench",
+        "TargetColumn": 1,
+        "VolumeUl": 50.0
+      },
+      "depends_on": [
+        "stop_t0"
+      ],
+      "status": "succeeded",
+      "planned_start_s": null,
+      "start_s": 11.066,
+      "end_s": 11.93,
+      "duration_s": 0.864,
+      "late_s": null,
+      "start_wall": "2026-11-04T04:50:59.002+00:00",
+      "end_wall": "2026-11-04T04:50:59.866+00:00",
+      "responses": {
+        "Message": "Transfer 50 uL reaction col 1 -> quench col 1: done (pick up tips: tips column 3; aspirate 50 uL x8 from reaction column 1; dispense 50 uL x8 into quench column 1; drop tips: back to their rack spots)."
+      },
+      "intermediate_count": 4,
+      "intermediates": [
+        {
+          "t_s": 11.093,
+          "Step": "1/4 pick up tips: tips column 3"
+        },
+        {
+          "t_s": 11.373,
+          "Step": "2/4 aspirate 50 uL x8 from reaction column 1"
+        },
+        {
+          "t_s": 11.587,
+          "Step": "3/4 dispense 50 uL x8 into quench column 1"
+        },
+        {
+          "t_s": 11.692,
+          "Step": "4/4 drop tips: back to their rack spots"
+        }
+      ],
+      "error": null,
+      "marks_t0": false,
+      "start_after_t0_s": null
+    },
+    {
+      "id": "shake_t0",
+      "device": "hhs",
+      "command": "StartShaking",
+      "params": {
+        "Speed": 600
+      },
+      "depends_on": [
+        "sample_t0"
+      ],
+      "status": "succeeded",
+      "planned_start_s": null,
+      "start_s": 11.93,
+      "end_s": 11.932,
+      "duration_s": 0.002,
+      "late_s": null,
+      "start_wall": "2026-11-04T04:50:59.866+00:00",
+      "end_wall": "2026-11-04T04:50:59.868+00:00",
+      "responses": {
+        "Message": "Shaking at 600 rpm (was 0 rpm)"
+      },
+      "intermediate_count": 0,
+      "intermediates": [],
+      "error": null,
+      "marks_t0": false,
+      "start_after_t0_s": null
+    },
+    {
+      "id": "stop_t1",
+      "device": "hhs",
+      "command": "StopShaking",
+      "params": {},
+      "depends_on": [
+        "shake_t0"
+      ],
+      "status": "succeeded",
+      "planned_start_s": 13.061,
+      "start_s": 13.061,
+      "end_s": 13.064,
+      "duration_s": 0.003,
+      "late_s": 0.0,
+      "start_wall": "2026-11-04T04:51:00.997+00:00",
+      "end_wall": "2026-11-04T04:51:01.000+00:00",
+      "responses": {
+        "Message": "Shaking stopped (was 600 rpm)"
+      },
+      "intermediate_count": 0,
+      "intermediates": [],
+      "error": null,
+      "marks_t0": false,
+      "start_after_t0_s": 60
+    },
+    {
+      "id": "sample_t1",
+      "device": "lh",
+      "command": "Transfer",
+      "params": {
+        "SourcePlate": "reaction",
+        "SourceColumn": 1,
+        "TargetPlate": "quench",
+        "TargetColumn": 2,
+        "VolumeUl": 50.0
+      },
+      "depends_on": [
+        "stop_t1"
+      ],
+      "status": "succeeded",
+      "planned_start_s": null,
+      "start_s": 13.065,
+      "end_s": 13.89,
+      "duration_s": 0.825,
+      "late_s": null,
+      "start_wall": "2026-11-04T04:51:01.001+00:00",
+      "end_wall": "2026-11-04T04:51:01.826+00:00",
+      "responses": {
+        "Message": "Transfer 50 uL reaction col 1 -> quench col 2: done (pick up tips: tips column 4; aspirate 50 uL x8 from reaction column 1; dispense 50 uL x8 into quench column 2; drop tips: back to their rack spots)."
+      },
+      "intermediate_count": 4,
+      "intermediates": [
+        {
+          "t_s": 13.11,
+          "Step": "1/4 pick up tips: tips column 4"
+        },
+        {
+          "t_s": 13.348,
+          "Step": "2/4 aspirate 50 uL x8 from reaction column 1"
+        },
+        {
+          "t_s": 13.536,
+          "Step": "3/4 dispense 50 uL x8 into quench column 2"
+        },
+        {
+          "t_s": 13.66,
+          "Step": "4/4 drop tips: back to their rack spots"
+        }
+      ],
+      "error": null,
+      "marks_t0": false,
+      "start_after_t0_s": null
+    },
+    {
+      "id": "shake_t1",
+      "device": "hhs",
+      "command": "StartShaking",
+      "params": {
+        "Speed": 600
+      },
+      "depends_on": [
+        "sample_t1"
+      ],
+      "status": "succeeded",
+      "planned_start_s": null,
+      "start_s": 13.89,
+      "end_s": 13.893,
+      "duration_s": 0.003,
+      "late_s": null,
+      "start_wall": "2026-11-04T04:51:01.826+00:00",
+      "end_wall": "2026-11-04T04:51:01.829+00:00",
+      "responses": {
+        "Message": "Shaking at 600 rpm (was 0 rpm)"
+      },
+      "intermediate_count": 0,
+      "intermediates": [],
+      "error": null,
+      "marks_t0": false,
+      "start_after_t0_s": null
+    },
+    {
+      "id": "stop_t2",
+      "device": "hhs",
+      "command": "StopShaking",
+      "params": {},
+      "depends_on": [
+        "shake_t1"
+      ],
+      "status": "succeeded",
+      "planned_start_s": 15.061,
+      "start_s": 15.061,
+      "end_s": 15.064,
+      "duration_s": 0.003,
+      "late_s": 0.0,
+      "start_wall": "2026-11-04T04:51:02.997+00:00",
+      "end_wall": "2026-11-04T04:51:03.000+00:00",
+      "responses": {
+        "Message": "Shaking stopped (was 600 rpm)"
+      },
+      "intermediate_count": 0,
+      "intermediates": [],
+      "error": null,
+      "marks_t0": false,
+      "start_after_t0_s": 120
+    },
+    {
+      "id": "sample_t2",
+      "device": "lh",
+      "command": "Transfer",
+      "params": {
+        "SourcePlate": "reaction",
+        "SourceColumn": 1,
+        "TargetPlate": "quench",
+        "TargetColumn": 3,
+        "VolumeUl": 50.0
+      },
+      "depends_on": [
+        "stop_t2"
+      ],
+      "status": "succeeded",
+      "planned_start_s": null,
+      "start_s": 15.065,
+      "end_s": 15.882,
+      "duration_s": 0.817,
+      "late_s": null,
+      "start_wall": "2026-11-04T04:51:03.001+00:00",
+      "end_wall": "2026-11-04T04:51:03.818+00:00",
+      "responses": {
+        "Message": "Transfer 50 uL reaction col 1 -> quench col 3: done (pick up tips: tips column 5; aspirate 50 uL x8 from reaction column 1; dispense 50 uL x8 into quench column 3; drop tips: back to their rack spots)."
+      },
+      "intermediate_count": 4,
+      "intermediates": [
+        {
+          "t_s": 15.099,
+          "Step": "1/4 pick up tips: tips column 5"
+        },
+        {
+          "t_s": 15.335,
+          "Step": "2/4 aspirate 50 uL x8 from reaction column 1"
+        },
+        {
+          "t_s": 15.544,
+          "Step": "3/4 dispense 50 uL x8 into quench column 3"
+        },
+        {
+          "t_s": 15.651,
+          "Step": "4/4 drop tips: back to their rack spots"
+        }
+      ],
+      "error": null,
+      "marks_t0": false,
+      "start_after_t0_s": null
+    },
+    {
+      "id": "shake_t2",
+      "device": "hhs",
+      "command": "StartShaking",
+      "params": {
+        "Speed": 600
+      },
+      "depends_on": [
+        "sample_t2"
+      ],
+      "status": "succeeded",
+      "planned_start_s": null,
+      "start_s": 15.882,
+      "end_s": 15.885,
+      "duration_s": 0.003,
+      "late_s": null,
+      "start_wall": "2026-11-04T04:51:03.818+00:00",
+      "end_wall": "2026-11-04T04:51:03.821+00:00",
+      "responses": {
+        "Message": "Shaking at 600 rpm (was 0 rpm)"
+      },
+      "intermediate_count": 0,
+      "intermediates": [],
+      "error": null,
+      "marks_t0": false,
+      "start_after_t0_s": null
+    },
+    {
+      "id": "stop_t3",
+      "device": "hhs",
+      "command": "StopShaking",
+      "params": {},
+      "depends_on": [
+        "shake_t2"
+      ],
+      "status": "succeeded",
+      "planned_start_s": 17.061,
+      "start_s": 17.061,
+      "end_s": 17.065,
+      "duration_s": 0.004,
+      "late_s": 0.0,
+      "start_wall": "2026-11-04T04:51:04.997+00:00",
+      "end_wall": "2026-11-04T04:51:05.000+00:00",
+      "responses": {
+        "Message": "Shaking stopped (was 600 rpm)"
+      },
+      "intermediate_count": 0,
+      "intermediates": [],
+      "error": null,
+      "marks_t0": false,
+      "start_after_t0_s": 180
+    },
+    {
+      "id": "sample_t3",
+      "device": "lh",
+      "command": "Transfer",
+      "params": {
+        "SourcePlate": "reaction",
+        "SourceColumn": 1,
+        "TargetPlate": "quench",
+        "TargetColumn": 4,
+        "VolumeUl": 50.0
+      },
+      "depends_on": [
+        "stop_t3"
+      ],
+      "status": "succeeded",
+      "planned_start_s": null,
+      "start_s": 17.065,
+      "end_s": 17.916,
+      "duration_s": 0.851,
+      "late_s": null,
+      "start_wall": "2026-11-04T04:51:05.001+00:00",
+      "end_wall": "2026-11-04T04:51:05.852+00:00",
+      "responses": {
+        "Message": "Transfer 50 uL reaction col 1 -> quench col 4: done (pick up tips: tips column 6; aspirate 50 uL x8 from reaction column 1; dispense 50 uL x8 into quench column 4; drop tips: back to their rack spots)."
+      },
+      "intermediate_count": 4,
+      "intermediates": [
+        {
+          "t_s": 17.121,
+          "Step": "1/4 pick up tips: tips column 6"
+        },
+        {
+          "t_s": 17.367,
+          "Step": "2/4 aspirate 50 uL x8 from reaction column 1"
+        },
+        {
+          "t_s": 17.554,
+          "Step": "3/4 dispense 50 uL x8 into quench column 4"
+        },
+        {
+          "t_s": 17.681,
+          "Step": "4/4 drop tips: back to their rack spots"
+        }
+      ],
+      "error": null,
+      "marks_t0": false,
+      "start_after_t0_s": null
+    },
+    {
+      "id": "shake_t3",
+      "device": "hhs",
+      "command": "StartShaking",
+      "params": {
+        "Speed": 600
+      },
+      "depends_on": [
+        "sample_t3"
+      ],
+      "status": "succeeded",
+      "planned_start_s": null,
+      "start_s": 17.916,
+      "end_s": 17.919,
+      "duration_s": 0.003,
+      "late_s": null,
+      "start_wall": "2026-11-04T04:51:05.852+00:00",
+      "end_wall": "2026-11-04T04:51:05.855+00:00",
+      "responses": {
+        "Message": "Shaking at 600 rpm (was 0 rpm)"
+      },
+      "intermediate_count": 0,
+      "intermediates": [],
+      "error": null,
+      "marks_t0": false,
+      "start_after_t0_s": null
+    },
+    {
+      "id": "stop_t5",
+      "device": "hhs",
+      "command": "StopShaking",
+      "params": {},
+      "depends_on": [
+        "shake_t3"
+      ],
+      "status": "succeeded",
+      "planned_start_s": 21.061,
+      "start_s": 21.061,
+      "end_s": 21.064,
+      "duration_s": 0.003,
+      "late_s": 0.0,
+      "start_wall": "2026-11-04T04:51:08.997+00:00",
+      "end_wall": "2026-11-04T04:51:09.000+00:00",
+      "responses": {
+        "Message": "Shaking stopped (was 600 rpm)"
+      },
+      "intermediate_count": 0,
+      "intermediates": [],
+      "error": null,
+      "marks_t0": false,
+      "start_after_t0_s": 300
+    },
+    {
+      "id": "sample_t5",
+      "device": "lh",
+      "command": "Transfer",
+      "params": {
+        "SourcePlate": "reaction",
+        "SourceColumn": 1,
+        "TargetPlate": "quench",
+        "TargetColumn": 5,
+        "VolumeUl": 50.0
+      },
+      "depends_on": [
+        "stop_t5"
+      ],
+      "status": "succeeded",
+      "planned_start_s": null,
+      "start_s": 21.064,
+      "end_s": 21.868,
+      "duration_s": 0.804,
+      "late_s": null,
+      "start_wall": "2026-11-04T04:51:09.000+00:00",
+      "end_wall": "2026-11-04T04:51:09.804+00:00",
+      "responses": {
+        "Message": "Transfer 50 uL reaction col 1 -> quench col 5: done (pick up tips: tips column 7; aspirate 50 uL x8 from reaction column 1; dispense 50 uL x8 into quench column 5; drop tips: back to their rack spots)."
+      },
+      "intermediate_count": 4,
+      "intermediates": [
+        {
+          "t_s": 21.102,
+          "Step": "1/4 pick up tips: tips column 7"
+        },
+        {
+          "t_s": 21.333,
+          "Step": "2/4 aspirate 50 uL x8 from reaction column 1"
+        },
+        {
+          "t_s": 21.532,
+          "Step": "3/4 dispense 50 uL x8 into quench column 5"
+        },
+        {
+          "t_s": 21.641,
+          "Step": "4/4 drop tips: back to their rack spots"
+        }
+      ],
+      "error": null,
+      "marks_t0": false,
+      "start_after_t0_s": null
+    },
+    {
+      "id": "shake_t5",
+      "device": "hhs",
+      "command": "StartShaking",
+      "params": {
+        "Speed": 600
+      },
+      "depends_on": [
+        "sample_t5"
+      ],
+      "status": "succeeded",
+      "planned_start_s": null,
+      "start_s": 21.869,
+      "end_s": 21.871,
+      "duration_s": 0.002,
+      "late_s": null,
+      "start_wall": "2026-11-04T04:51:09.804+00:00",
+      "end_wall": "2026-11-04T04:51:09.807+00:00",
+      "responses": {
+        "Message": "Shaking at 600 rpm (was 0 rpm)"
+      },
+      "intermediate_count": 0,
+      "intermediates": [],
+      "error": null,
+      "marks_t0": false,
+      "start_after_t0_s": null
+    },
+    {
+      "id": "stop_final",
+      "device": "hhs",
+      "command": "StopShaking",
+      "params": {},
+      "depends_on": [
+        "shake_t5"
+      ],
+      "status": "succeeded",
+      "planned_start_s": null,
+      "start_s": 21.871,
+      "end_s": 21.873,
+      "duration_s": 0.002,
+      "late_s": null,
+      "start_wall": "2026-11-04T04:51:09.807+00:00",
+      "end_wall": "2026-11-04T04:51:09.808+00:00",
+      "responses": {
+        "Message": "Shaking stopped (was 600 rpm)"
+      },
+      "intermediate_count": 0,
+      "intermediates": [],
+      "error": null,
+      "marks_t0": false,
+      "start_after_t0_s": null
+    },
+    {
+      "id": "cool_to_22",
+      "device": "hhs",
+      "command": "SetTemperature",
+      "params": {
+        "TargetTemperature": 22.0
+      },
+      "depends_on": [
+        "stop_final"
+      ],
+      "status": "succeeded",
+      "planned_start_s": null,
+      "start_s": 21.873,
+      "end_s": 32.149,
+      "duration_s": 10.276,
+      "late_s": null,
+      "start_wall": "2026-11-04T04:51:09.809+00:00",
+      "end_wall": "2026-11-04T04:51:20.085+00:00",
+      "responses": {
+        "ReachedTemperature": 22.488792067119856
+      },
+      "intermediate_count": 42,
+      "intermediates": [
+        {
+          "t_s": 21.878,
+          "CurrentTemperature": 36.9892999983239
+        },
+        {
+          "t_s": 22.126,
+          "CurrentTemperature": 35.789897402438726
+        },
+        {
+          "t_s": 22.377,
+          "CurrentTemperature": 34.686079886978746
+        },
+        {
+          "t_s": 22.628,
+          "CurrentTemperature": 33.67032843905579
+        },
+        {
+          "t_s": 22.877,
+          "CurrentTemperature": 32.73599821300509
+        },
+        {
+          "t_s": 23.132,
+          "CurrentTemperature": 31.86672357564469
+        },
+        {
+          "t_s": 23.382,
+          "CurrentTemperature": 31.076461933530247
+        },
+        {
+          "t_s": 23.632,
+          "CurrentTemperature": 30.34948980484928
+        },
+        {
+          "t_s": 23.883,
+          "CurrentTemperature": 29.681133054740858
+        },
+        {
+          "t_s": 24.133,
+          "CurrentTemperature": 29.066276621721055
+        },
+        {
+          "t_s": 24.384,
+          "CurrentTemperature": 28.500410872864254
+        },
+        {
+          "t_s": 24.634,
+          "CurrentTemperature": 27.979940310835627
+        },
+        {
+          "t_s": 24.883,
+          "CurrentTemperature": 27.5011591291073
+        },
+        {
+          "t_s": 25.134,
+          "CurrentTemperature": 27.06078324141397
+        },
+        {
+          "t_s": 25.384,
+          "CurrentTemperature": 26.6556566917168
+        },
+        {
+          "t_s": 25.635,
+          "CurrentTemperature": 26.28293890978192
+        },
+        {
+          "t_s": 25.885,
+          "CurrentTemperature": 25.93999402619151
+        },
+        {
+          "t_s": 26.135,
+          "CurrentTemperature": 25.624450847359004
+        },
+        {
+          "t_s": 26.387,
+          "CurrentTemperature": 25.334355731610636
+        },
+        {
+          "t_s": 26.637,
+          "CurrentTemperature": 25.067071556955547
+        },
+        {
+          "t_s": 26.887,
+          "CurrentTemperature": 24.821479686270123
+        },
+        {
+          "t_s": 27.139,
+          "CurrentTemperature": 24.595527374437943
+        },
+        {
+          "t_s": 27.388,
+          "CurrentTemperature": 24.38768341338067
+        },
+        {
+          "t_s": 27.638,
+          "CurrentTemperature": 24.1965141367488
+        },
+        {
+          "t_s": 27.889,
+          "CurrentTemperature": 24.020656031547908
+        },
+        {
+          "t_s": 28.138,
+          "CurrentTemperature": 23.858933159073985
+        },
+        {
+          "t_s": 28.389,
+          "CurrentTemperature": 23.710060093190542
+        },
+        {
+          "t_s": 28.64,
+          "CurrentTemperature": 23.573111423265683
+        },
+        {
+          "t_s": 28.89,
+          "CurrentTemperature": 23.44719164101827
+        },
+        {
+          "t_s": 29.14,
+          "CurrentTemperature": 23.331301879341655
+        },
+        {
+          "t_s": 29.391,
+          "CurrentTemperature": 23.224746382800756
+        },
+        {
+          "t_s": 29.642,
+          "CurrentTemperature": 23.126322926492847
+        },
+        {
+          "t_s": 29.892,
+          "CurrentTemperature": 23.036154456261702
+        },
+        {
+          "t_s": 30.144,
+          "CurrentTemperature": 22.952945311226188
+        },
+        {
+          "t_s": 30.395,
+          "CurrentTemperature": 22.876637978154097
+        },
+        {
+          "t_s": 30.644,
+          "CurrentTemperature": 22.806450195214133
+        },
+        {
+          "t_s": 30.894,
+          "CurrentTemperature": 22.74188517394466
+        },
+        {
+          "t_s": 31.145,
+          "CurrentTemperature": 22.682496335009937
+        },
+        {
+          "t_s": 31.395,
+          "CurrentTemperature": 22.627866004933985
+        },
+        {
+          "t_s": 31.645,
+          "CurrentTemperature": 22.57759448732564
+        },
+        {
+          "t_s": 31.896,
+          "CurrentTemperature": 22.531341394472353
+        },
+        {
+          "t_s": 32.147,
+          "CurrentTemperature": 22.488792067119856
+        }
+      ],
+      "error": null,
+      "marks_t0": false,
+      "start_after_t0_s": null
+    },
+    {
+      "id": "volumes_compounds",
+      "device": "lh",
+      "command": "GetWellVolumes",
+      "params": {
+        "Plate": "compounds"
+      },
+      "depends_on": [
+        "sample_t5"
+      ],
+      "status": "succeeded",
+      "planned_start_s": null,
+      "start_s": 21.868,
+      "end_s": 21.872,
+      "duration_s": 0.004,
+      "late_s": null,
+      "start_wall": "2026-11-04T04:51:09.804+00:00",
+      "end_wall": "2026-11-04T04:51:09.807+00:00",
+      "responses": {
+        "VolumesJson": "{\"A1\": 150.0, \"A2\": 200.0, \"A3\": 200.0, \"A4\": 200.0, \"A5\": 200.0, \"A6\": 200.0, \"A7\": 200.0, \"A8\": 200.0, \"A9\": 200.0, \"A10\": 200.0, \"A11\": 200.0, \"A12\": 200.0, \"B1\": 150.0, \"B2\": 200.0, \"B3\": 200.0, \"B4\": 200.0, \"B5\": 200.0, \"B6\": 200.0, \"B7\": 200.0, \"B8\": 200.0, \"B9\": 200.0, \"B10\": 200.0, \"B11\": 200.0, \"B12\": 200.0, \"C1\": 150.0, \"C2\": 200.0, \"C3\": 200.0, \"C4\": 200.0, \"C5\": 200.0, \"C6\": 200.0, \"C7\": 200.0, \"C8\": 200.0, \"C9\": 200.0, \"C10\": 200.0, \"C11\": 200.0, \"C12\": 200.0, \"D1\": 150.0, \"D2\": 200.0, \"D3\": 200.0, \"D4\": 200.0, \"D5\": 200.0, \"D6\": 200.0, \"D7\": 200.0, \"D8\": 200.0, \"D9\": 200.0, \"D10\"... [1272 chars; full data in results/*.json]"
+      },
+      "intermediate_count": 0,
+      "intermediates": [],
+      "error": null,
+      "marks_t0": false,
+      "start_after_t0_s": null
+    },
+    {
+      "id": "volumes_nadph",
+      "device": "lh",
+      "command": "GetWellVolumes",
+      "params": {
+        "Plate": "nadph"
+      },
+      "depends_on": [
+        "sample_t5"
+      ],
+      "status": "succeeded",
+      "planned_start_s": null,
+      "start_s": 21.872,
+      "end_s": 21.874,
+      "duration_s": 0.002,
+      "late_s": null,
+      "start_wall": "2026-11-04T04:51:09.808+00:00",
+      "end_wall": "2026-11-04T04:51:09.810+00:00",
+      "responses": {
+        "VolumesJson": "{\"A1\": 150.0, \"A2\": 200.0, \"A3\": 200.0, \"A4\": 200.0, \"A5\": 200.0, \"A6\": 200.0, \"A7\": 200.0, \"A8\": 200.0, \"A9\": 200.0, \"A10\": 200.0, \"A11\": 200.0, \"A12\": 200.0, \"B1\": 150.0, \"B2\": 200.0, \"B3\": 200.0, \"B4\": 200.0, \"B5\": 200.0, \"B6\": 200.0, \"B7\": 200.0, \"B8\": 200.0, \"B9\": 200.0, \"B10\": 200.0, \"B11\": 200.0, \"B12\": 200.0, \"C1\": 150.0, \"C2\": 200.0, \"C3\": 200.0, \"C4\": 200.0, \"C5\": 200.0, \"C6\": 200.0, \"C7\": 200.0, \"C8\": 200.0, \"C9\": 200.0, \"C10\": 200.0, \"C11\": 200.0, \"C12\": 200.0, \"D1\": 150.0, \"D2\": 200.0, \"D3\": 200.0, \"D4\": 200.0, \"D5\": 200.0, \"D6\": 200.0, \"D7\": 200.0, \"D8\": 200.0, \"D9\": 200.0, \"D10\"... [1272 chars; full data in results/*.json]"
+      },
+      "intermediate_count": 0,
+      "intermediates": [],
+      "error": null,
+      "marks_t0": false,
+      "start_after_t0_s": null
+    },
+    {
+      "id": "volumes_reaction",
+      "device": "lh",
+      "command": "GetWellVolumes",
+      "params": {
+        "Plate": "reaction"
+      },
+      "depends_on": [
+        "sample_t5"
+      ],
+      "status": "succeeded",
+      "planned_start_s": null,
+      "start_s": 21.874,
+      "end_s": 21.877,
+      "duration_s": 0.003,
+      "late_s": null,
+      "start_wall": "2026-11-04T04:51:09.810+00:00",
+      "end_wall": "2026-11-04T04:51:09.813+00:00",
+      "responses": {
+        "VolumesJson": "{\"A1\": 150.0, \"A2\": 300.0, \"A3\": 300.0, \"A4\": 300.0, \"A5\": 300.0, \"A6\": 300.0, \"A7\": 300.0, \"A8\": 300.0, \"A9\": 300.0, \"A10\": 300.0, \"A11\": 300.0, \"A12\": 300.0, \"B1\": 150.0, \"B2\": 300.0, \"B3\": 300.0, \"B4\": 300.0, \"B5\": 300.0, \"B6\": 300.0, \"B7\": 300.0, \"B8\": 300.0, \"B9\": 300.0, \"B10\": 300.0, \"B11\": 300.0, \"B12\": 300.0, \"C1\": 150.0, \"C2\": 300.0, \"C3\": 300.0, \"C4\": 300.0, \"C5\": 300.0, \"C6\": 300.0, \"C7\": 300.0, \"C8\": 300.0, \"C9\": 300.0, \"C10\": 300.0, \"C11\": 300.0, \"C12\": 300.0, \"D1\": 150.0, \"D2\": 300.0, \"D3\": 300.0, \"D4\": 300.0, \"D5\": 300.0, \"D6\": 300.0, \"D7\": 300.0, \"D8\": 300.0, \"D9\": 300.0, \"D10\"... [1272 chars; full data in results/*.json]"
+      },
+      "intermediate_count": 0,
+      "intermediates": [],
+      "error": null,
+      "marks_t0": false,
+      "start_after_t0_s": null
+    },
+    {
+      "id": "volumes_quench",
+      "device": "lh",
+      "command": "GetWellVolumes",
+      "params": {
+        "Plate": "quench"
+      },
+      "depends_on": [
+        "sample_t5"
+      ],
+      "status": "succeeded",
+      "planned_start_s": null,
+      "start_s": 21.877,
+      "end_s": 21.88,
+      "duration_s": 0.003,
+      "late_s": null,
+      "start_wall": "2026-11-04T04:51:09.813+00:00",
+      "end_wall": "2026-11-04T04:51:09.816+00:00",
+      "responses": {
+        "VolumesJson": "{\"A1\": 200.0, \"A2\": 200.0, \"A3\": 200.0, \"A4\": 200.0, \"A5\": 200.0, \"A6\": 150.0, \"A7\": 150.0, \"A8\": 150.0, \"A9\": 150.0, \"A10\": 150.0, \"A11\": 150.0, \"A12\": 150.0, \"B1\": 200.0, \"B2\": 200.0, \"B3\": 200.0, \"B4\": 200.0, \"B5\": 200.0, \"B6\": 150.0, \"B7\": 150.0, \"B8\": 150.0, \"B9\": 150.0, \"B10\": 150.0, \"B11\": 150.0, \"B12\": 150.0, \"C1\": 200.0, \"C2\": 200.0, \"C3\": 200.0, \"C4\": 200.0, \"C5\": 200.0, \"C6\": 150.0, \"C7\": 150.0, \"C8\": 150.0, \"C9\": 150.0, \"C10\": 150.0, \"C11\": 150.0, \"C12\": 150.0, \"D1\": 200.0, \"D2\": 200.0, \"D3\": 200.0, \"D4\": 200.0, \"D5\": 200.0, \"D6\": 150.0, \"D7\": 150.0, \"D8\": 150.0, \"D9\": 150.0, \"D10\"... [1272 chars; full data in results/*.json]"
+      },
+      "intermediate_count": 0,
+      "intermediates": [],
+      "error": null,
+      "marks_t0": false,
+      "start_after_t0_s": null
+    },
+    {
+      "id": "firmware_trace",
+      "device": "lh",
+      "command": "GetFirmwareTrace",
+      "params": {
+        "SinceIndex": 0
+      },
+      "depends_on": [
+        "volumes_quench"
+      ],
+      "status": "succeeded",
+      "planned_start_s": null,
+      "start_s": 21.88,
+      "end_s": 21.887,
+      "duration_s": 0.007,
+      "late_s": null,
+      "start_wall": "2026-11-04T04:51:09.816+00:00",
+      "end_wall": "2026-11-04T04:51:09.823+00:00",
+      "responses": {
+        "TraceJson": "[{\"index\": 0, \"time\": \"2026-11-04T04:50:48.002+00:00\", \"command\": \"C0RM\", \"reply\": null, \"operation\": \"Initialize\"}, {\"index\": 1, \"time\": \"2026-11-04T04:50:48.002+00:00\", \"command\": \"C0QM\", \"reply\": null, \"operation\": \"Initialize\"}, {\"index\": 2, \"time\": \"2026-11-04T04:50:48.002+00:00\", \"command\": \"C0RU\", \"reply\": \"simulation: ru950 13402 0 0 from model the declared arms' X ranges\", \"operation\": \"Initialize\"}, {\"index\": 3, \"time\": \"2026-11-04T04:50:48.002+00:00\", \"command\": \"C0UA\", \"reply\": \"simulation: ua5952 0 -3232 15172 0 0 from model the declared arms' envelopes\", \"operation\": \"Initialize\"... [208667 chars; full data in results/*.json]"
+      },
+      "intermediate_count": 0,
+      "intermediates": [],
+      "error": null,
+      "marks_t0": false,
+      "start_after_t0_s": null
+    }
+  ]
+}

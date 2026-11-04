@@ -1,0 +1,8 @@
+2026-11-04 04:52:59,238:INFO:hhs_twin.twin:Heater-shaker twin ready: T=22.00 C, setpoint 22.00 C, shaker stopped
+2026-11-04 04:52:59,238:WARNING:sila2.server.sila_server:Starting SiLA server without encryption
+2026-11-04 04:52:59,242:INFO:__main__:Server startup complete
+2026-11-04 04:53:00,163:INFO:hhs_twin.twin:Setpoint -> 37.00 C (T=22.00 C, expect ~10.2 s real)
+2026-11-04 04:53:10,436:INFO:hhs_twin.twin:SetTemperature 37.00 C done: T=36.51 C
+2026-11-04 04:53:10,526:INFO:hhs_twin.twin:Setpoint reached: T=36.53 C (setpoint 37.00 C)
+2026-11-04 04:53:11,223:INFO:hhs_twin.twin:Shaking: 0 -> 600 rpm
+2026-11-04 04:53:11,225:INFO:hhs_twin.twin:Shaking stopped (was 600 rpm)
