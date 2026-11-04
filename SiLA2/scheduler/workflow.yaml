@@ -1,0 +1,122 @@
+# Mini microsomal-stability run (time-compressed teaching POC).
+#
+# Biology in one paragraph: test compound is added to liver microsomes at 37 C, NADPH is
+# added to start the metabolic reaction (= t0), and at fixed time points an aliquot of the
+# reaction is pipetted into cold acetonitrile ("quench") which stops it. Later (not part of
+# this POC) the quench plate goes to LC-MS and the compound remaining over time gives the
+# intrinsic clearance.
+#
+# Step fields (the scheduler contract, see scheduler/scheduler.py):
+#   id               unique step name
+#   device           a key of `devices` below (one worker lane per device)
+#   command          SiLA command identifier from the feature definition (features/*.sila.xml)
+#   params           SiLA parameter identifiers -> values (omit for parameterless commands)
+#   depends_on       step ids that must have finished successfully first
+#   start_after_t0_s earliest start, in WORKFLOW seconds after t0 (scaled by time_scale below)
+#   marks_t0         true on the one step whose completion defines t0
+#
+# Time compression: 1 workflow minute = `real_seconds_per_workflow_minute` real seconds, so
+# the 5-minute time point (start_after_t0_s: 300) is due 10 real seconds after t0.
+
+name: mini microsomal stability (1 compound, 5 time points)
+time_scale:
+  real_seconds_per_workflow_minute: 2.0
+
+devices:
+  lh:
+    description: Hamilton STAR digital twin (PyLabRobot simulator) via SiLA 2
+    host: 127.0.0.1
+    port: 50052
+    feature: LiquidHandlerService
+  hhs:
+    description: Heater-shaker digital twin (first-order thermal model) via SiLA 2
+    host: 127.0.0.1
+    port: 50053
+    feature: HeaterShakerService
+
+steps:
+  # 1. Both lanes start at once: heat the reaction block while the STAR initialises.
+  - id: heat_to_37
+    device: hhs
+    command: SetTemperature
+    params: {TargetTemperature: 37.0}
+
+  - id: lh_init
+    device: lh
+    command: Initialize
+
+  # 2. Compound into the microsomes (reaction plate, column 1).
+  - id: add_compound
+    device: lh
+    command: Transfer
+    params: {SourcePlate: compounds, SourceColumn: 1, TargetPlate: reaction, TargetColumn: 1, VolumeUl: 50.0}
+    depends_on: [lh_init]
+
+  # 3./4. Only once the block is at 37 C: NADPH starts the reaction. Its completion is t0.
+  - id: add_nadph
+    device: lh
+    command: Transfer
+    params: {SourcePlate: nadph, SourceColumn: 1, TargetPlate: reaction, TargetColumn: 1, VolumeUl: 50.0}
+    depends_on: [add_compound, heat_to_37]
+    marks_t0: true
+
+  # 5. Incubate with shaking.
+  - id: shake_start
+    device: hhs
+    command: StartShaking
+    params: {Speed: 600}
+    depends_on: [add_nadph]
+
+  # 6. Time points t = 0, 1, 2, 3, 5 min -> quench columns 1..5.
+  #    Each: stop shaking, sample 50 uL into cold acetonitrile, resume shaking.
+  - {id: stop_t0, device: hhs, command: StopShaking, depends_on: [shake_start], start_after_t0_s: 0}
+  - id: sample_t0
+    device: lh
+    command: Transfer
+    params: {SourcePlate: reaction, SourceColumn: 1, TargetPlate: quench, TargetColumn: 1, VolumeUl: 50.0}
+    depends_on: [stop_t0]
+  - {id: shake_t0, device: hhs, command: StartShaking, params: {Speed: 600}, depends_on: [sample_t0]}
+
+  - {id: stop_t1, device: hhs, command: StopShaking, depends_on: [shake_t0], start_after_t0_s: 60}
+  - id: sample_t1
+    device: lh
+    command: Transfer
+    params: {SourcePlate: reaction, SourceColumn: 1, TargetPlate: quench, TargetColumn: 2, VolumeUl: 50.0}
+    depends_on: [stop_t1]
+  - {id: shake_t1, device: hhs, command: StartShaking, params: {Speed: 600}, depends_on: [sample_t1]}
+
+  - {id: stop_t2, device: hhs, command: StopShaking, depends_on: [shake_t1], start_after_t0_s: 120}
+  - id: sample_t2
+    device: lh
+    command: Transfer
+    params: {SourcePlate: reaction, SourceColumn: 1, TargetPlate: quench, TargetColumn: 3, VolumeUl: 50.0}
+    depends_on: [stop_t2]
+  - {id: shake_t2, device: hhs, command: StartShaking, params: {Speed: 600}, depends_on: [sample_t2]}
+
+  - {id: stop_t3, device: hhs, command: StopShaking, depends_on: [shake_t2], start_after_t0_s: 180}
+  - id: sample_t3
+    device: lh
+    command: Transfer
+    params: {SourcePlate: reaction, SourceColumn: 1, TargetPlate: quench, TargetColumn: 4, VolumeUl: 50.0}
+    depends_on: [stop_t3]
+  - {id: shake_t3, device: hhs, command: StartShaking, params: {Speed: 600}, depends_on: [sample_t3]}
+
+  - {id: stop_t5, device: hhs, command: StopShaking, depends_on: [shake_t3], start_after_t0_s: 300}
+  - id: sample_t5
+    device: lh
+    command: Transfer
+    params: {SourcePlate: reaction, SourceColumn: 1, TargetPlate: quench, TargetColumn: 5, VolumeUl: 50.0}
+    depends_on: [stop_t5]
+
+  - {id: shake_t5, device: hhs, command: StartShaking, params: {Speed: 600}, depends_on: [sample_t5]}
+
+  # 7. Wind down: stop shaking and cool the block back to room temperature.
+  - {id: stop_final, device: hhs, command: StopShaking, depends_on: [shake_t5]}
+  - {id: cool_to_22, device: hhs, command: SetTemperature, params: {TargetTemperature: 22.0}, depends_on: [stop_final]}
+
+  # 8. Read back the twin's state (run_demo.py also fetches these in full for results/).
+  - {id: volumes_compounds, device: lh, command: GetWellVolumes, params: {Plate: compounds}, depends_on: [sample_t5]}
+  - {id: volumes_nadph, device: lh, command: GetWellVolumes, params: {Plate: nadph}, depends_on: [sample_t5]}
+  - {id: volumes_reaction, device: lh, command: GetWellVolumes, params: {Plate: reaction}, depends_on: [sample_t5]}
+  - {id: volumes_quench, device: lh, command: GetWellVolumes, params: {Plate: quench}, depends_on: [sample_t5]}
+  - {id: firmware_trace, device: lh, command: GetFirmwareTrace, params: {SinceIndex: 0}, depends_on: [volumes_quench]}

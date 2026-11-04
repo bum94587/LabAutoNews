@@ -98,7 +98,9 @@ def main(
         return
 
     logger.info("Server startup complete")
-    signal.signal(signal.SIGTERM, lambda *args: server.grpc_server.stop())
+    # Fix (hhs_twin): grpc.Server.stop() requires a `grace` argument; the generated handler
+    # called it without one, so SIGTERM raised TypeError and left the process hanging.
+    signal.signal(signal.SIGTERM, lambda *args: server.grpc_server.stop(None))
 
     with contextlib.suppress(KeyboardInterrupt):
         server.grpc_server.wait_for_termination()

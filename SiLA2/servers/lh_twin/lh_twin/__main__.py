@@ -98,7 +98,8 @@ def main(
         return
 
     logger.info("Server startup complete")
-    signal.signal(signal.SIGTERM, lambda *args: server.grpc_server.stop())
+    # grpc.Server.stop needs its grace argument (None = abort ongoing calls now)
+    signal.signal(signal.SIGTERM, lambda *args: server.grpc_server.stop(None))
 
     with contextlib.suppress(KeyboardInterrupt):
         server.grpc_server.wait_for_termination()

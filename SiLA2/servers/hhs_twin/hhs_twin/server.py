@@ -16,15 +16,18 @@ class Server(SilaServer):
         name: Optional[str] = None,
         description: Optional[str] = None,
     ):
-        # TODO: fill in your server information
+        # Server information, reported to clients through the mandatory SiLAService feature.
         if name is None:
-            name = "TODO"
+            name = "HHS Twin"
         if description is None:
-            description = "TODO"
+            description = (
+                "Heater-shaker digital twin (first-order thermal model, tau 30 s, 10x accelerated time) "
+                "for the LabAutoNews SiLA 2 POC. Simulation only, no hardware."
+            )
         super().__init__(
             server_name=name,
             server_description=description,
-            server_type="TODO",
+            server_type="HeaterShakerTwin",
             server_version="0.1",
             server_vendor_url="https://gitlab.com/SiLA2/sila_python",
             server_uuid=server_uuid if server_uuid is not None else uuid4(),
