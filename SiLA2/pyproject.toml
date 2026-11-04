@@ -1,0 +1,27 @@
+[project]
+name = "labautonews-sila2-twin"
+version = "0.1.0"
+description = "POC: SiLA 2 virtual drivers for a Hamilton STAR digital twin (PyLabRobot simulator) and a heater-shaker twin, run by a small scheduler"
+requires-python = ">=3.12"
+dependencies = [
+    "hhs-twin",
+    "lh-twin",
+    "matplotlib>=3.11.2",
+    "pylabrobot",
+    "pyyaml>=6.0.3",
+    "sila2[codegen]==0.14.0",
+]
+
+[tool.uv]
+package = false
+
+[tool.uv.sources]
+pylabrobot = { git = "https://github.com/PyLabRobot/pylabrobot", rev = "7779f506d12755f5f274b4c5cab4d095f4fccb62" }
+lh-twin = { workspace = true, editable = true }
+hhs-twin = { workspace = true, editable = true }
+
+[tool.uv.workspace]
+members = [
+    "servers/lh_twin",
+    "servers/hhs_twin",
+]

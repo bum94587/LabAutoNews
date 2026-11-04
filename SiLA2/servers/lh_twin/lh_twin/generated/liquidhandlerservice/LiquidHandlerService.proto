@@ -1,0 +1,156 @@
+syntax = "proto3";
+
+import "SiLAFramework.proto";
+
+package sila2.org.labautonews.liquidhandling.liquidhandlerservice.v1;
+
+/* Column-wise (8-channel) liquid handling on a Hamilton STAR digital twin: PyLabRobot's v1 STAR firmware-level simulator plus its resource and volume model. */
+service LiquidHandlerService {
+  /* Set up the STAR twin: run firmware discovery and initialisation against the simulator and load the POC deck layout. */
+  rpc Initialize (sila2.org.labautonews.liquidhandling.liquidhandlerservice.v1.Initialize_Parameters) returns (sila2.org.labautonews.liquidhandling.liquidhandlerservice.v1.Initialize_Responses) {}
+  /* Return the deck as JSON: carriers, plates, tip racks and their locations. */
+  rpc GetDeckLayout (sila2.org.labautonews.liquidhandling.liquidhandlerservice.v1.GetDeckLayout_Parameters) returns (sila2.org.labautonews.liquidhandling.liquidhandlerservice.v1.GetDeckLayout_Responses) {}
+  /* Pick up 8 tips from one column of a tip rack. */
+  rpc PickUpTips (sila2.org.labautonews.liquidhandling.liquidhandlerservice.v1.PickUpTips_Parameters) returns (sila2.org.labautonews.liquidhandling.liquidhandlerservice.v1.PickUpTips_Responses) {}
+  /* Aspirate the same volume with 8 channels from one plate column. */
+  rpc Aspirate (sila2.org.labautonews.liquidhandling.liquidhandlerservice.v1.Aspirate_Parameters) returns (sila2.org.labautonews.liquidhandling.liquidhandlerservice.v1.Aspirate_Responses) {}
+  /* Dispense the same volume with 8 channels into one plate column. */
+  rpc Dispense (sila2.org.labautonews.liquidhandling.liquidhandlerservice.v1.Dispense_Parameters) returns (sila2.org.labautonews.liquidhandling.liquidhandlerservice.v1.Dispense_Responses) {}
+  /* Return the mounted tips to the spots they came from. */
+  rpc DropTips (sila2.org.labautonews.liquidhandling.liquidhandlerservice.v1.DropTips_Parameters) returns (sila2.org.labautonews.liquidhandling.liquidhandlerservice.v1.DropTips_Responses) {}
+  /* Pick up fresh tips, aspirate from a source column, dispense into a target column, drop tips. Observable: reports each step. */
+  rpc Transfer (sila2.org.labautonews.liquidhandling.liquidhandlerservice.v1.Transfer_Parameters) returns (sila2.org.silastandard.CommandConfirmation) {}
+  /* Monitor the state of Transfer */
+  rpc Transfer_Info (sila2.org.silastandard.CommandExecutionUUID) returns (stream sila2.org.silastandard.ExecutionInfo) {}
+  /* Retrieve intermediate responses of Transfer */
+  rpc Transfer_Intermediate (sila2.org.silastandard.CommandExecutionUUID) returns (stream sila2.org.labautonews.liquidhandling.liquidhandlerservice.v1.Transfer_IntermediateResponses) {}
+  /* Retrieve result of Transfer */
+  rpc Transfer_Result(sila2.org.silastandard.CommandExecutionUUID) returns (sila2.org.labautonews.liquidhandling.liquidhandlerservice.v1.Transfer_Responses) {}
+  /* Return the twin's tracked volume (uL) of every well of a plate, as JSON {well: volume}. */
+  rpc GetWellVolumes (sila2.org.labautonews.liquidhandling.liquidhandlerservice.v1.GetWellVolumes_Parameters) returns (sila2.org.labautonews.liquidhandling.liquidhandlerservice.v1.GetWellVolumes_Responses) {}
+  /* Return Hamilton firmware command strings the twin has sent to the simulated instrument, from an index on, as JSON list. */
+  rpc GetFirmwareTrace (sila2.org.labautonews.liquidhandling.liquidhandlerservice.v1.GetFirmwareTrace_Parameters) returns (sila2.org.labautonews.liquidhandling.liquidhandlerservice.v1.GetFirmwareTrace_Responses) {}
+  /* Model, driver and simulator description of the twin */
+  rpc Get_InstrumentInfo (sila2.org.labautonews.liquidhandling.liquidhandlerservice.v1.Get_InstrumentInfo_Parameters) returns (sila2.org.labautonews.liquidhandling.liquidhandlerservice.v1.Get_InstrumentInfo_Responses) {}
+  /* idle, busy or error, with the current operation */
+  rpc Subscribe_Status (sila2.org.labautonews.liquidhandling.liquidhandlerservice.v1.Subscribe_Status_Parameters) returns (stream sila2.org.labautonews.liquidhandling.liquidhandlerservice.v1.Subscribe_Status_Responses) {}
+}
+
+/* Parameters for Initialize */
+message Initialize_Parameters {
+}
+
+/* Responses of Initialize */
+message Initialize_Responses {
+  sila2.org.silastandard.String Summary = 1;  /* Instrument and deck summary */
+}
+
+/* Parameters for GetDeckLayout */
+message GetDeckLayout_Parameters {
+}
+
+/* Responses of GetDeckLayout */
+message GetDeckLayout_Responses {
+  sila2.org.silastandard.String DeckLayoutJson = 1;  /* Deck tree as JSON */
+}
+
+/* Parameters for PickUpTips */
+message PickUpTips_Parameters {
+  sila2.org.silastandard.String TipRack = 1;  /* Tip rack resource name */
+  sila2.org.silastandard.Integer Column = 2;  /* Column number, 1-12 */
+}
+
+/* Responses of PickUpTips */
+message PickUpTips_Responses {
+  sila2.org.silastandard.String Message = 1;  /* Human-readable summary of what the digital twin did */
+}
+
+/* Parameters for Aspirate */
+message Aspirate_Parameters {
+  sila2.org.silastandard.String Plate = 1;  /* Plate resource name */
+  sila2.org.silastandard.Integer Column = 2;  /* Column number, 1-12 */
+  sila2.org.silastandard.Real VolumeUl = 3;  /* Volume per channel in microlitres */
+}
+
+/* Responses of Aspirate */
+message Aspirate_Responses {
+  sila2.org.silastandard.String Message = 1;  /* Human-readable summary of what the digital twin did */
+}
+
+/* Parameters for Dispense */
+message Dispense_Parameters {
+  sila2.org.silastandard.String Plate = 1;  /* Plate resource name */
+  sila2.org.silastandard.Integer Column = 2;  /* Column number, 1-12 */
+  sila2.org.silastandard.Real VolumeUl = 3;  /* Volume per channel in microlitres */
+}
+
+/* Responses of Dispense */
+message Dispense_Responses {
+  sila2.org.silastandard.String Message = 1;  /* Human-readable summary of what the digital twin did */
+}
+
+/* Parameters for DropTips */
+message DropTips_Parameters {
+}
+
+/* Responses of DropTips */
+message DropTips_Responses {
+  sila2.org.silastandard.String Message = 1;  /* Human-readable summary of what the digital twin did */
+}
+
+/* Parameters for Transfer */
+message Transfer_Parameters {
+  sila2.org.silastandard.String SourcePlate = 1;  /* Source plate name */
+  sila2.org.silastandard.Integer SourceColumn = 2;  /* 1-12 */
+  sila2.org.silastandard.String TargetPlate = 3;  /* Target plate name */
+  sila2.org.silastandard.Integer TargetColumn = 4;  /* 1-12 */
+  sila2.org.silastandard.Real VolumeUl = 5;  /* Volume per channel in microlitres */
+}
+
+/* Responses of Transfer */
+message Transfer_Responses {
+  sila2.org.silastandard.String Message = 1;  /* Human-readable summary of what the digital twin did */
+}
+
+/* Intermediate responses of Transfer */
+message Transfer_IntermediateResponses {
+  sila2.org.silastandard.String Step = 1;  /* The sub-step now running */
+}
+
+/* Parameters for GetWellVolumes */
+message GetWellVolumes_Parameters {
+  sila2.org.silastandard.String Plate = 1;  /* Plate resource name */
+}
+
+/* Responses of GetWellVolumes */
+message GetWellVolumes_Responses {
+  sila2.org.silastandard.String VolumesJson = 1;  /* Well volumes as JSON */
+}
+
+/* Parameters for GetFirmwareTrace */
+message GetFirmwareTrace_Parameters {
+  sila2.org.silastandard.Integer SinceIndex = 1;  /* First trace index to return (0 = all) */
+}
+
+/* Responses of GetFirmwareTrace */
+message GetFirmwareTrace_Responses {
+  sila2.org.silastandard.String TraceJson = 1;  /* List of {index, time, command, reply} */
+}
+
+/* Parameters for InstrumentInfo */
+message Get_InstrumentInfo_Parameters {
+}
+
+/* Responses of InstrumentInfo */
+message Get_InstrumentInfo_Responses {
+  sila2.org.silastandard.String InstrumentInfo = 1;  /* Model, driver and simulator description of the twin */
+}
+
+/* Parameters for Status */
+message Subscribe_Status_Parameters {
+}
+
+/* Responses of Status */
+message Subscribe_Status_Responses {
+  sila2.org.silastandard.String Status = 1;  /* idle, busy or error, with the current operation */
+}

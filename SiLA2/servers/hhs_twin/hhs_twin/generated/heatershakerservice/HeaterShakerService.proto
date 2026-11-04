@@ -1,0 +1,77 @@
+syntax = "proto3";
+
+import "SiLAFramework.proto";
+
+package sila2.org.labautonews.heatingshaking.heatershakerservice.v1;
+
+/* A heater-shaker digital twin (first-order thermal model, accelerated time) that holds the reaction plate at 37 C and shakes it. */
+service HeaterShakerService {
+  /* Set the target temperature and wait until it is reached (within 0.5 C). Observable: reports the current temperature. */
+  rpc SetTemperature (sila2.org.labautonews.heatingshaking.heatershakerservice.v1.SetTemperature_Parameters) returns (sila2.org.silastandard.CommandConfirmation) {}
+  /* Monitor the state of SetTemperature */
+  rpc SetTemperature_Info (sila2.org.silastandard.CommandExecutionUUID) returns (stream sila2.org.silastandard.ExecutionInfo) {}
+  /* Retrieve intermediate responses of SetTemperature */
+  rpc SetTemperature_Intermediate (sila2.org.silastandard.CommandExecutionUUID) returns (stream sila2.org.labautonews.heatingshaking.heatershakerservice.v1.SetTemperature_IntermediateResponses) {}
+  /* Retrieve result of SetTemperature */
+  rpc SetTemperature_Result(sila2.org.silastandard.CommandExecutionUUID) returns (sila2.org.labautonews.heatingshaking.heatershakerservice.v1.SetTemperature_Responses) {}
+  /* Start orbital shaking at a speed. */
+  rpc StartShaking (sila2.org.labautonews.heatingshaking.heatershakerservice.v1.StartShaking_Parameters) returns (sila2.org.labautonews.heatingshaking.heatershakerservice.v1.StartShaking_Responses) {}
+  /* Stop shaking. */
+  rpc StopShaking (sila2.org.labautonews.heatingshaking.heatershakerservice.v1.StopShaking_Parameters) returns (sila2.org.labautonews.heatingshaking.heatershakerservice.v1.StopShaking_Responses) {}
+  /* Current block temperature, C */
+  rpc Subscribe_CurrentTemperature (sila2.org.labautonews.heatingshaking.heatershakerservice.v1.Subscribe_CurrentTemperature_Parameters) returns (stream sila2.org.labautonews.heatingshaking.heatershakerservice.v1.Subscribe_CurrentTemperature_Responses) {}
+  /* Current shaking speed in rpm (0 = stopped) */
+  rpc Get_ShakingSpeed (sila2.org.labautonews.heatingshaking.heatershakerservice.v1.Get_ShakingSpeed_Parameters) returns (sila2.org.labautonews.heatingshaking.heatershakerservice.v1.Get_ShakingSpeed_Responses) {}
+}
+
+/* Parameters for SetTemperature */
+message SetTemperature_Parameters {
+  sila2.org.silastandard.Real TargetTemperature = 1;  /* Target in degrees Celsius (4-70) */
+}
+
+/* Responses of SetTemperature */
+message SetTemperature_Responses {
+  sila2.org.silastandard.Real ReachedTemperature = 1;  /* Temperature when the target was reached, C */
+}
+
+/* Intermediate responses of SetTemperature */
+message SetTemperature_IntermediateResponses {
+  sila2.org.silastandard.Real CurrentTemperature = 1;  /* Current block temperature, C */
+}
+
+/* Parameters for StartShaking */
+message StartShaking_Parameters {
+  sila2.org.silastandard.Integer Speed = 1;  /* Speed in rpm (200-3000) */
+}
+
+/* Responses of StartShaking */
+message StartShaking_Responses {
+  sila2.org.silastandard.String Message = 1;  /* Human-readable summary of what the digital twin did */
+}
+
+/* Parameters for StopShaking */
+message StopShaking_Parameters {
+}
+
+/* Responses of StopShaking */
+message StopShaking_Responses {
+  sila2.org.silastandard.String Message = 1;  /* Human-readable summary of what the digital twin did */
+}
+
+/* Parameters for CurrentTemperature */
+message Subscribe_CurrentTemperature_Parameters {
+}
+
+/* Responses of CurrentTemperature */
+message Subscribe_CurrentTemperature_Responses {
+  sila2.org.silastandard.Real CurrentTemperature = 1;  /* Current block temperature, C */
+}
+
+/* Parameters for ShakingSpeed */
+message Get_ShakingSpeed_Parameters {
+}
+
+/* Responses of ShakingSpeed */
+message Get_ShakingSpeed_Responses {
+  sila2.org.silastandard.Integer ShakingSpeed = 1;  /* Current shaking speed in rpm (0 = stopped) */
+}

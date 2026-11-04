@@ -1,0 +1,105 @@
+<Feature xmlns="http://www.sila-standard.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Category="heatingshaking" FeatureVersion="1.0" MaturityLevel="Draft" Originator="org.labautonews" SiLA2Version="1.0" xsi:schemaLocation="http://www.sila-standard.org https://gitlab.com/SiLA2/sila_base/raw/master/schema/FeatureDefinition.xsd">
+  <Identifier>HeaterShakerService</Identifier>
+  <DisplayName>Heater Shaker Service</DisplayName>
+  <Description>A heater-shaker digital twin (first-order thermal model, accelerated time) that holds the reaction plate at 37 C and shakes it.</Description>
+  <Command>
+    <Identifier>SetTemperature</Identifier>
+    <DisplayName>Set Temperature</DisplayName>
+    <Description>Set the target temperature and wait until it is reached (within 0.5 C). Observable: reports the current temperature.</Description>
+    <Observable>Yes</Observable>
+    <Parameter>
+      <Identifier>TargetTemperature</Identifier>
+      <DisplayName>Target Temperature</DisplayName>
+      <Description>Target in degrees Celsius (4-70)</Description>
+      <DataType>
+        <Basic>Real</Basic>
+      </DataType>
+    </Parameter>
+    <Response>
+      <Identifier>ReachedTemperature</Identifier>
+      <DisplayName>Reached Temperature</DisplayName>
+      <Description>Temperature when the target was reached, C</Description>
+      <DataType>
+        <Basic>Real</Basic>
+      </DataType>
+    </Response>
+    <IntermediateResponse>
+      <Identifier>CurrentTemperature</Identifier>
+      <DisplayName>Current Temperature</DisplayName>
+      <Description>Current block temperature, C</Description>
+      <DataType>
+        <Basic>Real</Basic>
+      </DataType>
+    </IntermediateResponse>
+    <DefinedExecutionErrors>
+      <Identifier>TemperatureOutOfRange</Identifier>
+    </DefinedExecutionErrors>
+  </Command>
+  <Command>
+    <Identifier>StartShaking</Identifier>
+    <DisplayName>Start Shaking</DisplayName>
+    <Description>Start orbital shaking at a speed.</Description>
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>Speed</Identifier>
+      <DisplayName>Speed</DisplayName>
+      <Description>Speed in rpm (200-3000)</Description>
+      <DataType>
+        <Basic>Integer</Basic>
+      </DataType>
+    </Parameter>
+    <Response>
+      <Identifier>Message</Identifier>
+      <DisplayName>Message</DisplayName>
+      <Description>Human-readable summary of what the digital twin did</Description>
+      <DataType>
+        <Basic>String</Basic>
+      </DataType>
+    </Response>
+    <DefinedExecutionErrors>
+      <Identifier>SpeedOutOfRange</Identifier>
+    </DefinedExecutionErrors>
+  </Command>
+  <Command>
+    <Identifier>StopShaking</Identifier>
+    <DisplayName>Stop Shaking</DisplayName>
+    <Description>Stop shaking.</Description>
+    <Observable>No</Observable>
+    <Response>
+      <Identifier>Message</Identifier>
+      <DisplayName>Message</DisplayName>
+      <Description>Human-readable summary of what the digital twin did</Description>
+      <DataType>
+        <Basic>String</Basic>
+      </DataType>
+    </Response>
+  </Command>
+  <Property>
+    <Identifier>CurrentTemperature</Identifier>
+    <DisplayName>Current Temperature</DisplayName>
+    <Description>Current block temperature, C</Description>
+    <Observable>Yes</Observable>
+    <DataType>
+      <Basic>Real</Basic>
+    </DataType>
+  </Property>
+  <Property>
+    <Identifier>ShakingSpeed</Identifier>
+    <DisplayName>Shaking Speed</DisplayName>
+    <Description>Current shaking speed in rpm (0 = stopped)</Description>
+    <Observable>No</Observable>
+    <DataType>
+      <Basic>Integer</Basic>
+    </DataType>
+  </Property>
+  <DefinedExecutionError>
+    <Identifier>TemperatureOutOfRange</Identifier>
+    <DisplayName>Temperature Out Of Range</DisplayName>
+    <Description>Target must be between 4 and 70 C.</Description>
+  </DefinedExecutionError>
+  <DefinedExecutionError>
+    <Identifier>SpeedOutOfRange</Identifier>
+    <DisplayName>Speed Out Of Range</DisplayName>
+    <Description>Speed must be between 200 and 3000 rpm.</Description>
+  </DefinedExecutionError>
+</Feature>
