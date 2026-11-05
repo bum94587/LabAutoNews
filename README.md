@@ -18,7 +18,7 @@ corroborate and widen the net. See [`config/sources.yaml`](config/sources.yaml).
 
 ## How it runs
 
-Schedule: daily through 4 Nov 2026 (deep mode), then once a week, Mondays 04:47 Pacific.
+Schedule: once a week, Mondays 04:47 Pacific (scheduled task "LabAutoNews weekly research"), since 5 Nov 2026; it ran daily in deep mode from 1 to 4 Nov.
 
 ```
 every day (scheduled cloud run)            Mondays, additionally

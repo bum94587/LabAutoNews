@@ -7,8 +7,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working in this
 Reader: a DMPK / ADME scientist in drug discovery. Their field is the primary lens
 (`focus` in `config/watchlist.yaml`), but any lab automation relevant to pharma & biotech is in scope.
 
-Recurring, well-sourced intelligence on lab automation. A scheduled cloud run (daily through
-2026-11-04 in deep mode, then Mondays only) researches and writes structured items; on Mondays it renders a weekly brief that the user
+Recurring, well-sourced intelligence on lab automation. A scheduled cloud run ("LabAutoNews weekly research", Mondays
+04:47 Pacific since 2026-11-05; daily deep mode ran 1-4 Nov) researches the past week and writes structured items, then renders a weekly brief that the user
 reads (and rates) in the **myday** viewer, the same way as the money_systems finance briefs.
 Linked project: the thinking and the pulled briefs live in myday at `projects/labautonews/`;
 code, data and generated briefs live here.
