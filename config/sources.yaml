@@ -55,9 +55,43 @@ sources:
         - "PyLabRobot new device backend support"
         - "PyLabRobot paper OR talk OR workshop"
     notes: >-
-      Report as one weekly roll-up item ("PyLabRobot this week": new devices/backends, notable
-      fixes, releases), not one item per PR. Separate items only for releases, papers or
-      announcements.
+      LOW EMPHASIS (user request 2026-11-14). One weekly roll-up item listing only the big
+      changes (new devices/backends, releases, API breaks), relevance <= 3. No explainer or
+      code-reading items, no per-PR items. Separate items only for a release, paper or
+      announcement.
+
+  - id: autonomous-labs
+    name: Autonomous / self-driving lab start-ups and players
+    tier: core
+    kind: field
+    # Primary lens for the field news (user request 2026-11-14): new start-ups (stealth exits,
+    # seed/Series A), funding, facility openings, pharma deals, hires, papers and demos from the
+    # companies in watchlist.yaml `ai_native` and any new name found. Feeds below only work where
+    # the network allows them (the GitHub Action, see docs/network.md); the cloud run covers the
+    # same ground with search.
+    fetch:
+      - type: rss
+        url: "https://news.google.com/rss/search?q=%22self-driving+lab%22+OR+%22autonomous+lab%22+OR+%22AI+scientist%22+when:7d&hl=en-US&gl=US&ceid=US:en"
+      - type: rss
+        url: "https://news.google.com/rss/search?q=%22lab+automation%22+(raises+OR+seed+OR+%22Series+A%22+OR+%22Series+B%22+OR+launches)+when:7d&hl=en-US&gl=US&ceid=US:en"
+      - type: rss
+        url: "http://export.arxiv.org/api/query?search_query=abs:%22self-driving+lab%22+OR+abs:%22autonomous+laboratory%22+OR+abs:%22self-driving+laboratory%22&sortBy=submittedDate&sortOrder=descending&max_results=50"
+    search:
+      domains: []                # open web: start-ups announce on their own sites, TechCrunch, wires
+      queries:
+        - "self-driving lab start-up raises"
+        - "autonomous lab startup seed OR \"Series A\" OR \"Series B\""
+        - "AI scientist company launches lab robots"
+        - "autonomous laboratory opens facility"
+        - "Lila Sciences OR Periodic Labs OR Medra OR Trilobio OR Tetsuwan news"
+        - "Chemify OR \"Radical AI\" OR FutureHouse OR Arctoris OR Automata news"
+        - "pharma partnership autonomous lab OR self-driving lab"
+    notes: >-
+      Check every run, extended search mode. Aim for 3-6 items a week. Every new company name
+      found goes into watchlist.yaml `ai_native` (log it in the run's notes). Give a start-up
+      item a one-line "what they actually run" (wet lab? robots? which science?) in claims.
+      If the week is thin, the 'learn a topic' fallback article is about this field (business
+      models, who runs real robots vs software, pharma adoption, where ADME fits), not PyLabRobot.
 
   - id: slas
     name: SLAS (Society for Laboratory Automation and Screening)
@@ -267,6 +301,9 @@ sources:
     name: Lab trade press
     tier: secondary
     kind: press
+    fetch:
+      - type: rss
+        url: "https://news.google.com/rss/search?q=%22laboratory+automation%22+OR+%22lab+automation%22+OR+%22liquid+handler%22+when:7d&hl=en-US&gl=US&ceid=US:en"
     search:
       domains: [selectscience.net, labmanager.com, genomeweb.com, technologynetworks.com, labiotech.eu, therobotreport.com, fiercebiotech.com, drugdiscoverynews.com]
       queries:

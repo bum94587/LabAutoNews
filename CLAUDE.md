@@ -6,6 +6,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working in this
 
 Reader: a DMPK / ADME scientist in drug discovery. Their field is the primary lens
 (`focus` in `config/watchlist.yaml`), but any lab automation relevant to pharma & biotech is in scope.
+Second lens (since 2026-11-14): the autonomous / self-driving lab field, its start-ups and what the
+main players are doing (source `autonomous-labs`). PyLabRobot is low emphasis: one roll-up of big changes.
 
 Recurring, well-sourced intelligence on lab automation. A scheduled cloud run (daily through
 2026-11-04 in deep mode, then Mondays only) researches and writes structured items; on Mondays it renders a weekly brief that the user
@@ -54,11 +56,9 @@ code, data and generated briefs live here.
 
 ## Network note
 
-The cloud environment's network policy currently blocks direct fetches of the source sites
-(`fetch_sources.py` logs them as failed, and WebFetch can't open them). Runs fall back to
-site-restricted WebSearch. Allowing these domains in the environment's network settings
-enables direct fetching: labautomation.io, slas.org, lrig.org, elrig.org,
-hamiltoncompany.com, tecan.com, agilent.com, beckman.com, github.com (web/API; git itself works, which
-is how `fetch_sources.py` reads PyLabRobot), and for the weekly literature feeds api.crossref.org
-(SLAS Discovery, SLAS Technology, HardwareX by ISSN) and eutils.ncbi.nlm.nih.gov (PubMed).
+The cloud environment's network policy blocks direct fetches of the source sites, the literature
+APIs and every relay tried (probe of 2026-11-14: only git to github.com and raw.githubusercontent.com
+get through). Runs fall back to site-restricted WebSearch. The options, and the domain list to
+allow, are in `docs/network.md`; the daily `fetch-feeds` GitHub Action (`.github/workflows/`)
+fetches headlines from GitHub's runners into branch `claude/feeds-bot`, which `sync_state.py` merges.
 Google Scholar is deliberately not used (no API, blocks automation, not indexed by search).

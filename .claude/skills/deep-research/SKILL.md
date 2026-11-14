@@ -49,8 +49,8 @@ normal steps below:
   "Deep dive" below. Keep it to ~800 words plus references. Its key claims become items
   (found_via `followup`, status `include` or `hold`) so the verifier checks them like any other.
 Deep mode never skips verification. If today is past `deep_until`, ignore this section, and
-if `after_deep.run_days` doesn't include today's weekday, stop the scheduled run right away
-(nothing to research, write or commit). A run the user starts by hand always proceeds.
+a run on a day outside `after_deep.run_days` still proceeds (`off_day_runs: proceed`, user
+request 2026-11-14): never skip it; do the weekly run for the 7 days ending today.
 
 ## 1. Collect (daily)
 0. **Whose brief this is**: a DMPK / ADME scientist in drug discovery (`focus` in
@@ -58,7 +58,10 @@ if `after_deep.run_days` doesn't include today's weekday, stop the scheduled run
    +1 relevance, listed first), but any lab automation relevant to pharma & biotech is in
    scope. Don't narrow too far; materials/physics SDL work stays in at relevance −1.
 1. `uv run fetch_sources.py` (Mondays: `uv run fetch_sources.py --weekly`), then
-   `uv run fetch_sources.py --new` for the links first seen today.
+   `uv run fetch_sources.py --new --days 7` for the links first seen this week. After
+   `sync_state.py` that list also holds what the **feed-fetch GitHub Action** collected each
+   day from the sites this environment can't reach (branch `claude/feeds-bot`, see
+   `docs/network.md`); open those links' primary sources via search like any other lead.
    Sources that fail are normal when the network policy blocks them. Cover those with search.
 2. For **every core source due today** in `config/sources.yaml` (cadence `daily` every run;
    cadence `weekly` (SLAS Discovery, SLAS Technology, HardwareX, PubMed, preprints) on Mondays
@@ -66,6 +69,12 @@ if `after_deep.run_days` doesn't include today's weekday, stop the scheduled run
    WebSearch with `allowed_domains` = `search.domains` and each of `search.queries`, adding the
    current month/year. Vendors: keep only lab-automation sections (respect `include` /
    `exclude`). Agilent's chromatography or Beckman's centrifuge news is not lab automation.
+2b. **Autonomous-lab field (every run, extended search)**: source `autonomous-labs`. Search the
+   open web for new self-driving / autonomous-lab start-ups (stealth exits, seed to Series B),
+   funding, facility openings, pharma deals, hires, products and demos from the `ai_native`
+   companies in `config/watchlist.yaml` and the big players' autonomous-lab programmes (Danaher,
+   Roche, Lilly, Ginkgo, Thermo Fisher...). Any science counts for company news. Aim for 3-6
+   items a week; add every new company name to `ai_native` and say so in the run's notes.
 3. Secondary sources: run when core sources are thin, to corroborate, and for
    funding/research/self-driving-lab news. Spend more effort where `weights.json` effects are
    positive and less where they are negative, but always check every core source.
@@ -76,7 +85,13 @@ if `after_deep.run_days` doesn't include today's weekday, stop the scheduled run
    repeats) and it is about lab automation.
 6. Sources with a `notes:` field have special handling. Follow it (e.g. PyLabRobot is one
    weekly roll-up item built from `fetch_sources.py --new` PR titles, not one item per PR;
-   roll-ups go in the run on the brief day, or in the first run after a release).
+   roll-ups go in the run on the brief day, or in the first run after a release). Since
+   2026-11-14 PyLabRobot is **low emphasis**: the roll-up names only the big changes, and no
+   explainer or code-reading items are written about it.
+7. **Thin week**: if there is little news, write one magazine-style "learn a topic" piece
+   about the autonomous-lab field (business models, who runs real robots vs software only,
+   pharma adoption, where DMPK/ADME data fits, a notable paper explained), as `followup` items
+   the verifier checks. Not PyLabRobot internals.
 
 Record what you checked in `data/runs/D.json`:
 ```json

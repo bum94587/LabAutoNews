@@ -16,6 +16,8 @@ error: the research run covers it with site-restricted web search instead (see t
     uv run fetch_sources.py --all        # also secondary sources that have a fetch block
     uv run fetch_sources.py --only slas  # one source
     uv run fetch_sources.py --new        # just print links first seen today (no fetching)
+    uv run fetch_sources.py --new --days 7   # links first seen in the last 7 days (incl. the
+                                             # GitHub Action's daily fetches, after sync_state)
 """
 
 from __future__ import annotations
@@ -204,12 +206,15 @@ def main() -> None:
     ap.add_argument("--weekly", action="store_true",
                     help="also fetch sources with cadence: weekly (journals, PubMed); the Monday run uses this")
     ap.add_argument("--new", action="store_true", help="only list links first seen today")
+    ap.add_argument("--days", type=int, default=1,
+                    help="with --new: list links first seen in the last N days (default 1 = today)")
     args = ap.parse_args()
 
     known = {r["url"]: r for r in read_jsonl(LINKS)}
     if args.new:
+        since = (date.fromisoformat(today()) - timedelta(days=args.days - 1)).isoformat()
         for r in known.values():
-            if r["first_seen"] == today():
+            if r["first_seen"] >= since:
                 print(f"[{r['source_id']}] {r['published'] or '????-??-??'}  {r['title']}\n    {r['url']}")
         return
 

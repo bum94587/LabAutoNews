@@ -1,0 +1,59 @@
+# Daily headline fetch from GitHub's runners, which have open internet access.
+#
+# The scheduled Claude cloud runs sit behind a network allowlist that blocks the source sites
+# (vendors, SLAS/ELRIG/LRIG, labautomation.io, Crossref, PubMed, Google News, arXiv). This job
+# runs fetch_sources.py here instead and commits only data/raw/*.jsonl (headline metadata:
+# title, link, date, short feed summary) to the branch claude/feeds-bot. The research run's
+# `uv run sync_state.py` merges that branch like any other claude/* branch, and
+# `fetch_sources.py --new --days 7` then lists the week's links. See docs/network.md.
+#
+# Scheduled workflows only run from the default branch: this file must be on `main`.
+name: fetch-feeds
+
+on:
+  schedule:
+    - cron: "17 11 * * *"     # daily 11:17 UTC (03:17 / 04:17 in Los Angeles), before the Monday run
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fetch-feeds
+  cancel-in-progress: false
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Switch to the feeds branch (create it from main the first time)
+        run: |
+          git config user.name "labautonews-feeds-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git ls-remote --exit-code --heads origin claude/feeds-bot >/dev/null; then
+            git fetch origin claude/feeds-bot
+            git checkout -B claude/feeds-bot origin/claude/feeds-bot
+            # code and config always come from main; data/raw is the bot's own history
+            git checkout origin/main -- fetch_sources.py labnews config pyproject.toml uv.lock
+          else
+            git checkout -B claude/feeds-bot
+          fi
+
+      - uses: astral-sh/setup-uv@v6
+
+      - name: Fetch every source with a fetch block (core, secondary and weekly)
+        run: |
+          uv sync
+          uv run fetch_sources.py --all --weekly
+
+      - name: Commit the new headline metadata
+        run: |
+          git add data/raw/links.jsonl data/raw/fetch_log.jsonl
+          if git diff --cached --quiet; then echo "nothing new"; exit 0; fi
+          git commit -m "feeds: $(TZ=America/Los_Angeles date +%F)"
+          git push origin claude/feeds-bot

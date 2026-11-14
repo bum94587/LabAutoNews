@@ -13,7 +13,15 @@ focus:
                in vitro-in vivo extrapolation, DMTA cycle]
     relevance: +1 to the researcher's relevance guess (cap 5); papers in this field are listed first
   in_scope: Any laboratory automation relevant to pharma & biotech, from discovery and screening to bioanalysis, cell/gene therapy and QC
-  lower_priority: Self-driving labs in materials, chemistry or physics with no clear transfer to pharma (keep them, rate relevance 1 lower)
+  second_lens:
+    name: The autonomous / self-driving lab field (user request 2026-11-14)
+    segment: self-driving-labs
+    what: new start-ups, funding, facilities, pharma deals, hires, products and demos from AI-native
+          lab companies and the big players' autonomous-lab programmes; follow what the field is up to
+    rule: start-up and company news counts whatever the science (materials and chemistry included);
+          no relevance penalty for business news
+  lower_priority: Academic self-driving-lab papers in materials, chemistry or physics with no clear transfer to pharma (keep them, rate relevance 1 lower)
+  de_emphasised: PyLabRobot (user request 2026-11-14) - one weekly roll-up of big changes only
 
 segments:
   dmpk-adme: DMPK / ADME automation (primary focus)
@@ -35,7 +43,9 @@ companies:
   incumbents: [Thermo Fisher, Revvity, Molecular Devices, Eppendorf, Sartorius, Roche Diagnostics, Siemens Healthineers, Abbott, Waters, SPT Labtech, Formulatrix, Analytik Jena, Gilson, INTEGRA Biosciences]
   open_source: [PyLabRobot]
   growth: [Opentrons, Automata, Biosero, HighRes Biosolutions, Synthace, Benchling, Emerald Cloud Lab, Ginkgo Bioworks, Cellares, Retisoft, Unchained Labs]
-  ai_native: [Lila Sciences, Periodic Labs, Chemify, Radical AI, Medra, Trilobio, FutureHouse, Arctoris, Recursion]
+  ai_native: [Lila Sciences, Periodic Labs, Chemify, Radical AI, Medra, Trilobio, FutureHouse, Arctoris, Recursion,
+              Tetsuwan Scientific, Potato, Ginkgo Cloud Lab, XtalPi, Insilico Medicine, Telescope Innovations,
+              ABLE Labs, Monomer Bio, Emerald Cloud Lab, Automata, Dunia Innovations, Orbital Materials]
 
 keywords: ["lab automation", "laboratory automation", "liquid handler", "liquid handling robot",
            "self-driving lab", "autonomous laboratory", "laboratory robotics", "cloud lab",
