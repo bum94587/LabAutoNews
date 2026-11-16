@@ -1,0 +1,224 @@
+{
+ "date": "2026-11-09",
+ "sources_checked": [
+  {
+   "id": "slas",
+   "method": "site-search",
+   "queries": [
+    "SLAS news release November 2026"
+   ],
+   "candidates": 1,
+   "kept": 0
+  },
+  {
+   "id": "lrig",
+   "method": "site-search",
+   "queries": [
+    "ELRIG Drug Discovery 2026 automation LRIG"
+   ],
+   "candidates": 0,
+   "kept": 0
+  },
+  {
+   "id": "elrig",
+   "method": "site-search",
+   "queries": [
+    "ELRIG Drug Discovery 2026 automation LRIG"
+   ],
+   "candidates": 1,
+   "kept": 0
+  },
+  {
+   "id": "labautomation-io",
+   "method": "site-search",
+   "queries": [
+    "lab automation news this week November 2026 pharma"
+   ],
+   "candidates": 0,
+   "kept": 0
+  },
+  {
+   "id": "pylabrobot",
+   "method": "feed",
+   "queries": [
+    "fetch_sources.py --weekly (git-log)"
+   ],
+   "candidates": 8,
+   "kept": 1
+  },
+  {
+   "id": "hamilton",
+   "method": "site-search",
+   "queries": [
+    "Hamilton automated liquid handling news November 2026",
+    "Hamilton Duo Syringe Pump launch",
+    "Parallel Fluidics Hamilton partner"
+   ],
+   "candidates": 3,
+   "kept": 1
+  },
+  {
+   "id": "tecan",
+   "method": "site-search",
+   "queries": [
+    "Tecan automation launch partnership November 2026",
+    "Tecan Q3 2026 update November 5 sales"
+   ],
+   "candidates": 1,
+   "kept": 0
+  },
+  {
+   "id": "agilent",
+   "method": "site-search",
+   "queries": [
+    "Agilent automation liquid handling Bravo launch 2026"
+   ],
+   "candidates": 0,
+   "kept": 0
+  },
+  {
+   "id": "beckman",
+   "method": "site-search",
+   "queries": [
+    "Beckman Coulter Biomek automation 2026"
+   ],
+   "candidates": 0,
+   "kept": 0
+  },
+  {
+   "id": "slas-technology",
+   "method": "site-search",
+   "queries": [
+    "SLAS Technology OR SLAS Discovery 2026 automated ADME ..."
+   ],
+   "candidates": 1,
+   "kept": 0
+  },
+  {
+   "id": "slas-discovery",
+   "method": "site-search",
+   "queries": [
+    "SLAS Technology OR SLAS Discovery 2026 automated ADME ..."
+   ],
+   "candidates": 0,
+   "kept": 0
+  },
+  {
+   "id": "hardwarex",
+   "method": "site-search",
+   "queries": [],
+   "candidates": 0,
+   "kept": 0
+  },
+  {
+   "id": "pubmed",
+   "method": "site-search",
+   "queries": [
+    "PubMed 2026 automated high-throughput ADME DMPK assay robotic platform"
+   ],
+   "candidates": 3,
+   "kept": 0
+  },
+  {
+   "id": "preprints",
+   "method": "site-search",
+   "queries": [
+    "LLM agent controls liquid handling robot preprint 2026"
+   ],
+   "candidates": 2,
+   "kept": 0
+  },
+  {
+   "id": "web",
+   "method": "site-search",
+   "queries": [
+    "self-driving lab AI agent drug discovery automation November 2026"
+   ],
+   "candidates": 1,
+   "kept": 0
+  }
+ ],
+ "fetch_failed": [
+  "labautomation-io",
+  "slas",
+  "lrig",
+  "elrig",
+  "hamilton",
+  "tecan",
+  "agilent",
+  "beckman",
+  "slas-discovery",
+  "slas-technology",
+  "hardwarex",
+  "pubmed"
+ ],
+ "rejected": [
+  {
+   "title": "Hamilton Duo Syringe Pump launch",
+   "url": "https://macaubusiness.com/hamilton-launches-the-duo-syringe-pump-for-flexible-precise-liquid-delivery-in-research-applications/",
+   "source_id": "hamilton",
+   "reason": "27 Oct, outside 7-day window; OEM pump"
+  },
+  {
+   "title": "Ahlstrom and Hamilton automated DBS sample processing",
+   "url": "https://www.hamiltoncompany.com/press-releases",
+   "source_id": "hamilton",
+   "reason": "9 Oct, outside window"
+  },
+  {
+   "title": "Tecan Q3 update (5 Nov)",
+   "url": "https://www.tecan.com/corporate-news",
+   "source_id": "tecan",
+   "reason": "financial update, not found, not automation"
+  },
+  {
+   "title": "SLAS Innovation Award finalists",
+   "url": "https://www.slas.org/events-calendar/slas2026-international-conference-exhibition/present/innovation-award/",
+   "source_id": "slas",
+   "reason": "announcement not found yet"
+  },
+  {
+   "title": "Passive AI system verifying deck state on liquid handlers (arXiv 2610.02668)",
+   "url": "https://arxiv.org/html/2610.02668v1",
+   "source_id": "web",
+   "reason": "early Oct, outside 14-day window"
+  },
+  {
+   "title": "Caco-2 96-well automation (ADDT)",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/41468180/",
+   "source_id": "pubmed",
+   "reason": "already covered LAN-20261102-16"
+  },
+  {
+   "title": "GPT-enhanced robotic automation platform (SLAS Technol)",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/42002231/",
+   "source_id": "slas-technology",
+   "reason": "publication date unclear, not DMPK; unconfirmed in window"
+  },
+  {
+   "title": "Ginkgo ADME-One with Tangible and Inductive Bio",
+   "url": "https://www.drugdiscoverytrends.com/ginkgo-tangible-and-inductive-bio-aim-to-move-adme-decisions-from-lead-optimization-to-hit-id/",
+   "source_id": "web",
+   "reason": "June 2026, outside window"
+  },
+  {
+   "title": "Beckman Biomek i3",
+   "url": "https://www.beckman.com/news/biomek-i3-benchtop-liquid-handler",
+   "source_id": "beckman",
+   "reason": "Dec 2025, old"
+  },
+  {
+   "title": "Agilent OmixAI partnership",
+   "url": "https://www.agilent.com/about/newsroom/presrel/2026/14apr-ca26012.html",
+   "source_id": "agilent",
+   "reason": "April, old"
+  },
+  {
+   "title": "Protein Sciences in Drug Discovery, 10-11 Nov",
+   "url": "https://elrig.org/elrig-unveils-keynote-speakers-for-protein-sciences-2026/",
+   "source_id": "elrig",
+   "reason": "event listing, protein science not automation"
+  }
+ ],
+ "notes": "Thin week. All direct fetches blocked by proxy (hamiltoncompany.com does not resolve). Parallel Fluidics partnership seen only as headline/date in search snippet. No scope requests or ratings exist yet."
+}
