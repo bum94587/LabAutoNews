@@ -1,0 +1,311 @@
+{
+ "date": "2026-11-14",
+ "kind": "weekly (started by hand on a Saturday; user asked not to skip manual runs)",
+ "window": {
+  "news": "2026-11-07..2026-11-14",
+  "literature": "2026-10-31..2026-11-14"
+ },
+ "sources_checked": [
+  {
+   "id": "slas",
+   "method": "site-search",
+   "queries": [
+    "SLAS news November 2026"
+   ],
+   "candidates": 1,
+   "kept": 0
+  },
+  {
+   "id": "lrig",
+   "method": "site-search",
+   "queries": [
+    "ELRIG OR LRIG event automation November 2026"
+   ],
+   "candidates": 0,
+   "kept": 0
+  },
+  {
+   "id": "elrig",
+   "method": "site-search",
+   "queries": [
+    "ELRIG OR LRIG event automation November 2026"
+   ],
+   "candidates": 1,
+   "kept": 0
+  },
+  {
+   "id": "labautomation-io",
+   "method": "site-search",
+   "queries": [
+    "labautomation.io November 2026",
+    "Exypnos Automation Pivot soft launch"
+   ],
+   "candidates": 2,
+   "kept": 0
+  },
+  {
+   "id": "pylabrobot",
+   "method": "feed",
+   "queries": [
+    "fetch_sources.py --weekly (git-log)",
+    "git clone + code read"
+   ],
+   "candidates": 34,
+   "kept": 4
+  },
+  {
+   "id": "hamilton",
+   "method": "site-search",
+   "queries": [
+    "Hamilton Company press release November 2026 automation"
+   ],
+   "candidates": 3,
+   "kept": 0
+  },
+  {
+   "id": "tecan",
+   "method": "site-search",
+   "queries": [
+    "Tecan news November 2026"
+   ],
+   "candidates": 1,
+   "kept": 0
+  },
+  {
+   "id": "agilent",
+   "method": "site-search",
+   "queries": [
+    "Agilent automation announces November 2026"
+   ],
+   "candidates": 3,
+   "kept": 0
+  },
+  {
+   "id": "beckman",
+   "method": "site-search",
+   "queries": [
+    "Beckman Coulter Biomek OR Echo news November 2026"
+   ],
+   "candidates": 0,
+   "kept": 0
+  },
+  {
+   "id": "slas-technology",
+   "method": "site-search",
+   "queries": [
+    "SLAS Technology 2026 November self-driving laboratory robotic article"
+   ],
+   "candidates": 1,
+   "kept": 0
+  },
+  {
+   "id": "slas-discovery",
+   "method": "site-search",
+   "queries": [
+    "automated metabolic stability OR permeability OR plasma protein binding assay robotic 2026",
+    "PubMed 2026 high-throughput ADME automation acoustic mass spectrometry microsampling"
+   ],
+   "candidates": 1,
+   "kept": 0
+  },
+  {
+   "id": "hardwarex",
+   "method": "site-search",
+   "queries": [
+    "HardwareX November 2026 open source laboratory automation pipetting"
+   ],
+   "candidates": 0,
+   "kept": 0
+  },
+  {
+   "id": "pubmed",
+   "method": "site-search",
+   "queries": [
+    "automated metabolic stability OR permeability OR plasma protein binding assay robotic 2026",
+    "PubMed 2026 high-throughput ADME automation acoustic mass spectrometry microsampling"
+   ],
+   "candidates": 2,
+   "kept": 0
+  },
+  {
+   "id": "preprints",
+   "method": "site-search",
+   "queries": [
+    "arXiv OR bioRxiv preprint November 2026 LLM agent laboratory automation liquid handling robot"
+   ],
+   "candidates": 1,
+   "kept": 0
+  },
+  {
+   "id": "research",
+   "method": "site-search",
+   "queries": [
+    "AutoDNA autonomous genetics laboratory Shanghai Jiao Tong Nature 2026",
+    "Nature \"AI agents design your perfect robot-powered lab\"",
+    "\"self-driving laboratory\" OR \"autonomous laboratory\" news week November 10 2026"
+   ],
+   "candidates": 3,
+   "kept": 2
+  },
+  {
+   "id": "trade-press",
+   "method": "site-search",
+   "queries": [
+    "laboratory automation news November 2026"
+   ],
+   "candidates": 5,
+   "kept": 0
+  },
+  {
+   "id": "wires",
+   "method": "site-search",
+   "queries": [
+    "pharma AI automated lab drug discovery partnership week of November 9 2026",
+    "lab automation acquisition OR partnership announced November 2026 ..."
+   ],
+   "candidates": 6,
+   "kept": 1
+  },
+  {
+   "id": "web",
+   "method": "site-search",
+   "queries": [
+    "self-driving lab startup raises November 2026",
+    "autonomous lab drug discovery announcement November 2026",
+    "lab automation robotics company funding Series A November 2026 biotech",
+    "Lila Sciences OR Periodic Labs OR Medra ... news November 2026",
+    "\"autonomous lab\" OR \"AI scientist\" startup launches ... November 2026",
+    "Sino Biological 4RISE"
+   ],
+   "candidates": 8,
+   "kept": 1
+  }
+ ],
+ "fetch_failed": [
+  "labautomation-io",
+  "slas",
+  "lrig",
+  "elrig",
+  "hamilton",
+  "tecan",
+  "agilent",
+  "beckman",
+  "slas-discovery",
+  "slas-technology",
+  "hardwarex",
+  "pubmed",
+  "webfetch:nature.com",
+  "webfetch:pubmed.ncbi.nlm.nih.gov"
+ ],
+ "rejected": [
+  {
+   "title": "Hamilton and Parallel Fluidics partnership",
+   "url": "https://www.hamiltoncompany.com/press-releases",
+   "source_id": "hamilton",
+   "reason": "duplicate of LAN-20261109-01"
+  },
+  {
+   "title": "Ahlstrom and Hamilton automated DBS processing",
+   "url": "https://www.hamiltoncompany.com/press-releases/ahlstrom-hamilton-automated-dbs-processing",
+   "source_id": "hamilton",
+   "reason": "12 Oct, outside window (DMPK-relevant microsampling; missed earlier)"
+  },
+  {
+   "title": "Tecan Q3 2026 update",
+   "url": "https://www.tecan.com/news-archive",
+   "source_id": "tecan",
+   "reason": "financial results, 5 Nov, outside window"
+  },
+  {
+   "title": "Agilent 5987A GC/MS MSD and Proscia acquisition close",
+   "url": "https://www.agilent.com/about/newsroom/presrel/",
+   "source_id": "agilent",
+   "reason": "not lab automation; 2-4 Nov"
+  },
+  {
+   "title": "Exypnos Pivot plate rotator",
+   "url": "https://labautomation.io/t/rotating-plates-90-degrees-around-z-axis/2806",
+   "source_id": "labautomation-io",
+   "reason": "post is ~3 years old, not new"
+  },
+  {
+   "title": "SLAS San Diego meet-up and liquid-handling boot camp (17-18 Nov)",
+   "url": "https://www.slas.org/events-calendar/",
+   "source_id": "slas",
+   "reason": "routine event listings"
+  },
+  {
+   "title": "ELRIG Protein Sciences in Drug Discovery, 10-11 Nov",
+   "url": "https://elrig.org/portfolio/protein-sciences-in-drug-discovery-2026/",
+   "source_id": "elrig",
+   "reason": "protein science/AI meeting, no automation content found"
+  },
+  {
+   "title": "Robotic safety in self-driving laboratories (SLAS Technology)",
+   "url": "https://www.sciencedirect.com/science/article/pii/S2472630326000774",
+   "source_id": "slas-technology",
+   "reason": "online 26 Aug 2026, outside 14-day window"
+  },
+  {
+   "title": "Acoustic ejection native MS for protein-ligand screening (SLAS Discov)",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/42580591/",
+   "source_id": "pubmed",
+   "reason": "publication date not verifiable (PubMed blocked)"
+  },
+  {
+   "title": "Monterey Automation acquires DYNEX Technologies",
+   "url": "https://app.dealroom.co/news/note/monterey-automation-buys-dynex-technologies-to-deepen-lab-automation-reach",
+   "source_id": "web",
+   "reason": "6 Nov, one day outside window"
+  },
+  {
+   "title": "Lila Sciences Pd-oxide electrolysis catalysts",
+   "url": "https://cen.acs.org/business/start-ups/lila-ai-hydrogen-catalyst-electrolyzer/104/web/2026/10",
+   "source_id": "web",
+   "reason": "4 Nov, outside window; materials"
+  },
+  {
+   "title": "Lila CEO on Fast Company Tech Visionaries list",
+   "url": "https://www.lila.ai/news",
+   "source_id": "web",
+   "reason": "award, not news"
+  },
+  {
+   "title": "NVIDIA GR00T 2 and Isaac Lab 3.0",
+   "url": "https://therobotreport.com/nvidia-launches-gr00t-2-isaac-lab-3-0-corl",
+   "source_id": "trade-press",
+   "reason": "general robot learning, not lab automation"
+  },
+  {
+   "title": "Uncountable environmental monitoring",
+   "url": "https://drugdiscoverynews.com/can-auditors-trace-every-swab-result-to-its-sampling-point-17663",
+   "source_id": "trade-press",
+   "reason": "QC/EM software, not lab automation"
+  },
+  {
+   "title": "mzio mzassist MS control layer",
+   "url": "https://www.drugtargetreview.com/reports/lab-automation-2026-inside-the-labs-making-drug-discovery-faster-and-more-reliable/2136826.article",
+   "source_id": "trade-press",
+   "reason": "2 Nov, outside window; only secondary mention"
+  },
+  {
+   "title": "Chai-Roche, Variational AI-Merck, VivoSim-Chemveda deals",
+   "url": "https://www.biospace.com/press-releases/chai-discovery-announces-collaboration-with-roche-in-ai-driven-drug-discovery",
+   "source_id": "wires",
+   "reason": "AI design deals without lab automation; 2-6 Nov"
+  },
+  {
+   "title": "Applied Intuition, Opdo raises",
+   "url": "https://tech.eu/2026/11/12/berlin-la-startup-opdo-raises-23m-to-automate-optical-engineering-with-ai",
+   "source_id": "web",
+   "reason": "autonomous vehicles / optics, not labs"
+  },
+  {
+   "title": "PyLabRobot single PRs (CI, docs, resources, visualizer tweaks)",
+   "url": "https://github.com/PyLabRobot/pylabrobot/commits/main",
+   "source_id": "pylabrobot",
+   "reason": "folded into weekly roll-up LAN-20261114-05"
+  }
+ ],
+ "notes": "Thin news week: no self-driving-lab start-up raises or launches found 7-14 Nov; no Hamilton/Tecan/Agilent/Beckman automation news in window. Brief padded with PyLabRobot explainer items per the run prompt. Scope requests: none (0 ratings harvested)."
+}
